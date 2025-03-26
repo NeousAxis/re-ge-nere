@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ré(ge)nère - Plateforme d'Écosystème Mutualisé</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4CAF50">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #80cbc4;
+            --background-color: #f0e6d2;
+            --text-color: #555;
+            --card-background: #f9f3e7;
+            --card-border: #ece0c5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 15px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            margin-top: 10px;
+            font-weight: normal;
+            font-size: 1.2rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background-color: var(--card-background);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--card-border);
+            background-color: white;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .company-card {
+            background-color: white;
+            border: 1px solid var(--card-border);
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .company-name {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .company-detail {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .company-detail strong {
+            color: #666;
+            margin-right: 5px;
+        }
+        
+        /* Styles pour le modal de notification */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .close-modal {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .notification-settings-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .notification-settings-btn button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .match-badge {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-weight: bold;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ré(ge)nère</h1>
+        <div class="subtitle">Plateforme d'Écosystème Mutualisé</div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Ajouter une entreprise</h2>
+            <form id="companyForm">
+                <div>
+                    <label for="companyName">Nom de l'entreprise:</label>
+                    <input type="text" id="companyName" required>
+                </div>
+                
+                <div>
+                    <label for="companyEmail">Email:</label>
+                    <input type="email" id="companyEmail">
+                </div>
+                
+                <div>
+                    <label for="companyPhone">Téléphone:</label>
+                    <input type="tel" id="companyPhone">
+                </div>
+                
+                <div>
+                    <label for="companyLocation">Localisation:</label>
+                    <input type="text" id="companyLocation">
+                </div>
+                
+                <div>
+                    <label for="companyResources">Ressources disponibles (séparées par des virgules):</label>
+                    <textarea id="companyResources"></textarea>
+                </div>
+                
+                <div>
+                    <label for="companyServices">Services proposés (séparés par des virgules):</label>
+                    <textarea id="companyServices"></textarea>
+                </div>
+                
+                <div>
+                    <label for="companyNeeds">Besoins recherchés (séparés par des virgules):</label>
+                    <textarea id="companyNeeds"></textarea>
+                </div>
+                
+                <button type="submit">Ajouter</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h2>Entreprises enregistrées</h2>
+            <div id="companiesList"></div>
+        </div>
+    </div>
+    
+    <!-- Modal pour les préférences de notification -->
+    <div id="notificationModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Préférences de notification</h2>
+            <form id="notificationForm">
+                <div>
+                    <label for="emailNotif">Email pour les notifications:</label>
+                    <input type="email" id="emailNotif" required>
+                </div>
+                <div>
+                    <label>Fréquence des notifications:</label>
+                    <select id="notifFrequency">
+                        <option value="immediate">Immédiate</option>
+                        <option value="daily">Résumé quotidien</option>
+                        <option value="weekly">Résumé hebdomadaire</option>
+                    </select>
+                </div>
+                <button type="submit">Enregistrer mes préférences</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bouton pour accéder aux préférences de notification -->
+    <div class="notification-settings-btn">
+        <button id="openNotifSettings">Préférences de notification</button>
+    </div>
+    
+    <script>
+        // Fonctions de base
+        function addCompany() {
+            const companyName = document.getElementById('companyName').value;
+            const companyEmail = document.getElementById('companyEmail').value;
+            const companyPhone = document.getElementById('companyPhone').value;
+            const companyLocation = document.getElementById('companyLocation').value;
+            const companyResources = document.getElementById('companyResources').value;
+            const companyServices = document.getElementById('companyServices').value;
+            const companyNeeds = document.getElementById('companyNeeds').value;
+            
+            const company = {
+                id: Date.now(),
+                name: companyName,
+                email: companyEmail,
+                phone: companyPhone,
+                location: companyLocation,
+                resources: companyResources,
+                services: companyServices,
+                needs: companyNeeds,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Récupérer les entreprises existantes
+            const companies = JSON.parse(localStorage.getItem('companies')) || [];
+            
+            // Ajouter la nouvelle entreprise
+            companies.push(company);
+            
+            // Enregistrer dans le localStorage
+            localStorage.setItem('companies', JSON.stringify(companies));
+            
+            // Réinitialiser le formulaire et actualiser l'affichage
+            document.getElementById('companyForm').reset();
+            displayCompanies();
+            
+            // Chercher des correspondances
+            findOptimizedMatches();
+        }
+        
+        function displayCompanies() {
+            const companiesList = document.getElementById('companiesList');
+            companiesList.innerHTML = '';
+            
+            const companies = JSON.parse(localStorage.getItem('companies')) || [];
+            
+            if (companies.length === 0) {
+                companiesList.innerHTML = '<p>Aucune entreprise enregistrée pour le moment.</p>';
+                return;
+            }
+            
+            companies.forEach(company => {
+                const companyCard = document.createElement('div');
+                companyCard.className = 'company-card';
+                
+                companyCard.innerHTML = `
+                    <div class="company-name">${company.name}</div>
+                    <div class="company-detail"><strong>Contact:</strong> ${company.email ? company.email : 'Non fourni'} | ${company.phone ? company.phone : 'Non fourni'}</div>
+                    <div class="company-detail"><strong>Localisation:</strong> ${company.location ? company.location : 'Non fournie'}</div>
+                    <div class="company-detail"><strong>Ressources:</strong> ${company.resources ? company.resources : 'Aucune'}</div>
+                    <div class="company-detail"><strong>Services:</strong> ${company.services ? company.services : 'Aucun'}</div>
+                    <div class="company-detail"><strong>Besoins:</strong> ${company.needs ? company.needs : 'Aucun'}</div>
+                `;
+                
+                companiesList.appendChild(companyCard);
+            });
+        }
+        
+        // Fonction d'optimisation du matching
+        function findOptimizedMatches() {
+            const companies = JSON.parse(localStorage.getItem('companies')) || [];
+            const matches = [];
+            
+            // Pour chaque paire d'entreprises
+            for (let i = 0; i < companies.length; i++) {
+                for (let j = i + 1; j < companies.length; j++) {
+                    const company1 = companies[i];
+                    const company2 = companies[j];
+                    
+                    // Vérifier les correspondances ressources/besoins dans les deux sens
+                    const matches1To2 = checkEnhancedMatch(company1, company2);
+                    const matches2To1 = checkEnhancedMatch(company2, company1);
+                    
+                    if (matches1To2.length > 0 || matches2To1.length > 0) {
+                        matches.push({
+                            company1: company1,
+                            company2: company2,
+                            matches1To2: matches1To2,
+                            matches2To1: matches2To1,
+                            score: calculateMatchScore(matches1To2, matches2To1, company1, company2),
+                            timestamp: new Date().toISOString()
+                        });
+                    }
+                }
+            }
+            
+            // Trier les matches par score de pertinence
+            matches.sort((a, b) => b.score - a.score);
+            
+            // Stocker les matches dans le localStorage
+            localStorage.setItem('matches', JSON.stringify(matches));
+            
+            // Envoyer des notifications pour les nouveaux matches
+            sendMatchNotifications(matches);
+            
+            return matches;
+        }
+        
+        // Fonction améliorée de vérification de correspondance
+        function checkEnhancedMatch(provider, receiver) {
+            const matches = [];
+            
+            // Vérifier les ressources du provider contre les besoins du receiver
+            if (provider.resources && receiver.needs) {
+                const resources = provider.resources.toLowerCase().split(',').map(r => r.trim());
+                const needs = receiver.needs.toLowerCase().split(',').map(n => n.trim());
+                
+                // Analyse sémantique simple (recherche de mots apparentés et synonymes communs)
+                const resourceWords = resources.flatMap(r => r.split(' '));
+                const needWords = needs.flatMap(n => n.split(' '));
+                
+                for (const resource of resources) {
+                    for (const need of needs) {
+                        // Correspondance directe
+                        if (resource === need) {
+                            matches.push({ type: 'exact', resource, need, weight: 1.0 });
+                            continue;
+                        }
+                        
+                        // Correspondance partielle
+                        if (resource.includes(need) || need.includes(resource)) {
+                            matches.push({ type: 'partial', resource, need, weight: 0.8 });
+                            continue;
+                        }
+                        
+                        // Correspondance par mots-clés
+                        const commonWords = resourceWords.filter(word => needWords.includes(word));
+                        if (commonWords.length > 0) {
+                            matches.push({ 
+                                type: 'keyword', 
+                                resource, 
+                                need, 
+                                weight: 0.6 * (commonWords.length / Math.max(resourceWords.length, needWords.length)) 
+                            });
+                        }
+                    }
+                }
+            }
+            
+            // Faire de même pour les services du provider et les besoins du receiver
+            if (provider.services && receiver.needs) {
+                const services = provider.services.toLowerCase().split(',').map(s => s.trim());
+                const needs = receiver.needs.toLowerCase().split(',').map(n => n.trim());
+                
+                const serviceWords = services.flatMap(s => s.split(' '));
+                const needWords = needs.flatMap(n => n.split(' '));
+                
+                for (const service of services) {
+                    for (const need of needs) {
+                        // Correspondance directe
+                        if (service === need) {
+                            matches.push({ type: 'exact', service, need, weight: 1.0 });
+                            continue;
+                        }
+                        
+                        // Correspondance partielle
+                        if (service.includes(need) || need.includes(service)) {
+                            matches.push({ type: 'partial', service, need, weight: 0.8 });
+                            continue;
+                        }
+                        
+                        // Correspondance par mots-clés
+                        const commonWords = serviceWords.filter(word => needWords.includes(word));
+                        if (commonWords.length > 0) {
+                            matches.push({ 
+                                type: 'keyword', 
+                                service, 
+                                need, 
+                                weight: 0.6 * (commonWords.length / Math.max(serviceWords.length, needWords.length)) 
+                            });
+                        }
+                    }
+                }
+            }
+            
+            return matches;
+        }
+        
+        // Fonction de calcul du score de correspondance
+        function calculateMatchScore(matches1To2, matches2To1, company1, company2) {
+            let score = 0;
+            
+            // Additionner les poids des correspondances
+            for (const match of [...matches1To2, ...matches2To1]) {
+                score += match.weight;
+            }
+            
+            // Facteur de proximité géographique (si disponible)
+            if (company1.location && company2.location) {
+                if (company1.location.toLowerCase() === company2.location.toLowerCase()) {
+                    score *= 1.2; // Bonus de 20% pour la même localité
+                }
+            }
+            
+            return score;
+        }
+        
+        // Fonction pour envoyer des notifications par email
+        function sendMatchNotifications(matches) {
+            // Récupérer les matches déjà notifiés
+            const notifiedMatches = JSON.parse(localStorage.getItem('notifiedMatches')) || [];
+            const notifiedMatchIds = new Set(notifiedMatches.map(match => 
+                `${match.company1.id}-${match.company2.id}`));
+            
+            // Filtrer les nouveaux matches
+            const newMatches = matches.filter(match => {
+                const matchId = `${match.company1.id}-${match.company2.id}`;
+                return !notifiedMatchIds.has(matchId);
+            });
+            
+            if (newMatches.length === 0) return;
+            
+            // Préparer les emails pour chaque nouveau match
+            for (const match of newMatches) {
+                prepareMatchEmail(match.company1, match.company2, match);
+                prepareMatchEmail(match.company2, match.company1, match);
+                
+                // Marquer ce match comme notifié
+                notifiedMatches.push({
+                    company1: { id: match.company1.id },
+                    company2: { id: match.company2.id },
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            // Mettre à jour la liste des matches notifiés
+            localStorage.setItem('notifiedMatches', JSON.stringify(notifiedMatches));
+            
+            // Afficher un badge avec le nombre de nouveaux matches
+            displayMatchBadge(newMatches.length);
+        }
+        
+        // Fonction pour préparer un email de notification de match
+        function prepareMatchEmail(recipient, matchedCompany, matchDetails) {
+            // Dans une application réelle, cette fonction appellerait une API pour envoyer l'email
+            const emailNotif = localStorage.getItem('notificationEmail');
+            if (!emailNotif) return;
+            
+            const emailSubject = `Nouveau match trouvé avec ${matchedCompany.name}`;
+            
+            let emailBody = `
+                <h2>Bonjour ${recipient.name},</h2>
+                <p>Nous avons trouvé une correspondance potentielle entre vos besoins/ressources et ceux de ${matchedCompany.name}.</p>
+                <h3>Détails de la correspondance :</h3>
+                <ul>
+            `;
+            
+            // Ajouter les détails des correspondances
+            if (recipient.id === matchDetails.company1.id) {
+                for (const match of matchDetails.matches1To2) {
+                    if (match.resource) {
+                        emailBody += `<li>Votre ressource "${match.resource}" correspond à leur besoin "${match.need}"</li>`;
+                    } else if (match.service) {
+                        emailBody += `<li>Votre service "${match.service}" correspond à leur besoin "${match.need}"</li>`;
+                    }
+                }
+            } else {
+                for (const match of matchDetails.matches2To1) {
+                    if (match.resource) {
+                        emailBody += `<li>Votre besoin "${match.need}" correspond à leur ressource "${match.resource}"</li>`;
+                    } else if (match.service) {
+                        emailBody += `<li>Votre besoin "${match.need}" correspond à leur service "${match.service}"</li>`;
+                    }
+                }
+            }
+            
+            emailBody += `
+                </ul>
+                <p>Coordonnées de ${matchedCompany.name} :</p>
+                <ul>
+                    <li>Email : ${matchedCompany.email || 'Non fourni'}</li>
+                    <li>Téléphone : ${matchedCompany.phone || 'Non fourni'}</li>
+                    <li>Localisation : ${matchedCompany.location || 'Non fournie'}</li>
+                </ul>
+                <p>Connectez-vous à la plateforme Ré(ge)nère pour en savoir plus et contacter cette entreprise.</p>
+                <p>Cordialement,<br>L'équipe Ré(ge)nère</p>
+            `;
+            
+            console.log(`Email préparé pour ${recipient.name}:`);
+            console.log(`Sujet: ${emailSubject}`);
+            console.log(`Corps: ${emailBody}`);
+            console.log(`Destinataire: ${emailNotif}`);
+        }
+        
+        // Fonction pour afficher un badge de notification
+        function displayMatchBadge(count) {
+            // Supprimer un badge existant si présent
+            const existingBadge = document.querySelector('.match-badge');
+            if (existingBadge) {
+                existingBadge.remove();
+            }
+            
+            const badge = document.createElement('div');
+            badge.className = 'match-badge';
+            badge.textContent = count;
+            
+            badge.addEventListener('click', showMatches);
+            
+            document.body.appendChild(badge);
+        }
+        
+        // Fonction pour afficher les matches
+        function showMatches() {
+            const matches = JSON.parse(localStorage.getItem('matches')) || [];
+            
+            // Créer un conteneur modal pour afficher les matches
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            
+            const modalContent = document.createElement('div');
+            modalContent.className = 'modal-content';
+            modalContent.style.maxWidth = '700px';
+            
+            const closeBtn = document.createElement('span');
+            closeBtn.className = 'close-modal';
+            closeBtn.innerHTML = '&times;';
+            closeBtn.addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+            
+            modalContent.appendChild(closeBtn);
+            modalContent.innerHTML += `<h2>Correspondances trouvées</h2>`;
+            
+            if (matches.length === 0) {
+                modalContent.innerHTML += `<p>Aucune correspondance trouvée pour le moment.</p>`;
+            } else {
+                matches.forEach(match => {
+                    modalContent.innerHTML += `
+                        <div class="company-card">
+                            <div class="company-name">Match entre ${match.company1.name} et ${match.company2.name}</div>
+                            <div class="company-detail"><strong>Score de pertinence:</strong> ${match.score.toFixed(2)}</div>
+                            
+                            <div class="company-detail">
+                                <strong>Ressources/Services de ${match.company1.name} → Besoins de ${match.company2.name}</strong>
+                                <ul>
+                                    ${match.matches1To2.map(m => {
+                                        if (m.resource) {
+                                            return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                        } else if (m.service) {
+                                            return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                        }
+                                        return '';
+                                    }).join('')}
+                                </ul>
+                            </div>
+                            
+                            <div class="company-detail">
+                                <strong>Ressources/Services de ${match.company2.name} → Besoins de ${match.company1.name}</strong>
+                                <ul>
+                                    ${match.matches2To1.map(m => {
+                                        if (m.resource) {
+                                            return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                        } else if (m.service) {
+                                            return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                        }
+                                        return '';
+                                    }).join('')}
+                                </ul>
+                            </div>
+                            
+                            <div class="company-detail"><strong>Contact ${match.company1.name}:</strong> ${match.company1.email || 'Email non fourni'}</div>
+                            <div class="company-detail"><strong>Contact ${match.company2.name}:</strong> ${match.company2.email || 'Email non fourni'}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+        }
+        
+        // Gestion du modal de notification
+        const notifModal = document.getElementById('notificationModal');
+        const openNotifBtn = document.getElementById('openNotifSettings');
+        const closeNotifBtn = document.querySelector('.close-modal');
+        const notifForm = document.getElementById('notificationForm');
+
+        // Ouvrir le modal
+        openNotifBtn.addEventListener('click', () => {
+            notifModal.classList.remove('hidden');
+            
+            // Charger les préférences sauvegardées
+            const savedEmail = localStorage.getItem('notificationEmail');
+            const savedFreq = localStorage.getItem('notificationFrequency');
+            
+            if (savedEmail) {
+                document.getElementById('emailNotif').value = savedEmail;
+            }
+            
+            if (savedFreq) {
+                document.getElementById('notifFrequency').value = savedFreq;
+            }
+        });
+
+        // Fermer le modal
+        closeNotifBtn.addEventListener('click', () => {
+            notifModal.classList.add('hidden');
+        });
+
+        // Enregistrer les préférences
+        notifForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('emailNotif').value;
+            const frequency = document.getElementById('notifFrequency').value;
+            
+            // Sauvegarder dans localStorage
+            localStorage.setItem('notificationEmail', email);
+            localStorage.setItem('notificationFrequency', frequency);
+            
+            // Simuler l'enregistrement sur un serveur
+            console.log(`Email de notification: ${email}`);
+            console.log(`Fréquence: ${frequency}`);
+            
+            alert('Vos préférences de notification ont été enregistrées!');
+            notifModal.classList.add('hidden');
+        });
+        
+        // Initialisation
+        function initApp() {
+            // Afficher les entreprises au chargement
+            displayCompanies();
+            
+            // Exécuter l'algorithme de matching optimisé
+            const matches = findOptimizedMatches();
+            
+            // Ajouter un gestionnaire d'événements pour le formulaire
+            document.getElementById('companyForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addCompany();
+            });
+        }
+        
+        // Enregistrer le service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+            .then(registration => {
+                console.log('Service Worker enregistré avec succès:', registration);
+            })
+            .catch(error => {
+                console.log('Échec de l\'enregistrement du Service Worker:', error);
+            });
+        }
+        
+        // Initialiser l'application au chargement de la page
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
