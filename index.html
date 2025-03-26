@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -530,37 +531,77 @@
         
         // Fonction pour préparer un email de notification de match
         function prepareMatchEmail(recipient, matchedCompany, matchDetails) {
-            // Dans une application réelle, cette fonction appellerait une API pour envoyer l'email
-            const emailNotif = localStorage.getItem('notificationEmail');
-            if (!emailNotif) return;
-            
-            const emailSubject = `Nouveau match trouvé avec ${matchedCompany.name}`;
-            
-            let emailBody = `
-                <h2>Bonjour ${recipient.name},</h2>
-                <p>Nous avons trouvé une correspondance potentielle entre vos besoins/ressources et ceux de ${matchedCompany.name}.</p>
-                <h3>Détails de la correspondance :</h3>
-                <ul>
-            `;
-            
-            // Ajouter les détails des correspondances
-            if (recipient.id === matchDetails.company1.id) {
-                for (const match of matchDetails.matches1To2) {
-                    if (match.resource) {
-                        emailBody += `<li>Votre ressource "${match.resource}" correspond à leur besoin "${match.need}"</li>`;
-                    } else if (match.service) {
-                        emailBody += `<li>Votre service "${match.service}" correspond à leur besoin "${match.need}"</li>`;
-                    }
-                }
-            } else {
-                for (const match of matchDetails.matches2To1) {
-                    if (match.resource) {
-                        emailBody += `<li>Votre besoin "${match.need}" correspond à leur ressource "${match.resource}"</li>`;
-                    } else if (match.service) {
-                        emailBody += `<li>Votre besoin "${match.need}" correspond à leur service "${match.service}"</li>`;
-                    }
-                }
+    // Vérifier si la notification par email est activée
+    const emailNotif = localStorage.getItem('notificationEmail');
+    if (!emailNotif) return;
+    
+    // Préparer les détails de correspondance pour l'email
+    let matchDetailsHtml = '<ul>';
+    
+    if (recipient.id === matchDetails.company1.id) {
+        for (const match of matchDetails.matches1To2) {
+            if (match.resource) {
+                matchDetailsHtml += `<li>Votre ressource "${match.resource}" correspond à leur besoin "${match.need}"</li>`;
+            } else if (match.service) {
+                matchDetailsHtml += `<li>Votre service "${match.service}" correspond à leur besoin "${match.need}"</li>`;
             }
+        }
+    } else {
+        for (const match of matchDetails.matches2To1) {
+            if (match.resource) {
+                matchDetailsHtml += `<li>Votre besoin "${match.need}" correspond à leur ressource "${match.resource}"</li>`;
+            } else if (match.service) {
+                matchDetailsHtml += `<li>Votre besoin "${match.need}" correspond à leur service "${match.service}"</li>`;
+            }
+        }
+    }
+    
+    matchDetailsHtml += '</ul>';
+    
+    // Préparer les paramètres pour EmailJS
+    const templateParams = {
+        to_email: emailNotif,
+        recipient_company: recipient.name,
+        matched_company: matchedCompany.name,
+        match_details: matchDetailsHtml,
+        matched_email: matchedCompany.email || 'Non fourni',
+        matched_phone: matchedCompany.phone || 'Non fourni',
+        matched_location: matchedCompany.location || 'Non fournie'
+    };
+    
+    // Envoyer l'email avec vos identifiants
+    emailjs.send('service_w5kg7es', 'template_zm00bwr', templateParams)
+        .then(function(response) {
+            console.log('Email envoyé avec succès!', response.status, response.text);
+            
+            // Afficher un message de succès
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '20px';
+            notification.style.backgroundColor = 'var(--primary-color)';
+            notification.style.color = 'white';
+            notification.style.padding = '10px 20px';
+            notification.style.borderRadius = '5px';
+            notification.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+            notification.style.zIndex = '1000';
+            notification.textContent = `Notification envoyée à ${recipient.name}`;
+            
+            document.body.appendChild(notification);
+            
+            // Disparaître après 3 secondes
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => document.body.removeChild(notification), 500);
+            }, 3000);
+        }, function(error) {
+            console.log('Erreur lors de l\'envoi de l\'email:', error);
+            
+            // Afficher un message d'erreur
+            alert('Erreur lors de l\'envoi de la notification. Veuillez réessayer plus tard.');
+        });
+}
             
             emailBody += `
                 </ul>
@@ -716,29 +757,21 @@
         
         // Initialisation
         function initApp() {
-            // Afficher les entreprises au chargement
-            displayCompanies();
-            
-            // Exécuter l'algorithme de matching optimisé
-            const matches = findOptimizedMatches();
-            
-            // Ajouter un gestionnaire d'événements pour le formulaire
-            document.getElementById('companyForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                addCompany();
-            });
-        }
-        
-        // Enregistrer le service worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-            .then(registration => {
-                console.log('Service Worker enregistré avec succès:', registration);
-            })
-            .catch(error => {
-                console.log('Échec de l\'enregistrement du Service Worker:', error);
-            });
-        }
+    // Initialiser EmailJS avec votre Public Key
+    emailjs.init("GX0U6Fx-DT8e7v6xo");
+    
+    // Afficher les entreprises au chargement
+    displayCompanies();
+    
+    // Exécuter l'algorithme de matching optimisé
+    const matches = findOptimizedMatches();
+    
+    // Ajouter un gestionnaire d'événements pour le formulaire
+    document.getElementById('companyForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        addCompany();
+    });
+}
         
         // Initialiser l'application au chargement de la page
         window.addEventListener('DOMContentLoaded', initApp);
