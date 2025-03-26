@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +7,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#4CAF50">
     <link rel="apple-touch-icon" href="icon-192x192.png">
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <style>
         :root {
             --primary-color: #4CAF50;
@@ -96,10 +96,39 @@
             cursor: pointer;
             font-size: 1rem;
             transition: background-color 0.3s;
+            margin-right: 10px;
         }
         
         button:hover {
             background-color: #45a049;
+        }
+        
+        .btn-secondary {
+            background-color: #999;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #777;
+        }
+        
+        .btn-edit {
+            background-color: #2196F3;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-edit:hover {
+            background-color: #0b7dda;
+        }
+        
+        .btn-validate {
+            background-color: #FF9800;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-validate:hover {
+            background-color: #e68a00;
         }
         
         .company-card {
@@ -108,6 +137,7 @@
             border-radius: 5px;
             padding: 15px;
             margin-bottom: 15px;
+            position: relative;
         }
         
         .company-name {
@@ -125,6 +155,12 @@
         .company-detail strong {
             color: #666;
             margin-right: 5px;
+        }
+        
+        .company-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
         }
         
         /* Styles pour le modal de notification */
@@ -147,6 +183,8 @@
             border-radius: 8px;
             max-width: 500px;
             width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .close-modal {
@@ -170,6 +208,7 @@
             border: none;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             cursor: pointer;
+            margin-right: 0;
         }
         
         .hidden {
@@ -189,6 +228,36 @@
             cursor: pointer;
         }
         
+        .form-info {
+            margin: 10px 0; 
+            padding: 10px; 
+            background-color: #f8f9fa; 
+            border-left: 4px solid var(--primary-color); 
+            border-radius: 4px;
+        }
+        
+        .validated-match {
+            border-left: 4px solid #FF9800;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            background-color: #eee;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        
+        .tab.active {
+            background-color: white;
+            font-weight: bold;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -200,6 +269,10 @@
             
             .card {
                 padding: 15px;
+            }
+            
+            button {
+                padding: 10px 16px;
             }
         }
     </style>
@@ -220,13 +293,16 @@
                 </div>
                 
                 <div>
-                    <label for="companyEmail">Email:</label>
-                    <input type="email" id="companyEmail">
+                    <label for="companyEmail">Email de contact:</label>
+                    <input type="email" id="companyEmail" placeholder="Email professionnel de la personne référente" required>
                 </div>
                 
-                <div>
-                    <label for="companyPhone">Téléphone:</label>
-                    <input type="tel" id="companyPhone">
+                <div class="form-info">
+                    <p style="margin: 0; font-size: 0.9rem;">
+                        ℹ️ Pour faciliter les mises en relation, merci d'indiquer l'email professionnel 
+                        de la personne référente qui supervisera les correspondances dans votre organisation.
+                        Cet email sera également utilisé pour vous identifier lors de la modification de votre fiche.
+                    </p>
                 </div>
                 
                 <div>
@@ -281,6 +357,69 @@
             </form>
         </div>
     </div>
+    
+    <!-- Modal pour modifier une entreprise -->
+    <div id="editCompanyModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            <h2>Modifier les informations de l'entreprise</h2>
+            <form id="editCompanyForm">
+                <input type="hidden" id="editCompanyId">
+                
+                <div>
+                    <label for="editCompanyName">Nom de l'entreprise:</label>
+                    <input type="text" id="editCompanyName" required>
+                </div>
+                
+                <div>
+                    <label for="editCompanyEmail">Email de contact:</label>
+                    <input type="email" id="editCompanyEmail" readonly>
+                    <p class="form-info" style="font-size: 0.8rem; margin-top: -10px;">L'email ne peut pas être modifié car il sert d'identifiant.</p>
+                </div>
+                
+                <div>
+                    <label for="editCompanyLocation">Localisation:</label>
+                    <input type="text" id="editCompanyLocation">
+                </div>
+                
+                <div>
+                    <label for="editCompanyResources">Ressources disponibles (séparées par des virgules):</label>
+                    <textarea id="editCompanyResources"></textarea>
+                </div>
+                
+                <div>
+                    <label for="editCompanyServices">Services proposés (séparés par des virgules):</label>
+                    <textarea id="editCompanyServices"></textarea>
+                </div>
+                
+                <div>
+                    <label for="editCompanyNeeds">Besoins recherchés (séparés par des virgules):</label>
+                    <textarea id="editCompanyNeeds"></textarea>
+                </div>
+                
+                <button type="submit">Enregistrer les modifications</button>
+                <button type="button" class="btn-secondary" onclick="closeEditModal()">Annuler</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal pour vérifier l'email avant modification -->
+    <div id="verifyEmailModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeVerifyEmailModal()">&times;</span>
+            <h2>Vérification de l'email</h2>
+            <p>Pour modifier cette entreprise, veuillez confirmer l'email associé à cette fiche.</p>
+            <form id="verifyEmailForm">
+                <input type="hidden" id="verifyCompanyId">
+                <div>
+                    <label for="verifyEmail">Email de contact:</label>
+                    <input type="email" id="verifyEmail" required>
+                </div>
+                <button type="submit">Vérifier</button>
+                <button type="button" class="btn-secondary" onclick="closeVerifyEmailModal()">Annuler</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Bouton pour accéder aux préférences de notification -->
     <div class="notification-settings-btn">
@@ -292,7 +431,6 @@
         function addCompany() {
             const companyName = document.getElementById('companyName').value;
             const companyEmail = document.getElementById('companyEmail').value;
-            const companyPhone = document.getElementById('companyPhone').value;
             const companyLocation = document.getElementById('companyLocation').value;
             const companyResources = document.getElementById('companyResources').value;
             const companyServices = document.getElementById('companyServices').value;
@@ -302,7 +440,6 @@
                 id: Date.now(),
                 name: companyName,
                 email: companyEmail,
-                phone: companyPhone,
                 location: companyLocation,
                 resources: companyResources,
                 services: companyServices,
@@ -344,15 +481,106 @@
                 
                 companyCard.innerHTML = `
                     <div class="company-name">${company.name}</div>
-                    <div class="company-detail"><strong>Contact:</strong> ${company.email ? company.email : 'Non fourni'} | ${company.phone ? company.phone : 'Non fourni'}</div>
+                    <div class="company-detail"><strong>Contact:</strong> ${company.email ? company.email : 'Non fourni'}</div>
                     <div class="company-detail"><strong>Localisation:</strong> ${company.location ? company.location : 'Non fournie'}</div>
                     <div class="company-detail"><strong>Ressources:</strong> ${company.resources ? company.resources : 'Aucune'}</div>
                     <div class="company-detail"><strong>Services:</strong> ${company.services ? company.services : 'Aucun'}</div>
                     <div class="company-detail"><strong>Besoins:</strong> ${company.needs ? company.needs : 'Aucun'}</div>
+                    <div class="company-actions">
+                        <button class="btn-edit" onclick="showVerifyEmailModal(${company.id})">Modifier</button>
+                    </div>
                 `;
                 
                 companiesList.appendChild(companyCard);
             });
+        }
+        
+        // Fonctions pour la modification d'entreprises
+        function showVerifyEmailModal(companyId) {
+            document.getElementById('verifyCompanyId').value = companyId;
+            document.getElementById('verifyEmail').value = '';
+            document.getElementById('verifyEmailModal').classList.remove('hidden');
+        }
+        
+        function closeVerifyEmailModal() {
+            document.getElementById('verifyEmailModal').classList.add('hidden');
+        }
+        
+        function verifyEmail(e) {
+            e.preventDefault();
+            
+            const companyId = parseInt(document.getElementById('verifyCompanyId').value);
+            const enteredEmail = document.getElementById('verifyEmail').value;
+            
+            const companies = JSON.parse(localStorage.getItem('companies')) || [];
+            const company = companies.find(c => c.id === companyId);
+            
+            if (company && company.email === enteredEmail) {
+                // Email vérifié, ouvrir le formulaire de modification
+                closeVerifyEmailModal();
+                showEditCompanyForm(company);
+            } else {
+                alert('L\'email ne correspond pas à celui associé à cette entreprise.');
+            }
+        }
+        
+        function showEditCompanyForm(company) {
+            document.getElementById('editCompanyId').value = company.id;
+            document.getElementById('editCompanyName').value = company.name;
+            document.getElementById('editCompanyEmail').value = company.email;
+            document.getElementById('editCompanyLocation').value = company.location || '';
+            document.getElementById('editCompanyResources').value = company.resources || '';
+            document.getElementById('editCompanyServices').value = company.services || '';
+            document.getElementById('editCompanyNeeds').value = company.needs || '';
+            
+            document.getElementById('editCompanyModal').classList.remove('hidden');
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editCompanyModal').classList.add('hidden');
+        }
+        
+        function updateCompany(e) {
+            e.preventDefault();
+            
+            const companyId = parseInt(document.getElementById('editCompanyId').value);
+            const companyName = document.getElementById('editCompanyName').value;
+            const companyEmail = document.getElementById('editCompanyEmail').value;
+            const companyLocation = document.getElementById('editCompanyLocation').value;
+            const companyResources = document.getElementById('editCompanyResources').value;
+            const companyServices = document.getElementById('editCompanyServices').value;
+            const companyNeeds = document.getElementById('editCompanyNeeds').value;
+            
+            // Récupérer les entreprises
+            const companies = JSON.parse(localStorage.getItem('companies')) || [];
+            
+            // Trouver l'index de l'entreprise à modifier
+            const companyIndex = companies.findIndex(c => c.id === companyId);
+            
+            if (companyIndex !== -1) {
+                // Mettre à jour l'entreprise
+                companies[companyIndex] = {
+                    ...companies[companyIndex],
+                    name: companyName,
+                    location: companyLocation,
+                    resources: companyResources,
+                    services: companyServices,
+                    needs: companyNeeds,
+                    lastUpdated: new Date().toISOString()
+                };
+                
+                // Enregistrer les modifications
+                localStorage.setItem('companies', JSON.stringify(companies));
+                
+                // Fermer le modal et actualiser l'affichage
+                closeEditModal();
+                displayCompanies();
+                
+                // Recalculer les correspondances
+                findOptimizedMatches();
+                
+                alert('Les informations de l\'entreprise ont été mises à jour avec succès.');
+            }
         }
         
         // Fonction d'optimisation du matching
@@ -371,13 +599,18 @@
                     const matches2To1 = checkEnhancedMatch(company2, company1);
                     
                     if (matches1To2.length > 0 || matches2To1.length > 0) {
+                        // Récupérer l'état de validation précédent si existant
+                        const existingMatch = getExistingMatch(company1.id, company2.id);
+                        const isValidated = existingMatch ? existingMatch.isValidated : false;
+                        
                         matches.push({
                             company1: company1,
                             company2: company2,
                             matches1To2: matches1To2,
                             matches2To1: matches2To1,
                             score: calculateMatchScore(matches1To2, matches2To1, company1, company2),
-                            timestamp: new Date().toISOString()
+                            timestamp: new Date().toISOString(),
+                            isValidated: isValidated
                         });
                     }
                 }
@@ -393,6 +626,53 @@
             sendMatchNotifications(matches);
             
             return matches;
+        }
+        
+        // Récupérer l'état de validation d'un match existant
+        function getExistingMatch(companyId1, companyId2) {
+            const existingMatches = JSON.parse(localStorage.getItem('matches')) || [];
+            return existingMatches.find(match => 
+                (match.company1.id === companyId1 && match.company2.id === companyId2) || 
+                (match.company1.id === companyId2 && match.company2.id === companyId1)
+            );
+        }
+        
+        // Fonction pour valider une correspondance
+        function validateMatch(matchIndex) {
+            const matches = JSON.parse(localStorage.getItem('matches')) || [];
+            
+            if (matchIndex >= 0 && matchIndex < matches.length) {
+                matches[matchIndex].isValidated = true;
+                matches[matchIndex].validatedAt = new Date().toISOString();
+                
+                localStorage.setItem('matches', JSON.stringify(matches));
+                showMatches();
+                
+                // Envoyer une notification de validation
+                const match = matches[matchIndex];
+                sendValidationNotification(match);
+            }
+        }
+        
+        // Fonction pour envoyer une notification de validation
+        function sendValidationNotification(match) {
+            // Vérifier si la notification par email est activée
+            const emailNotif = localStorage.getItem('notificationEmail');
+            if (!emailNotif) return;
+            
+            const templateParams = {
+                to_email: emailNotif,
+                subject: `Correspondance validée entre ${match.company1.name} et ${match.company2.name}`,
+                message: `La correspondance entre ${match.company1.name} et ${match.company2.name} a été validée. Les deux entreprises peuvent maintenant procéder à l'échange des ressources/services correspondants.`
+            };
+            
+            // Envoyer l'email
+            emailjs.send('service_w5kg7es', 'template_zm00bwr', templateParams)
+                .then(function(response) {
+                    console.log('Notification de validation envoyée!', response.status, response.text);
+                }, function(error) {
+                    console.log('Erreur lors de l\'envoi de la notification:', error);
+                });
         }
         
         // Fonction améliorée de vérification de correspondance
@@ -531,94 +811,75 @@
         
         // Fonction pour préparer un email de notification de match
         function prepareMatchEmail(recipient, matchedCompany, matchDetails) {
-    // Vérifier si la notification par email est activée
-    const emailNotif = localStorage.getItem('notificationEmail');
-    if (!emailNotif) return;
-    
-    // Préparer les détails de correspondance pour l'email
-    let matchDetailsHtml = '<ul>';
-    
-    if (recipient.id === matchDetails.company1.id) {
-        for (const match of matchDetails.matches1To2) {
-            if (match.resource) {
-                matchDetailsHtml += `<li>Votre ressource "${match.resource}" correspond à leur besoin "${match.need}"</li>`;
-            } else if (match.service) {
-                matchDetailsHtml += `<li>Votre service "${match.service}" correspond à leur besoin "${match.need}"</li>`;
+            // Vérifier si la notification par email est activée
+            const emailNotif = localStorage.getItem('notificationEmail');
+            if (!emailNotif) return;
+            
+            // Préparer les détails de correspondance pour l'email
+            let matchDetailsHtml = '<ul>';
+            
+            if (recipient.id === matchDetails.company1.id) {
+                for (const match of matchDetails.matches1To2) {
+                    if (match.resource) {
+                        matchDetailsHtml += `<li>Votre ressource "${match.resource}" correspond à leur besoin "${match.need}"</li>`;
+                    } else if (match.service) {
+                        matchDetailsHtml += `<li>Votre service "${match.service}" correspond à leur besoin "${match.need}"</li>`;
+                    }
+                }
+            } else {
+                for (const match of matchDetails.matches2To1) {
+                    if (match.resource) {
+                        matchDetailsHtml += `<li>Votre besoin "${match.need}" correspond à leur ressource "${match.resource}"</li>`;
+                    } else if (match.service) {
+                        matchDetailsHtml += `<li>Votre besoin "${match.need}" correspond à leur service "${match.service}"</li>`;
+                    }
+                }
             }
-        }
-    } else {
-        for (const match of matchDetails.matches2To1) {
-            if (match.resource) {
-                matchDetailsHtml += `<li>Votre besoin "${match.need}" correspond à leur ressource "${match.resource}"</li>`;
-            } else if (match.service) {
-                matchDetailsHtml += `<li>Votre besoin "${match.need}" correspond à leur service "${match.service}"</li>`;
-            }
-        }
-    }
-    
-    matchDetailsHtml += '</ul>';
-    
-    // Préparer les paramètres pour EmailJS
-    const templateParams = {
-        to_email: emailNotif,
-        recipient_company: recipient.name,
-        matched_company: matchedCompany.name,
-        match_details: matchDetailsHtml,
-        matched_email: matchedCompany.email || 'Non fourni',
-        matched_phone: matchedCompany.phone || 'Non fourni',
-        matched_location: matchedCompany.location || 'Non fournie'
-    };
-    
-    // Envoyer l'email avec vos identifiants
-    emailjs.send('service_w5kg7es', 'template_zm00bwr', templateParams)
-        .then(function(response) {
-            console.log('Email envoyé avec succès!', response.status, response.text);
             
-            // Afficher un message de succès
-            const notification = document.createElement('div');
-            notification.style.position = 'fixed';
-            notification.style.bottom = '20px';
-            notification.style.left = '20px';
-            notification.style.backgroundColor = 'var(--primary-color)';
-            notification.style.color = 'white';
-            notification.style.padding = '10px 20px';
-            notification.style.borderRadius = '5px';
-            notification.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
-            notification.style.zIndex = '1000';
-            notification.textContent = `Notification envoyée à ${recipient.name}`;
+            matchDetailsHtml += '</ul>';
             
-            document.body.appendChild(notification);
+            // Préparer les paramètres pour EmailJS
+            const templateParams = {
+                to_email: emailNotif,
+                recipient_company: recipient.name,
+                matched_company: matchedCompany.name,
+                match_details: matchDetailsHtml,
+                matched_email: matchedCompany.email || 'Non fourni',
+                matched_location: matchedCompany.location || 'Non fournie'
+            };
             
-            // Disparaître après 3 secondes
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transition = 'opacity 0.5s';
-                setTimeout(() => document.body.removeChild(notification), 500);
-            }, 3000);
-        }, function(error) {
-            console.log('Erreur lors de l\'envoi de l\'email:', error);
-            
-            // Afficher un message d'erreur
-            alert('Erreur lors de l\'envoi de la notification. Veuillez réessayer plus tard.');
-        });
-}
-            
-            emailBody += `
-                </ul>
-                <p>Coordonnées de ${matchedCompany.name} :</p>
-                <ul>
-                    <li>Email : ${matchedCompany.email || 'Non fourni'}</li>
-                    <li>Téléphone : ${matchedCompany.phone || 'Non fourni'}</li>
-                    <li>Localisation : ${matchedCompany.location || 'Non fournie'}</li>
-                </ul>
-                <p>Connectez-vous à la plateforme Ré(ge)nère pour en savoir plus et contacter cette entreprise.</p>
-                <p>Cordialement,<br>L'équipe Ré(ge)nère</p>
-            `;
-            
-            console.log(`Email préparé pour ${recipient.name}:`);
-            console.log(`Sujet: ${emailSubject}`);
-            console.log(`Corps: ${emailBody}`);
-            console.log(`Destinataire: ${emailNotif}`);
+            // Envoyer l'email
+            emailjs.send('service_w5kg7es', 'template_zm00bwr', templateParams)
+                .then(function(response) {
+                    console.log('Email envoyé avec succès!', response.status, response.text);
+                    
+                    // Afficher un message de succès
+                    const notification = document.createElement('div');
+                    notification.style.position = 'fixed';
+                    notification.style.bottom = '20px';
+                    notification.style.left = '20px';
+                    notification.style.backgroundColor = 'var(--primary-color)';
+                    notification.style.color = 'white';
+                    notification.style.padding = '10px 20px';
+                    notification.style.borderRadius = '5px';
+                    notification.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+                    notification.style.zIndex = '1000';
+                    notification.textContent = `Notification envoyée à ${recipient.name}`;
+                    
+                    document.body.appendChild(notification);
+                    
+                    // Disparaître après 3 secondes
+                    setTimeout(() => {
+                        notification.style.opacity = '0';
+                        notification.style.transition = 'opacity 0.5s';
+                        setTimeout(() => document.body.removeChild(notification), 500);
+                    }, 3000);
+                }, function(error) {
+                    console.log('Erreur lors de l\'envoi de l\'email:', error);
+                    
+                    // Afficher un message d'erreur
+                    alert('Erreur lors de l\'envoi de la notification. Veuillez réessayer plus tard.');
+                });
         }
         
         // Fonction pour afficher un badge de notification
@@ -658,54 +919,155 @@
             });
             
             modalContent.appendChild(closeBtn);
-            modalContent.innerHTML += `<h2>Correspondances trouvées</h2>`;
             
-            if (matches.length === 0) {
-                modalContent.innerHTML += `<p>Aucune correspondance trouvée pour le moment.</p>`;
-            } else {
-                matches.forEach(match => {
-                    modalContent.innerHTML += `
-                        <div class="company-card">
-                            <div class="company-name">Match entre ${match.company1.name} et ${match.company2.name}</div>
-                            <div class="company-detail"><strong>Score de pertinence:</strong> ${match.score.toFixed(2)}</div>
-                            
-                            <div class="company-detail">
-                                <strong>Ressources/Services de ${match.company1.name} → Besoins de ${match.company2.name}</strong>
-                                <ul>
-                                    ${match.matches1To2.map(m => {
-                                        if (m.resource) {
-                                            return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                        } else if (m.service) {
-                                            return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                        }
-                                        return '';
-                                    }).join('')}
-                                </ul>
-                            </div>
-                            
-                            <div class="company-detail">
-                                <strong>Ressources/Services de ${match.company2.name} → Besoins de ${match.company1.name}</strong>
-                                <ul>
-                                    ${match.matches2To1.map(m => {
-                                        if (m.resource) {
-                                            return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                        } else if (m.service) {
-                                            return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                        }
-                                        return '';
-                                    }).join('')}
-                                </ul>
-                            </div>
-                            
-                            <div class="company-detail"><strong>Contact ${match.company1.name}:</strong> ${match.company1.email || 'Email non fourni'}</div>
-                            <div class="company-detail"><strong>Contact ${match.company2.name}:</strong> ${match.company2.email || 'Email non fourni'}</div>
-                        </div>
-                    `;
-                });
-            }
+            // Créer des onglets pour les correspondances en attente et validées
+            modalContent.innerHTML += `
+                <h2>Correspondances trouvées</h2>
+                <div class="tabs">
+                    <div class="tab active" id="tab-pending" onclick="switchTab('pending')">En attente</div>
+                    <div class="tab" id="tab-validated" onclick="switchTab('validated')">Validées</div>
+                </div>
+            `;
+            
+            // Conteneurs pour les deux types de correspondances
+            modalContent.innerHTML += `
+                <div id="pending-matches">
+                    ${matches.filter(m => !m.isValidated).length === 0 ? 
+                        '<p>Aucune correspondance en attente.</p>' : ''}
+                </div>
+                <div id="validated-matches" style="display: none;">
+                    ${matches.filter(m => m.isValidated).length === 0 ? 
+                        '<p>Aucune correspondance validée.</p>' : ''}
+                </div>
+            `;
+            
+            const pendingContainer = document.createElement('div');
+            pendingContainer.id = 'pending-matches-container';
+            
+            const validatedContainer = document.createElement('div');
+            validatedContainer.id = 'validated-matches-container';
+            validatedContainer.style.display = 'none';
+            
+            // Ajouter les correspondances en attente
+            matches.filter(m => !m.isValidated).forEach((match, index) => {
+                const matchCard = document.createElement('div');
+                matchCard.className = 'company-card';
+                
+                matchCard.innerHTML = `
+                    <div class="company-name">Correspondance entre ${match.company1.name} et ${match.company2.name}</div>
+                    <div class="company-detail"><strong>Score de pertinence:</strong> ${match.score.toFixed(2)}</div>
+                    
+                    <div class="company-detail">
+                        <strong>Ressources/Services de ${match.company1.name} → Besoins de ${match.company2.name}</strong>
+                        <ul>
+                            ${match.matches1To2.map(m => {
+                                if (m.resource) {
+                                    return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                } else if (m.service) {
+                                    return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                }
+                                return '';
+                            }).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="company-detail">
+                        <strong>Ressources/Services de ${match.company2.name} → Besoins de ${match.company1.name}</strong>
+                        <ul>
+                            ${match.matches2To1.map(m => {
+                                if (m.resource) {
+                                    return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                } else if (m.service) {
+                                    return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                }
+                                return '';
+                            }).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="company-detail"><strong>Contact ${match.company1.name}:</strong> ${match.company1.email || 'Email non fourni'}</div>
+                    <div class="company-detail"><strong>Contact ${match.company2.name}:</strong> ${match.company2.email || 'Email non fourni'}</div>
+                    
+                    <div class="company-actions">
+                        <button class="btn-validate" onclick="validateMatch(${index})">Valider cette correspondance</button>
+                    </div>
+                `;
+                
+                pendingContainer.appendChild(matchCard);
+            });
+            
+            // Ajouter les correspondances validées
+            matches.filter(m => m.isValidated).forEach((match) => {
+                const matchCard = document.createElement('div');
+                matchCard.className = 'company-card validated-match';
+                
+                const validatedDate = new Date(match.validatedAt).toLocaleDateString();
+                
+                matchCard.innerHTML = `
+                    <div class="company-name">Correspondance validée entre ${match.company1.name} et ${match.company2.name}</div>
+                    <div class="company-detail"><strong>Validée le:</strong> ${validatedDate}</div>
+                    
+                    <div class="company-detail">
+                        <strong>Ressources/Services de ${match.company1.name} → Besoins de ${match.company2.name}</strong>
+                        <ul>
+                            ${match.matches1To2.map(m => {
+                                if (m.resource) {
+                                    return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                } else if (m.service) {
+                                    return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                }
+                                return '';
+                            }).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="company-detail">
+                        <strong>Ressources/Services de ${match.company2.name} → Besoins de ${match.company1.name}</strong>
+                        <ul>
+                            ${match.matches2To1.map(m => {
+                                if (m.resource) {
+                                    return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                } else if (m.service) {
+                                    return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
+                                }
+                                return '';
+                            }).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="company-detail"><strong>Contact ${match.company1.name}:</strong> ${match.company1.email || 'Email non fourni'}</div>
+                    <div class="company-detail"><strong>Contact ${match.company2.name}:</strong> ${match.company2.email || 'Email non fourni'}</div>
+                `;
+                
+                validatedContainer.appendChild(matchCard);
+            });
+            
+            // Ajouter les conteneurs au modal
+            document.getElementById('pending-matches').appendChild(pendingContainer);
+            document.getElementById('validated-matches').appendChild(validatedContainer);
             
             modal.appendChild(modalContent);
             document.body.appendChild(modal);
+            
+            // Ajouter la fonction de changement d'onglet au window pour qu'elle soit accessible
+            window.switchTab = function(tabName) {
+                const pendingTab = document.getElementById('tab-pending');
+                const validatedTab = document.getElementById('tab-validated');
+                const pendingMatches = document.getElementById('pending-matches');
+                const validatedMatches = document.getElementById('validated-matches');
+                
+                if (tabName === 'pending') {
+                    pendingTab.classList.add('active');
+                    validatedTab.classList.remove('active');
+                    pendingMatches.style.display = 'block';
+                    validatedMatches.style.display = 'none';
+                } else {
+                    pendingTab.classList.remove('active');
+                    validatedTab.classList.add('active');
+                    pendingMatches.style.display = 'none';
+                    validatedMatches.style.display = 'block';
+                }
+            };
         }
         
         // Gestion du modal de notification
@@ -757,21 +1119,25 @@
         
         // Initialisation
         function initApp() {
-    // Initialiser EmailJS avec votre Public Key
-    emailjs.init("GX0U6Fx-DT8e7v6xo");
-    
-    // Afficher les entreprises au chargement
-    displayCompanies();
-    
-    // Exécuter l'algorithme de matching optimisé
-    const matches = findOptimizedMatches();
-    
-    // Ajouter un gestionnaire d'événements pour le formulaire
-    document.getElementById('companyForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        addCompany();
-    });
-}
+            // Initialiser EmailJS avec votre Public Key
+            emailjs.init("GX0U6Fx-DT8e7v6xo");
+            
+            // Afficher les entreprises au chargement
+            displayCompanies();
+            
+            // Exécuter l'algorithme de matching optimisé
+            findOptimizedMatches();
+            
+            // Ajouter un gestionnaire d'événements pour le formulaire
+            document.getElementById('companyForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addCompany();
+            });
+            
+            // Ajouter des gestionnaires pour les formulaires de modification
+            document.getElementById('verifyEmailForm').addEventListener('submit', verifyEmail);
+            document.getElementById('editCompanyForm').addEventListener('submit', updateCompany);
+        }
         
         // Initialiser l'application au chargement de la page
         window.addEventListener('DOMContentLoaded', initApp);
