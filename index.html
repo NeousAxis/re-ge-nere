@@ -390,10 +390,6 @@
                             <label for="editWebsite">Site web</label>
                             <input type="url" id="editWebsite">
                         </div>
-                        <div class="form-group">
-                            <label for="editPhone">Téléphone</label>
-                            <input type="tel" id="editPhone">
-                        </div>
                         <button class="save-btn" onclick="saveSection('company-info')">Enregistrer les modifications</button>
                     </div>
                 </div>
@@ -561,7 +557,7 @@
                     <div class="step-number">4</div>
                     <div class="step-content">
                         <h3>Collaborez localement</h3>
-                        <p>Entrez en contact avec les entreprises suggérées et établissez des partenariats bénéfiques pour tous, dans une logique d'économie circulaire locale.</p>
+                        <p>Entrez en contact avec les entreprises suggérées et établissez des partenariats bénéfiques pour tous, dans une logique d'économie locale.</p>
                     </div>
                 </div>
             </div>
@@ -596,10 +592,6 @@
                     <div class="form-group">
                         <label for="email">Email professionnel*</label>
                         <input type="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Téléphone*</label>
-                        <input type="tel" id="phone" required>
                     </div>
                     <div class="form-group">
                         <label for="resources">Ressources disponibles*</label>
@@ -695,7 +687,6 @@
                     <p><strong>Ville :</strong> ${company.city || ''}</p>
                     <p><strong>Site web :</strong> ${company.website || 'Non spécifié'}</p>
                     <p><strong>Email :</strong> ${company.email || ''}</p>
-                    <p><strong>Téléphone :</strong> ${company.phone || ''}</p>
                 `;
                 
                 // Charger les valeurs dans le formulaire d'édition
@@ -704,7 +695,6 @@
                 document.getElementById('editZip').value = company.zipCode || '';
                 document.getElementById('editCity').value = company.city || '';
                 document.getElementById('editWebsite').value = company.website || '';
-                document.getElementById('editPhone').value = company.phone || '';
                 
                 // Charger les ressources
                 document.getElementById('resources-display').innerHTML = `
@@ -766,7 +756,6 @@
                     company.zipCode = document.getElementById('editZip').value;
                     company.city = document.getElementById('editCity').value;
                     company.website = document.getElementById('editWebsite').value;
-                    company.phone = document.getElementById('editPhone').value;
                 } else if (section === 'resources') {
                     company.resources = document.getElementById('editResources').value;
                 } else if (section === 'needs') {
@@ -821,7 +810,6 @@ Code postal : ${company.zipCode || ''}
 Ville : ${company.city || ''}
 Site web : ${company.website || ''}
 Email : ${company.email || ''}
-Téléphone : ${company.phone || ''}
 
 RESSOURCES DISPONIBLES
 --------------------------
@@ -862,13 +850,12 @@ Ces données sont stockées localement sur votre appareil. Conservez ce fichier 
             const city = document.getElementById('city').value;
             const website = document.getElementById('website').value;
             const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
             const resources = document.getElementById('resources').value;
             const needs = document.getElementById('needs').value;
             const notifications = document.getElementById('notifications').value;
             
             // Validation simple
-            if (!name || !address || !zipCode || !city || !email || !phone || !resources || !needs) {
+            if (!name || !address || !zipCode || !city || !email || !resources || !needs) {
                 alert('Veuillez remplir tous les champs obligatoires.');
                 return;
             }
@@ -888,7 +875,6 @@ Ces données sont stockées localement sur votre appareil. Conservez ce fichier 
                 city,
                 website,
                 email,
-                phone,
                 resources,
                 needs,
                 notifications
