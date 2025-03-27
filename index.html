@@ -3,1144 +3,839 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ré(ge)nère - Plateforme d'Écosystème Mutualisé</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4CAF50">
-    <link rel="apple-touch-icon" href="icon-192x192.png">
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <title>Ré(GE)nère - Plateforme d'Économie Circulaire</title>
     <style>
         :root {
-            --primary-color: #4CAF50;
-            --secondary-color: #80cbc4;
-            --background-color: #f0e6d2;
-            --text-color: #555;
-            --card-background: #f9f3e7;
-            --card-border: #ece0c5;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --primary-color: #3a7e6d;
+            --secondary-color: #a1d4c6;
+            --accent-color: #f0a849;
+            --dark-text: #333333;
+            --light-text: #ffffff;
+            --background-light: #f5f5f5;
         }
         
         body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            max-width: 100%;
-            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--background-light);
+            color: var(--dark-text);
         }
         
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 30px 15px;
-            text-align: center;
-        }
-        
-        .subtitle {
-            margin-top: 10px;
-            font-weight: normal;
-            font-size: 1.2rem;
+        h1, h2, h3 {
+            color: var(--primary-color);
         }
         
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 10px;
             padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
         }
         
-        .card {
-            background-color: var(--card-background);
-            border: 1px solid var(--card-border);
-            border-radius: 8px;
-            padding: 20px;
+        .selection-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .category-group {
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         
-        h2 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #666;
-        }
-        
-        input, textarea, select {
+        select {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid var(--card-border);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
             background-color: white;
-            border-radius: 5px;
-            font-size: 1rem;
+            margin-bottom: 10px;
         }
         
-        textarea {
-            min-height: 80px;
-            resize: vertical;
+        .selected-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
         }
         
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 5px;
+        .tag {
+            background-color: var(--secondary-color);
+            padding: 8px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tag-remove {
             cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s;
-            margin-right: 10px;
+            font-weight: bold;
+            color: var(--primary-color);
         }
         
-        button:hover {
-            background-color: #45a049;
-        }
-        
-        .btn-secondary {
-            background-color: #999;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #777;
-        }
-        
-        .btn-edit {
-            background-color: #2196F3;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-        }
-        
-        .btn-edit:hover {
-            background-color: #0b7dda;
-        }
-        
-        .btn-validate {
-            background-color: #FF9800;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-        }
-        
-        .btn-validate:hover {
-            background-color: #e68a00;
-        }
-        
-        .company-card {
-            background-color: white;
-            border: 1px solid var(--card-border);
+        .output-area {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
             border-radius: 5px;
             padding: 15px;
-            margin-bottom: 15px;
-            position: relative;
+            margin-top: 20px;
         }
         
-        .company-name {
-            color: var(--primary-color);
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-        
-        .company-detail {
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-        
-        .company-detail strong {
-            color: #666;
-            margin-right: 5px;
-        }
-        
-        .company-actions {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-        }
-        
-        /* Styles pour le modal de notification */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .close-modal {
-            float: right;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        
-        .notification-settings-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-        }
-        
-        .notification-settings-btn button {
+        .btn {
             background-color: var(--primary-color);
             color: white;
-            padding: 10px 15px;
-            border-radius: 50px;
             border: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
-            margin-right: 0;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
         }
         
-        .hidden {
-            display: none;
-        }
-        
-        .match-badge {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 50%;
-            font-weight: bold;
-            z-index: 1000;
-            cursor: pointer;
-        }
-        
-        .form-info {
-            margin: 10px 0; 
-            padding: 10px; 
-            background-color: #f8f9fa; 
-            border-left: 4px solid var(--primary-color); 
-            border-radius: 4px;
-        }
-        
-        .validated-match {
-            border-left: 4px solid #FF9800;
+        .btn:hover {
+            background-color: #2d6354;
         }
         
         .tabs {
             display: flex;
-            margin-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
         
         .tab {
-            padding: 10px 15px;
-            background-color: #eee;
-            cursor: pointer;
+            padding: 10px 20px;
+            background-color: #e0e0e0;
             border-radius: 5px 5px 0 0;
-            margin-right: 5px;
+            cursor: pointer;
         }
         
         .tab.active {
-            background-color: white;
-            font-weight: bold;
+            background-color: var(--primary-color);
+            color: white;
         }
         
-        @media (max-width: 600px) {
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .notification-settings {
+            background-color: #f5f8ff;
+            border: 1px solid #dde5ff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            margin: 0;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+        }
+        
+        .progress-step::after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            background-color: #ddd;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            z-index: -1;
+        }
+        
+        .progress-step:last-child::after {
+            display: none;
+        }
+        
+        .progress-step.active {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .progress-step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #ddd;
+            border-radius: 50%;
+            line-height: 30px;
+            margin-bottom: 8px;
+        }
+        
+        .progress-step.active .progress-step-number {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .logo span {
+            color: var(--accent-color);
+        }
+        
+        @media (max-width: 768px) {
             .container {
+                gap: 20px;
+            }
+            
+            .section {
                 padding: 15px;
             }
             
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            .card {
-                padding: 15px;
-            }
-            
-            button {
-                padding: 10px 16px;
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Ré(ge)nère</h1>
-        <div class="subtitle">Plateforme d'Écosystème Mutualisé</div>
-    </header>
-
+    <div class="logo">Ré<span>(GE)</span>nère</div>
+    <p style="text-align: center;">Plateforme d'Économie Circulaire - Genève</p>
+    
+    <div class="progress-indicator">
+        <div class="progress-step active">
+            <div class="progress-step-number">1</div>
+            <div>Informations</div>
+        </div>
+        <div class="progress-step">
+            <div class="progress-step-number">2</div>
+            <div>Ressources</div>
+        </div>
+        <div class="progress-step">
+            <div class="progress-step-number">3</div>
+            <div>Besoins</div>
+        </div>
+        <div class="progress-step">
+            <div class="progress-step-number">4</div>
+            <div>Notifications</div>
+        </div>
+    </div>
+    
     <div class="container">
-        <div class="card">
-            <h2>Ajouter une entreprise</h2>
-            <form id="companyForm">
-                <div>
-                    <label for="companyName">Nom de l'entreprise:</label>
-                    <input type="text" id="companyName" required>
+        <!-- SECTION 1: INFORMATIONS DE L'ENTREPRISE -->
+        <div class="section tab-content active" id="tab-1">
+            <div class="section-header">
+                <h2 class="section-title">Informations de l'entreprise</h2>
+            </div>
+            
+            <div class="form-group">
+                <label for="entreprise-nom">Nom de l'entreprise *</label>
+                <input type="text" id="entreprise-nom" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="entreprise-secteur">Secteur d'activité *</label>
+                        <select id="entreprise-secteur" required>
+                            <option value="">-- Sélectionnez un secteur --</option>
+                            <option value="Agriculture">Agriculture, Sylviculture et Pêche</option>
+                            <option value="Industrie">Industrie manufacturière</option>
+                            <option value="Construction">Construction</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Transport">Transport et Entreposage</option>
+                            <option value="Restauration">Hébergement et Restauration</option>
+                            <option value="Information">Information et Communication</option>
+                            <option value="Finance">Activités financières et Assurance</option>
+                            <option value="Immobilier">Activités immobilières</option>
+                            <option value="Services">Services aux entreprises</option>
+                            <option value="Santé">Santé humaine et Action sociale</option>
+                            <option value="Arts">Arts, Spectacles et Activités récréatives</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
                 </div>
-                
-                <div>
-                    <label for="companyEmail">Email de contact:</label>
-                    <input type="email" id="companyEmail" placeholder="Email professionnel de la personne référente" required>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="entreprise-taille">Taille de l'entreprise *</label>
+                        <select id="entreprise-taille" required>
+                            <option value="">-- Sélectionnez une taille --</option>
+                            <option value="TPE">1-9 employés (TPE)</option>
+                            <option value="PME">10-249 employés (PME)</option>
+                            <option value="ETI">250-4999 employés (ETI)</option>
+                            <option value="GE">5000+ employés (Grande Entreprise)</option>
+                        </select>
+                    </div>
                 </div>
-                
-                <div class="form-info">
-                    <p style="margin: 0; font-size: 0.9rem;">
-                        ℹ️ Pour faciliter les mises en relation, merci d'indiquer l'email professionnel 
-                        de la personne référente qui supervisera les correspondances dans votre organisation.
-                        Cet email sera également utilisé pour vous identifier lors de la modification de votre fiche.
-                    </p>
+            </div>
+            
+            <div class="form-group">
+                <label for="entreprise-description">Description de l'entreprise *</label>
+                <textarea id="entreprise-description" required placeholder="Décrivez brièvement votre entreprise, ses activités et sa mission..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="entreprise-adresse">Adresse *</label>
+                <input type="text" id="entreprise-adresse" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="entreprise-code-postal">Code postal *</label>
+                        <input type="text" id="entreprise-code-postal" required>
+                    </div>
                 </div>
-                
-                <div>
-                    <label for="companyLocation">Localisation:</label>
-                    <input type="text" id="companyLocation">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="entreprise-ville">Ville *</label>
+                        <input type="text" id="entreprise-ville" value="Genève" required>
+                    </div>
                 </div>
-                
-                <div>
-                    <label for="companyResources">Ressources disponibles (séparées par des virgules):</label>
-                    <textarea id="companyResources"></textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="contact-nom">Nom du contact *</label>
+                        <input type="text" id="contact-nom" required>
+                    </div>
                 </div>
-                
-                <div>
-                    <label for="companyServices">Services proposés (séparés par des virgules):</label>
-                    <textarea id="companyServices"></textarea>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="contact-fonction">Fonction *</label>
+                        <input type="text" id="contact-fonction" required>
+                    </div>
                 </div>
-                
-                <div>
-                    <label for="companyNeeds">Besoins recherchés (séparés par des virgules):</label>
-                    <textarea id="companyNeeds"></textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="contact-email">Email *</label>
+                        <input type="email" id="contact-email" required>
+                    </div>
                 </div>
-                
-                <button type="submit">Ajouter</button>
-            </form>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="contact-telephone">Téléphone *</label>
+                        <input type="tel" id="contact-telephone" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="entreprise-site">Site web</label>
+                <input type="url" id="entreprise-site" placeholder="https://...">
+            </div>
+            
+            <button class="btn" onclick="navigateToTab(2)">Continuer vers les ressources</button>
         </div>
         
-        <div class="card">
-            <h2>Entreprises enregistrées</h2>
-            <div id="companiesList"></div>
+        <!-- SECTION 2: RESSOURCES DISPONIBLES -->
+        <div class="section tab-content" id="tab-2">
+            <div class="section-header">
+                <h2 class="section-title">Ressources disponibles</h2>
+            </div>
+            
+            <p>Sélectionnez les ressources que votre entreprise peut mettre à disposition d'autres entreprises.</p>
+            
+            <div class="category-group">
+                <h3>Espaces et Locaux</h3>
+                <select id="select-espace" onchange="addSelectedItem('select-espace', 'ressources')">
+                    <option value="">-- Sélectionnez un espace --</option>
+                    <option value="Bureau partagé">Bureau partagé</option>
+                    <option value="Espace de coworking">Espace de coworking</option>
+                    <option value="Salle de réunion">Salle de réunion</option>
+                    <option value="Espace d'événement">Espace d'événement</option>
+                    <option value="Espace de stockage">Espace de stockage</option>
+                    <option value="Atelier">Atelier</option>
+                    <option value="Cuisine professionnelle">Cuisine professionnelle</option>
+                    <option value="Laboratoire">Laboratoire</option>
+                    <option value="Parking">Parking</option>
+                    <option value="Surface extérieure">Surface extérieure</option>
+                    <option value="Local commercial">Local commercial</option>
+                </select>
+            </div>
+            
+            <div class="category-group">
+                <h3>Équipements et Matériel</h3>
+                <select id="select-equipement" onchange="addSelectedItem('select-equipement', 'ressources')">
+                    <option value="">-- Sélectionnez un équipement --</option>
+                    <option value="Matériel informatique">Matériel informatique</option>
+                    <option value="Imprimante / Scanner">Imprimante / Scanner</option>
+                    <option value="Vidéoprojecteur">Vidéoprojecteur</option>
+                    <option value="Machine-outil">Machine-outil</option>
+                    <option value="Équipement de manutention">Équipement de manutention</option>
+                    <option value="Véhicule professionnel">Véhicule professionnel</option>
+                    <option value="Équipement audio/vidéo">Équipement audio/vidéo</option>
+                    <option value="Matériel événementiel">Matériel événementiel</option>
+                    <option value="Mobilier de bureau">Mobilier de bureau</option>
+                    <option value="Outillage spécialisé">Outillage spécialisé</option>
+                    <option value="Équipement médical">Équipement médical</option>
+                </select>
+            </div>
+            
+            <div class="category-group">
+                <h3>Ressources Humaines et Compétences</h3>
+                <select id="select-competence" onchange="addSelectedItem('select-competence', 'ressources')">
+                    <option value="">-- Sélectionnez une compétence --</option>
+                    <option value="Expertise comptable">Expertise comptable</option>
+                    <option value="Compétences juridiques">Compétences juridiques</option>
+                    <option value="Développement informatique">Développement informatique</option>
+                    <option value="Design / Graphisme">Design / Graphisme</option>
+                    <option value="Communication / Marketing">Communication / Marketing</option>
+                    <option value="Traduction">Traduction</option>
+                    <option value="Conseil en stratégie">Conseil en stratégie</option>
+                    <option value="Formation professionnelle">Formation professionnelle</option>
+                    <option value="Gestion de projet">Gestion de projet</option>
+                    <option value="Ressources humaines">Ressources humaines</option>
+                    <option value="Maintenance technique">Maintenance technique</option>
+                </select>
+            </div>
+            
+            <div class="category-group">
+                <h3>Matières et Ressources Matérielles</h3>
+                <select id="select-matiere" onchange="addSelectedItem('select-matiere', 'ressources')">
+                    <option value="">-- Sélectionnez une matière --</option>
+                    <option value="Matières premières">Matières premières</option>
+                    <option value="Matériaux recyclés">Matériaux recyclés</option>
+                    <option value="Emballages">Emballages</option>
+                    <option value="Palettes">Palettes</option>
+                    <option value="Chutes de production">Chutes de production</option>
+                    <option value="Papier / Carton">Papier / Carton</option>
+                    <option value="Textiles">Textiles</option>
+                    <option value="Bois">Bois</option>
+                    <option value="Métaux">Métaux</option>
+                    <option value="Plastiques">Plastiques</option>
+                    <option value="Produits chimiques">Produits chimiques</option>
+                </select>
+            </div>
+            
+            <div class="category-group">
+                <h3>Services</h3>
+                <select id="select-service" onchange="addSelectedItem('select-service', 'ressources')">
+                    <option value="">-- Sélectionnez un service --</option>
+                    <option value="Livraison / Transport">Livraison / Transport</option>
+                    <option value="Accueil / Réception">Accueil / Réception</option>
+                    <option value="Services administratifs">Services administratifs</option>
+                    <option value="Nettoyage">Nettoyage</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Sécurité">Sécurité</option>
+                    <option value="Restauration collective">Restauration collective</option>
+                    <option value="Services informatiques">Services informatiques</option>
+                    <option value="Gestion déchets">Gestion déchets</option>
+                    <option value="Conciergerie">Conciergerie</option>
+                    <option value="Formation">Formation</option>
+                </select>
+            </div>
+            
+            <h3>Ressources sélectionnées</h3>
+            <div id="ressources-selected" class="selected-items"></div>
+            
+            <div class="form-group">
+                <label for="ressources-details">Informations complémentaires (optionnel)</label>
+                <textarea id="ressources-details" placeholder="Précisez des détails sur les ressources disponibles, conditions, quantités, fréquence..."></textarea>
+            </div>
+            
+            <div class="form-row">
+                <button class="btn" onclick="navigateToTab(1)" style="background-color: #888;">Retour</button>
+                <button class="btn" onclick="navigateToTab(3)">Continuer vers les besoins</button>
+            </div>
         </div>
-    </div>
-    
-    <!-- Modal pour les préférences de notification -->
-    <div id="notificationModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Préférences de notification</h2>
-            <form id="notificationForm">
-                <div>
-                    <label for="emailNotif">Email pour les notifications:</label>
-                    <input type="email" id="emailNotif" required>
-                </div>
-                <div>
-                    <label>Fréquence des notifications:</label>
-                    <select id="notifFrequency">
-                        <option value="immediate">Immédiate</option>
-                        <option value="daily">Résumé quotidien</option>
-                        <option value="weekly">Résumé hebdomadaire</option>
-                    </select>
-                </div>
-                <button type="submit">Enregistrer mes préférences</button>
-            </form>
+        
+        <!-- SECTION 3: BESOINS RECHERCHÉS -->
+        <div class="section tab-content" id="tab-3">
+            <div class="section-header">
+                <h2 class="section-title">Besoins recherchés</h2>
+            </div>
+            
+            <p>Sélectionnez les besoins que votre entreprise recherche auprès d'autres entreprises.</p>
+            
+            <div class="category-group">
+                <h3>Espaces et Locaux</h3>
+                <select id="select-espace-besoin" onchange="addSelectedItem('select-espace-besoin', 'besoins')">
+                    <option value="">-- Sélectionnez un espace --</option>
+                    <option value="Bureau partagé">Bureau partagé</option>
+                    <option value="Espace de coworking">Espace de coworking</option>
+                    <option value="Salle de réunion">Salle de réunion</option>
+                    <option value="Espace d'événement">Espace d'événement</option>
+                    <option value="Espace de stockage">Espace de stockage</option>
+                    <option value="Atelier">Atelier</option>
+                    <option value="Cuisine professionnelle">Cuisine professionnelle</option>
+                    <option value="Laboratoire">Laboratoire</option>
+                    <option value="Parking">Parking</option>
+                    <option value="Surface extérieure">Surface extérieure</option>
+                    <option value="Local commercial">Local commercial</option>
+                </select>
+            </div>
+            
+            <div class="category-group">
+                <h3>Équipements et Matériel</h3>
+                <select id="select-equipement-besoin" onchange="addSelectedItem('select-equipement-besoin', 'besoins')">
+                    <option value="">-- Sélectionnez un équipement --</option>
+                    <option value="Matériel informatique">Matériel informatique</option>
+                    <option value="Imprimante / Scanner">Imprimante / Scanner</option>
+                    <option value="Vidéoprojecteur">Vidéoprojecteur</option>
+                    <option value="Machine-outil">Machine-outil</option>
+                    <option value="Équipement de manutention">Équipement de manutention</option>
+                    <option value="Véhicule professionnel">Véhicule professionnel</option>
+                    <option value="Équipement audio/vidéo">Équipement audio/vidéo</option>
+                    <option value="Matériel événementiel">Matériel événementiel</option>
+                    <option value="Mobilier de bureau">Mobilier de bureau</option>
+                    <option value="Outillage spécialisé">Outillage spécialisé</option>
+                    <option value="Équipement médical">Équipement médical</option>
+                </select>
+            </div>
+            
+            <div class="category-group">
+                <h3>Ressources Humaines et Compétences</h3>
+                <select id="select-competence-besoin" onchange="addSelectedItem('select-competence-besoin', 'besoins')">
+                    <option value="">-- Sélectionnez une compétence --</option>
+                    <option value="Expertise comptable">Expertise comptable</option>
+                    <option value="Compétences juridiques">Compétences juridiques</option>
+                    <option value="Développement informatique">Développement informatique</option>
+                    <option value="Design / Graphisme">Design / Graphisme</option>
+                    <option value="Communication / Marketing">Communication / Marketing</option>
+                    <option value="Traduction">Traduction</option>
+                    <option value="Conseil en stratégie">Conseil en stratégie</option>
+                    <option value="Formation professionnelle">Formation professionnelle</option>
+                    <option value="Gestion de projet">Gestion de projet</option>
+                    <option value="Ressources humaines">Ressources humaines</option>
+                    <option value="Maintenance technique">Maintenance technique</option>
+                </select>
+            </div>
+            
+            <div class="category-group">
+                <h3>Matières et Ressources Matérielles</h3>
+                <select id="select-matiere-besoin" onchange="addSelectedItem('select-matiere-besoin', 'besoins')">
+                    <option value="">-- Sélectionnez une matière --</option>
+                    <option value="Matières premières">Matières premières</option>
+                    <option value="Matériaux recyclés">Matériaux recyclés</option>
+                    <option value="Emballages">Emballages</option>
+                    <option value="Palettes">Palettes</option>
+                    <option value="Chutes de production">Chutes de production</option>
+                    <option value="Papier / Carton">Papier / Carton</option>
+                    <option value="Textiles">Textiles</option>
+                    <option value="Bois">Bois</option>
+                    <option value="Métaux">Métaux</option>
+                    <option value="Plastiques">Plastiques</option>
+                    <option value="Produits chimiques">Produits chimiques</option>
+                </select>
+            </div>
+            
+            <div class="category-group">
+                <h3>Services</h3>
+                <select id="select-service-besoin" onchange="addSelectedItem('select-service-besoin', 'besoins')">
+                    <option value="">-- Sélectionnez un service --</option>
+                    <option value="Livraison / Transport">Livraison / Transport</option>
+                    <option value="Accueil / Réception">Accueil / Réception</option>
+                    <option value="Services administratifs">Services administratifs</option>
+                    <option value="Nettoyage">Nettoyage</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Sécurité">Sécurité</option>
+                    <option value="Restauration collective">Restauration collective</option>
+                    <option value="Services informatiques">Services informatiques</option>
+                    <option value="Gestion déchets">Gestion déchets</option>
+                    <option value="Conciergerie">Conciergerie</option>
+                    <option value="Formation">Formation</option>
+                </select>
+            </div>
+            
+            <h3>Besoins sélectionnés</h3>
+            <div id="besoins-selected" class="selected-items"></div>
+            
+            <div class="form-group">
+                <label for="besoins-details">Informations complémentaires (optionnel)</label>
+                <textarea id="besoins-details" placeholder="Précisez des détails sur vos besoins, quantités souhaitées, fréquence, etc."></textarea>
+            </div>
+            
+            <div class="form-row">
+                <button class="btn" onclick="navigateToTab(2)" style="background-color: #888;">Retour</button>
+                <button class="btn" onclick="navigateToTab(4)">Continuer vers les notifications</button>
+            </div>
         </div>
-    </div>
-    
-    <!-- Modal pour modifier une entreprise -->
-    <div id="editCompanyModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeEditModal()">&times;</span>
-            <h2>Modifier les informations de l'entreprise</h2>
-            <form id="editCompanyForm">
-                <input type="hidden" id="editCompanyId">
-                
-                <div>
-                    <label for="editCompanyName">Nom de l'entreprise:</label>
-                    <input type="text" id="editCompanyName" required>
+        
+        <!-- SECTION 4: PRÉFÉRENCES DE NOTIFICATION -->
+        <div class="section tab-content" id="tab-4">
+            <div class="section-header">
+                <h2 class="section-title">Préférences de notification</h2>
+            </div>
+            
+            <p>Paramétrez vos préférences de notification pour être informé des correspondances potentielles.</p>
+            
+            <div class="form-group">
+                <label>Recevoir des notifications par email</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="notif-email-oui" name="notif-email" value="oui" checked>
+                        <label for="notif-email-oui">Oui</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="notif-email-non" name="notif-email" value="non">
+                        <label for="notif-email-non">Non</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="notification-settings">
+                <div class="form-group">
+                    <label for="notif-email-adresse">Email pour les notifications</label>
+                    <input type="email" id="notif-email-adresse">
                 </div>
                 
-                <div>
-                    <label for="editCompanyEmail">Email de contact:</label>
-                    <input type="email" id="editCompanyEmail" readonly>
-                    <p class="form-info" style="font-size: 0.8rem; margin-top: -10px;">L'email ne peut pas être modifié car il sert d'identifiant.</p>
+                <div class="form-group">
+                    <label>Fréquence des notifications</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="freq-immediate" name="notif-frequence" value="immediate" checked>
+                            <label for="freq-immediate">Immédiate</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="freq-quotidienne" name="notif-frequence" value="quotidienne">
+                            <label for="freq-quotidienne">Quotidienne</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="freq-hebdomadaire" name="notif-frequence" value="hebdomadaire">
+                            <label for="freq-hebdomadaire">Hebdomadaire</label>
+                        </div>
+                    </div>
                 </div>
                 
-                <div>
-                    <label for="editCompanyLocation">Localisation:</label>
-                    <input type="text" id="editCompanyLocation">
+                <div class="form-group">
+                    <label>Types de notifications</label>
+                    <div class="form-group">
+                        <div class="radio-option">
+                            <input type="checkbox" id="notif-type-match" checked>
+                            <label for="notif-type-match">Nouvelles correspondances</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="notif-type-message" checked>
+                            <label for="notif-type-message">Messages reçus</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="notif-type-actualite">
+                            <label for="notif-type-actualite">Actualités et événements Ré(GE)nère</label>
+                        </div>
+                    </div>
                 </div>
-                
-                <div>
-                    <label for="editCompanyResources">Ressources disponibles (séparées par des virgules):</label>
-                    <textarea id="editCompanyResources"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Visibilité de votre profil</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="visibilite-public" name="profil-visibilite" value="public" checked>
+                        <label for="visibilite-public">Public (visible par toutes les entreprises)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="visibilite-prive" name="profil-visibilite" value="prive">
+                        <label for="visibilite-prive">Privé (visible uniquement en cas de correspondance)</label>
+                    </div>
                 </div>
-                
-                <div>
-                    <label for="editCompanyServices">Services proposés (séparés par des virgules):</label>
-                    <textarea id="editCompanyServices"></textarea>
-                </div>
-                
-                <div>
-                    <label for="editCompanyNeeds">Besoins recherchés (séparés par des virgules):</label>
-                    <textarea id="editCompanyNeeds"></textarea>
-                </div>
-                
-                <button type="submit">Enregistrer les modifications</button>
-                <button type="button" class="btn-secondary" onclick="closeEditModal()">Annuler</button>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Modal pour vérifier l'email avant modification -->
-    <div id="verifyEmailModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeVerifyEmailModal()">&times;</span>
-            <h2>Vérification de l'email</h2>
-            <p>Pour modifier cette entreprise, veuillez confirmer l'email associé à cette fiche.</p>
-            <form id="verifyEmailForm">
-                <input type="hidden" id="verifyCompanyId">
-                <div>
-                    <label for="verifyEmail">Email de contact:</label>
-                    <input type="email" id="verifyEmail" required>
-                </div>
-                <button type="submit">Vérifier</button>
-                <button type="button" class="btn-secondary" onclick="closeVerifyEmailModal()">Annuler</button>
-            </form>
+            </div>
+            
+            <div class="form-row">
+                <button class="btn" onclick="navigateToTab(3)" style="background-color: #888;">Retour</button>
+                <button class="btn" onclick="submitForm()">Enregistrer</button>
+            </div>
         </div>
     </div>
 
-    <!-- Bouton pour accéder aux préférences de notification -->
-    <div class="notification-settings-btn">
-        <button id="openNotifSettings">Préférences de notification</button>
-    </div>
-    
     <script>
-        // Fonctions de base
-        function addCompany() {
-            const companyName = document.getElementById('companyName').value;
-            const companyEmail = document.getElementById('companyEmail').value;
-            const companyLocation = document.getElementById('companyLocation').value;
-            const companyResources = document.getElementById('companyResources').value;
-            const companyServices = document.getElementById('companyServices').value;
-            const companyNeeds = document.getElementById('companyNeeds').value;
-            
-            const company = {
-                id: Date.now(),
-                name: companyName,
-                email: companyEmail,
-                location: companyLocation,
-                resources: companyResources,
-                services: companyServices,
-                needs: companyNeeds,
-                timestamp: new Date().toISOString()
-            };
-            
-            // Récupérer les entreprises existantes
-            const companies = JSON.parse(localStorage.getItem('companies')) || [];
-            
-            // Ajouter la nouvelle entreprise
-            companies.push(company);
-            
-            // Enregistrer dans le localStorage
-            localStorage.setItem('companies', JSON.stringify(companies));
-            
-            // Réinitialiser le formulaire et actualiser l'affichage
-            document.getElementById('companyForm').reset();
-            displayCompanies();
-            
-            // Chercher des correspondances
-            findOptimizedMatches();
-        }
+        // Listes pour stocker les sélections
+        let ressourcesList = [];
+        let besoinsList = [];
         
-        function displayCompanies() {
-            const companiesList = document.getElementById('companiesList');
-            companiesList.innerHTML = '';
-            
-            const companies = JSON.parse(localStorage.getItem('companies')) || [];
-            
-            if (companies.length === 0) {
-                companiesList.innerHTML = '<p>Aucune entreprise enregistrée pour le moment.</p>';
-                return;
-            }
-            
-            companies.forEach(company => {
-                const companyCard = document.createElement('div');
-                companyCard.className = 'company-card';
-                
-                companyCard.innerHTML = `
-                    <div class="company-name">${company.name}</div>
-                    <div class="company-detail"><strong>Contact:</strong> ${company.email ? company.email : 'Non fourni'}</div>
-                    <div class="company-detail"><strong>Localisation:</strong> ${company.location ? company.location : 'Non fournie'}</div>
-                    <div class="company-detail"><strong>Ressources:</strong> ${company.resources ? company.resources : 'Aucune'}</div>
-                    <div class="company-detail"><strong>Services:</strong> ${company.services ? company.services : 'Aucun'}</div>
-                    <div class="company-detail"><strong>Besoins:</strong> ${company.needs ? company.needs : 'Aucun'}</div>
-                    <div class="company-actions">
-                        <button class="btn-edit" onclick="showVerifyEmailModal(${company.id})">Modifier</button>
-                    </div>
-                `;
-                
-                companiesList.appendChild(companyCard);
-            });
-        }
-        
-        // Fonctions pour la modification d'entreprises
-        function showVerifyEmailModal(companyId) {
-            document.getElementById('verifyCompanyId').value = companyId;
-            document.getElementById('verifyEmail').value = '';
-            document.getElementById('verifyEmailModal').classList.remove('hidden');
-        }
-        
-        function closeVerifyEmailModal() {
-            document.getElementById('verifyEmailModal').classList.add('hidden');
-        }
-        
-        function verifyEmail(e) {
-            e.preventDefault();
-            
-            const companyId = parseInt(document.getElementById('verifyCompanyId').value);
-            const enteredEmail = document.getElementById('verifyEmail').value;
-            
-            const companies = JSON.parse(localStorage.getItem('companies')) || [];
-            const company = companies.find(c => c.id === companyId);
-            
-            if (company && company.email === enteredEmail) {
-                // Email vérifié, ouvrir le formulaire de modification
-                closeVerifyEmailModal();
-                showEditCompanyForm(company);
-            } else {
-                alert('L\'email ne correspond pas à celui associé à cette entreprise.');
-            }
-        }
-        
-        function showEditCompanyForm(company) {
-            document.getElementById('editCompanyId').value = company.id;
-            document.getElementById('editCompanyName').value = company.name;
-            document.getElementById('editCompanyEmail').value = company.email;
-            document.getElementById('editCompanyLocation').value = company.location || '';
-            document.getElementById('editCompanyResources').value = company.resources || '';
-            document.getElementById('editCompanyServices').value = company.services || '';
-            document.getElementById('editCompanyNeeds').value = company.needs || '';
-            
-            document.getElementById('editCompanyModal').classList.remove('hidden');
-        }
-        
-        function closeEditModal() {
-            document.getElementById('editCompanyModal').classList.add('hidden');
-        }
-        
-        function updateCompany(e) {
-            e.preventDefault();
-            
-            const companyId = parseInt(document.getElementById('editCompanyId').value);
-            const companyName = document.getElementById('editCompanyName').value;
-            const companyEmail = document.getElementById('editCompanyEmail').value;
-            const companyLocation = document.getElementById('editCompanyLocation').value;
-            const companyResources = document.getElementById('editCompanyResources').value;
-            const companyServices = document.getElementById('editCompanyServices').value;
-            const companyNeeds = document.getElementById('editCompanyNeeds').value;
-            
-            // Récupérer les entreprises
-            const companies = JSON.parse(localStorage.getItem('companies')) || [];
-            
-            // Trouver l'index de l'entreprise à modifier
-            const companyIndex = companies.findIndex(c => c.id === companyId);
-            
-            if (companyIndex !== -1) {
-                // Mettre à jour l'entreprise
-                companies[companyIndex] = {
-                    ...companies[companyIndex],
-                    name: companyName,
-                    location: companyLocation,
-                    resources: companyResources,
-                    services: companyServices,
-                    needs: companyNeeds,
-                    lastUpdated: new Date().toISOString()
-                };
-                
-                // Enregistrer les modifications
-                localStorage.setItem('companies', JSON.stringify(companies));
-                
-                // Fermer le modal et actualiser l'affichage
-                closeEditModal();
-                displayCompanies();
-                
-                // Recalculer les correspondances
-                findOptimizedMatches();
-                
-                alert('Les informations de l\'entreprise ont été mises à jour avec succès.');
-            }
-        }
-        
-        // Fonction d'optimisation du matching
-        function findOptimizedMatches() {
-            const companies = JSON.parse(localStorage.getItem('companies')) || [];
-            const matches = [];
-            
-            // Pour chaque paire d'entreprises
-            for (let i = 0; i < companies.length; i++) {
-                for (let j = i + 1; j < companies.length; j++) {
-                    const company1 = companies[i];
-                    const company2 = companies[j];
-                    
-                    // Vérifier les correspondances ressources/besoins dans les deux sens
-                    const matches1To2 = checkEnhancedMatch(company1, company2);
-                    const matches2To1 = checkEnhancedMatch(company2, company1);
-                    
-                    if (matches1To2.length > 0 || matches2To1.length > 0) {
-                        // Récupérer l'état de validation précédent si existant
-                        const existingMatch = getExistingMatch(company1.id, company2.id);
-                        const isValidated = existingMatch ? existingMatch.isValidated : false;
-                        
-                        matches.push({
-                            company1: company1,
-                            company2: company2,
-                            matches1To2: matches1To2,
-                            matches2To1: matches2To1,
-                            score: calculateMatchScore(matches1To2, matches2To1, company1, company2),
-                            timestamp: new Date().toISOString(),
-                            isValidated: isValidated
-                        });
-                    }
-                }
-            }
-            
-            // Trier les matches par score de pertinence
-            matches.sort((a, b) => b.score - a.score);
-            
-            // Stocker les matches dans le localStorage
-            localStorage.setItem('matches', JSON.stringify(matches));
-            
-            // Envoyer des notifications pour les nouveaux matches
-            sendMatchNotifications(matches);
-            
-            return matches;
-        }
-        
-        // Récupérer l'état de validation d'un match existant
-        function getExistingMatch(companyId1, companyId2) {
-            const existingMatches = JSON.parse(localStorage.getItem('matches')) || [];
-            return existingMatches.find(match => 
-                (match.company1.id === companyId1 && match.company2.id === companyId2) || 
-                (match.company1.id === companyId2 && match.company2.id === companyId1)
-            );
-        }
-        
-        // Fonction pour valider une correspondance
-        function validateMatch(matchIndex) {
-            const matches = JSON.parse(localStorage.getItem('matches')) || [];
-            
-            if (matchIndex >= 0 && matchIndex < matches.length) {
-                matches[matchIndex].isValidated = true;
-                matches[matchIndex].validatedAt = new Date().toISOString();
-                
-                localStorage.setItem('matches', JSON.stringify(matches));
-                showMatches();
-                
-                // Envoyer une notification de validation
-                const match = matches[matchIndex];
-                sendValidationNotification(match);
-            }
-        }
-        
-        // Fonction pour envoyer une notification de validation
-        function sendValidationNotification(match) {
-            // Vérifier si la notification par email est activée
-            const emailNotif = localStorage.getItem('notificationEmail');
-            if (!emailNotif) return;
-            
-            const templateParams = {
-                to_email: emailNotif,
-                subject: `Correspondance validée entre ${match.company1.name} et ${match.company2.name}`,
-                message: `La correspondance entre ${match.company1.name} et ${match.company2.name} a été validée. Les deux entreprises peuvent maintenant procéder à l'échange des ressources/services correspondants.`
-            };
-            
-            // Envoyer l'email
-            emailjs.send('service_w5kg7es', 'template_zm00bwr', templateParams)
-                .then(function(response) {
-                    console.log('Notification de validation envoyée!', response.status, response.text);
-                }, function(error) {
-                    console.log('Erreur lors de l\'envoi de la notification:', error);
-                });
-        }
-        
-        // Fonction améliorée de vérification de correspondance
-        function checkEnhancedMatch(provider, receiver) {
-            const matches = [];
-            
-            // Vérifier les ressources du provider contre les besoins du receiver
-            if (provider.resources && receiver.needs) {
-                const resources = provider.resources.toLowerCase().split(',').map(r => r.trim());
-                const needs = receiver.needs.toLowerCase().split(',').map(n => n.trim());
-                
-                // Analyse sémantique simple (recherche de mots apparentés et synonymes communs)
-                const resourceWords = resources.flatMap(r => r.split(' '));
-                const needWords = needs.flatMap(n => n.split(' '));
-                
-                for (const resource of resources) {
-                    for (const need of needs) {
-                        // Correspondance directe
-                        if (resource === need) {
-                            matches.push({ type: 'exact', resource, need, weight: 1.0 });
-                            continue;
-                        }
-                        
-                        // Correspondance partielle
-                        if (resource.includes(need) || need.includes(resource)) {
-                            matches.push({ type: 'partial', resource, need, weight: 0.8 });
-                            continue;
-                        }
-                        
-                        // Correspondance par mots-clés
-                        const commonWords = resourceWords.filter(word => needWords.includes(word));
-                        if (commonWords.length > 0) {
-                            matches.push({ 
-                                type: 'keyword', 
-                                resource, 
-                                need, 
-                                weight: 0.6 * (commonWords.length / Math.max(resourceWords.length, needWords.length)) 
-                            });
-                        }
-                    }
-                }
-            }
-            
-            // Faire de même pour les services du provider et les besoins du receiver
-            if (provider.services && receiver.needs) {
-                const services = provider.services.toLowerCase().split(',').map(s => s.trim());
-                const needs = receiver.needs.toLowerCase().split(',').map(n => n.trim());
-                
-                const serviceWords = services.flatMap(s => s.split(' '));
-                const needWords = needs.flatMap(n => n.split(' '));
-                
-                for (const service of services) {
-                    for (const need of needs) {
-                        // Correspondance directe
-                        if (service === need) {
-                            matches.push({ type: 'exact', service, need, weight: 1.0 });
-                            continue;
-                        }
-                        
-                        // Correspondance partielle
-                        if (service.includes(need) || need.includes(service)) {
-                            matches.push({ type: 'partial', service, need, weight: 0.8 });
-                            continue;
-                        }
-                        
-                        // Correspondance par mots-clés
-                        const commonWords = serviceWords.filter(word => needWords.includes(word));
-                        if (commonWords.length > 0) {
-                            matches.push({ 
-                                type: 'keyword', 
-                                service, 
-                                need, 
-                                weight: 0.6 * (commonWords.length / Math.max(serviceWords.length, needWords.length)) 
-                            });
-                        }
-                    }
-                }
-            }
-            
-            return matches;
-        }
-        
-        // Fonction de calcul du score de correspondance
-        function calculateMatchScore(matches1To2, matches2To1, company1, company2) {
-            let score = 0;
-            
-            // Additionner les poids des correspondances
-            for (const match of [...matches1To2, ...matches2To1]) {
-                score += match.weight;
-            }
-            
-            // Facteur de proximité géographique (si disponible)
-            if (company1.location && company2.location) {
-                if (company1.location.toLowerCase() === company2.location.toLowerCase()) {
-                    score *= 1.2; // Bonus de 20% pour la même localité
-                }
-            }
-            
-            return score;
-        }
-        
-        // Fonction pour envoyer des notifications par email
-        function sendMatchNotifications(matches) {
-            // Récupérer les matches déjà notifiés
-            const notifiedMatches = JSON.parse(localStorage.getItem('notifiedMatches')) || [];
-            const notifiedMatchIds = new Set(notifiedMatches.map(match => 
-                `${match.company1.id}-${match.company2.id}`));
-            
-            // Filtrer les nouveaux matches
-            const newMatches = matches.filter(match => {
-                const matchId = `${match.company1.id}-${match.company2.id}`;
-                return !notifiedMatchIds.has(matchId);
+        // Fonction pour naviguer entre les onglets
+        function navigateToTab(tabNumber) {
+            // Masquer tous les onglets
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
             });
             
-            if (newMatches.length === 0) return;
+            // Afficher l'onglet sélectionné
+            document.getElementById(`tab-${tabNumber}`).classList.add('active');
             
-            // Préparer les emails pour chaque nouveau match
-            for (const match of newMatches) {
-                prepareMatchEmail(match.company1, match.company2, match);
-                prepareMatchEmail(match.company2, match.company1, match);
-                
-                // Marquer ce match comme notifié
-                notifiedMatches.push({
-                    company1: { id: match.company1.id },
-                    company2: { id: match.company2.id },
-                    timestamp: new Date().toISOString()
-                });
-            }
-            
-            // Mettre à jour la liste des matches notifiés
-            localStorage.setItem('notifiedMatches', JSON.stringify(notifiedMatches));
-            
-            // Afficher un badge avec le nombre de nouveaux matches
-            displayMatchBadge(newMatches.length);
-        }
-        
-        // Fonction pour préparer un email de notification de match
-        function prepareMatchEmail(recipient, matchedCompany, matchDetails) {
-            // Vérifier si la notification par email est activée
-            const emailNotif = localStorage.getItem('notificationEmail');
-            if (!emailNotif) return;
-            
-            // Préparer les détails de correspondance pour l'email
-            let matchDetailsHtml = '<ul>';
-            
-            if (recipient.id === matchDetails.company1.id) {
-                for (const match of matchDetails.matches1To2) {
-                    if (match.resource) {
-                        matchDetailsHtml += `<li>Votre ressource "${match.resource}" correspond à leur besoin "${match.need}"</li>`;
-                    } else if (match.service) {
-                        matchDetailsHtml += `<li>Votre service "${match.service}" correspond à leur besoin "${match.need}"</li>`;
-                    }
-                }
-            } else {
-                for (const match of matchDetails.matches2To1) {
-                    if (match.resource) {
-                        matchDetailsHtml += `<li>Votre besoin "${match.need}" correspond à leur ressource "${match.resource}"</li>`;
-                    } else if (match.service) {
-                        matchDetailsHtml += `<li>Votre besoin "${match.need}" correspond à leur service "${match.service}"</li>`;
-                    }
-                }
-            }
-            
-            matchDetailsHtml += '</ul>';
-            
-            // Préparer les paramètres pour EmailJS
-            const templateParams = {
-                to_email: emailNotif,
-                recipient_company: recipient.name,
-                matched_company: matchedCompany.name,
-                match_details: matchDetailsHtml,
-                matched_email: matchedCompany.email || 'Non fourni',
-                matched_location: matchedCompany.location || 'Non fournie'
-            };
-            
-            // Envoyer l'email
-            emailjs.send('service_w5kg7es', 'template_zm00bwr', templateParams)
-                .then(function(response) {
-                    console.log('Email envoyé avec succès!', response.status, response.text);
-                    
-                    // Afficher un message de succès
-                    const notification = document.createElement('div');
-                    notification.style.position = 'fixed';
-                    notification.style.bottom = '20px';
-                    notification.style.left = '20px';
-                    notification.style.backgroundColor = 'var(--primary-color)';
-                    notification.style.color = 'white';
-                    notification.style.padding = '10px 20px';
-                    notification.style.borderRadius = '5px';
-                    notification.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
-                    notification.style.zIndex = '1000';
-                    notification.textContent = `Notification envoyée à ${recipient.name}`;
-                    
-                    document.body.appendChild(notification);
-                    
-                    // Disparaître après 3 secondes
-                    setTimeout(() => {
-                        notification.style.opacity = '0';
-                        notification.style.transition = 'opacity 0.5s';
-                        setTimeout(() => document.body.removeChild(notification), 500);
-                    }, 3000);
-                }, function(error) {
-                    console.log('Erreur lors de l\'envoi de l\'email:', error);
-                    
-                    // Afficher un message d'erreur
-                    alert('Erreur lors de l\'envoi de la notification. Veuillez réessayer plus tard.');
-                });
-        }
-        
-        // Fonction pour afficher un badge de notification
-        function displayMatchBadge(count) {
-            // Supprimer un badge existant si présent
-            const existingBadge = document.querySelector('.match-badge');
-            if (existingBadge) {
-                existingBadge.remove();
-            }
-            
-            const badge = document.createElement('div');
-            badge.className = 'match-badge';
-            badge.textContent = count;
-            
-            badge.addEventListener('click', showMatches);
-            
-            document.body.appendChild(badge);
-        }
-        
-        // Fonction pour afficher les matches
-        function showMatches() {
-            const matches = JSON.parse(localStorage.getItem('matches')) || [];
-            
-            // Créer un conteneur modal pour afficher les matches
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            
-            const modalContent = document.createElement('div');
-            modalContent.className = 'modal-content';
-            modalContent.style.maxWidth = '700px';
-            
-            const closeBtn = document.createElement('span');
-            closeBtn.className = 'close-modal';
-            closeBtn.innerHTML = '&times;';
-            closeBtn.addEventListener('click', () => {
-                document.body.removeChild(modal);
-            });
-            
-            modalContent.appendChild(closeBtn);
-            
-            // Créer des onglets pour les correspondances en attente et validées
-            modalContent.innerHTML += `
-                <h2>Correspondances trouvées</h2>
-                <div class="tabs">
-                    <div class="tab active" id="tab-pending" onclick="switchTab('pending')">En attente</div>
-                    <div class="tab" id="tab-validated" onclick="switchTab('validated')">Validées</div>
-                </div>
-            `;
-            
-            // Conteneurs pour les deux types de correspondances
-            modalContent.innerHTML += `
-                <div id="pending-matches">
-                    ${matches.filter(m => !m.isValidated).length === 0 ? 
-                        '<p>Aucune correspondance en attente.</p>' : ''}
-                </div>
-                <div id="validated-matches" style="display: none;">
-                    ${matches.filter(m => m.isValidated).length === 0 ? 
-                        '<p>Aucune correspondance validée.</p>' : ''}
-                </div>
-            `;
-            
-            const pendingContainer = document.createElement('div');
-            pendingContainer.id = 'pending-matches-container';
-            
-            const validatedContainer = document.createElement('div');
-            validatedContainer.id = 'validated-matches-container';
-            validatedContainer.style.display = 'none';
-            
-            // Ajouter les correspondances en attente
-            matches.filter(m => !m.isValidated).forEach((match, index) => {
-                const matchCard = document.createElement('div');
-                matchCard.className = 'company-card';
-                
-                matchCard.innerHTML = `
-                    <div class="company-name">Correspondance entre ${match.company1.name} et ${match.company2.name}</div>
-                    <div class="company-detail"><strong>Score de pertinence:</strong> ${match.score.toFixed(2)}</div>
-                    
-                    <div class="company-detail">
-                        <strong>Ressources/Services de ${match.company1.name} → Besoins de ${match.company2.name}</strong>
-                        <ul>
-                            ${match.matches1To2.map(m => {
-                                if (m.resource) {
-                                    return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                } else if (m.service) {
-                                    return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                }
-                                return '';
-                            }).join('')}
-                        </ul>
-                    </div>
-                    
-                    <div class="company-detail">
-                        <strong>Ressources/Services de ${match.company2.name} → Besoins de ${match.company1.name}</strong>
-                        <ul>
-                            ${match.matches2To1.map(m => {
-                                if (m.resource) {
-                                    return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                } else if (m.service) {
-                                    return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                }
-                                return '';
-                            }).join('')}
-                        </ul>
-                    </div>
-                    
-                    <div class="company-detail"><strong>Contact ${match.company1.name}:</strong> ${match.company1.email || 'Email non fourni'}</div>
-                    <div class="company-detail"><strong>Contact ${match.company2.name}:</strong> ${match.company2.email || 'Email non fourni'}</div>
-                    
-                    <div class="company-actions">
-                        <button class="btn-validate" onclick="validateMatch(${index})">Valider cette correspondance</button>
-                    </div>
-                `;
-                
-                pendingContainer.appendChild(matchCard);
-            });
-            
-            // Ajouter les correspondances validées
-            matches.filter(m => m.isValidated).forEach((match) => {
-                const matchCard = document.createElement('div');
-                matchCard.className = 'company-card validated-match';
-                
-                const validatedDate = new Date(match.validatedAt).toLocaleDateString();
-                
-                matchCard.innerHTML = `
-                    <div class="company-name">Correspondance validée entre ${match.company1.name} et ${match.company2.name}</div>
-                    <div class="company-detail"><strong>Validée le:</strong> ${validatedDate}</div>
-                    
-                    <div class="company-detail">
-                        <strong>Ressources/Services de ${match.company1.name} → Besoins de ${match.company2.name}</strong>
-                        <ul>
-                            ${match.matches1To2.map(m => {
-                                if (m.resource) {
-                                    return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                } else if (m.service) {
-                                    return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                }
-                                return '';
-                            }).join('')}
-                        </ul>
-                    </div>
-                    
-                    <div class="company-detail">
-                        <strong>Ressources/Services de ${match.company2.name} → Besoins de ${match.company1.name}</strong>
-                        <ul>
-                            ${match.matches2To1.map(m => {
-                                if (m.resource) {
-                                    return `<li>Ressource "${m.resource}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                } else if (m.service) {
-                                    return `<li>Service "${m.service}" → Besoin "${m.need}" (type: ${m.type})</li>`;
-                                }
-                                return '';
-                            }).join('')}
-                        </ul>
-                    </div>
-                    
-                    <div class="company-detail"><strong>Contact ${match.company1.name}:</strong> ${match.company1.email || 'Email non fourni'}</div>
-                    <div class="company-detail"><strong>Contact ${match.company2.name}:</strong> ${match.company2.email || 'Email non fourni'}</div>
-                `;
-                
-                validatedContainer.appendChild(matchCard);
-            });
-            
-            // Ajouter les conteneurs au modal
-            document.getElementById('pending-matches').appendChild(pendingContainer);
-            document.getElementById('validated-matches').appendChild(validatedContainer);
-            
-            modal.appendChild(modalContent);
-            document.body.appendChild(modal);
-            
-            // Ajouter la fonction de changement d'onglet au window pour qu'elle soit accessible
-            window.switchTab = function(tabName) {
-                const pendingTab = document.getElementById('tab-pending');
-                const validatedTab = document.getElementById('tab-validated');
-                const pendingMatches = document.getElementById('pending-matches');
-                const validatedMatches = document.getElementById('validated-matches');
-                
-                if (tabName === 'pending') {
-                    pendingTab.classList.add('active');
-                    validatedTab.classList.remove('active');
-                    pendingMatches.style.display = 'block';
-                    validatedMatches.style.display = 'none';
+            // Mettre à jour l'indicateur de progression
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                if (index + 1 === tabNumber) {
+                    step.classList.add('active');
+                } else if (index + 1 < tabNumber) {
+                    step.classList.add('active');
                 } else {
-                    pendingTab.classList.remove('active');
-                    validatedTab.classList.add('active');
-                    pendingMatches.style.display = 'none';
-                    validatedMatches.style.display = 'block';
+                    step.classList.remove('active');
                 }
-            };
-        }
-        
-        // Gestion du modal de notification
-        const notifModal = document.getElementById('notificationModal');
-        const openNotifBtn = document.getElementById('openNotifSettings');
-        const closeNotifBtn = document.querySelector('.close-modal');
-        const notifForm = document.getElementById('notificationForm');
-
-        // Ouvrir le modal
-        openNotifBtn.addEventListener('click', () => {
-            notifModal.classList.remove('hidden');
-            
-            // Charger les préférences sauvegardées
-            const savedEmail = localStorage.getItem('notificationEmail');
-            const savedFreq = localStorage.getItem('notificationFrequency');
-            
-            if (savedEmail) {
-                document.getElementById('emailNotif').value = savedEmail;
-            }
-            
-            if (savedFreq) {
-                document.getElementById('notifFrequency').value = savedFreq;
-            }
-        });
-
-        // Fermer le modal
-        closeNotifBtn.addEventListener('click', () => {
-            notifModal.classList.add('hidden');
-        });
-
-        // Enregistrer les préférences
-        notifForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('emailNotif').value;
-            const frequency = document.getElementById('notifFrequency').value;
-            
-            // Sauvegarder dans localStorage
-            localStorage.setItem('notificationEmail', email);
-            localStorage.setItem('notificationFrequency', frequency);
-            
-            // Simuler l'enregistrement sur un serveur
-            console.log(`Email de notification: ${email}`);
-            console.log(`Fréquence: ${frequency}`);
-            
-            alert('Vos préférences de notification ont été enregistrées!');
-            notifModal.classList.add('hidden');
-        });
-        
-        // Initialisation
-        function initApp() {
-            // Initialiser EmailJS avec votre Public Key
-            emailjs.init("GX0U6Fx-DT8e7v6xo");
-            
-            // Afficher les entreprises au chargement
-            displayCompanies();
-            
-            // Exécuter l'algorithme de matching optimisé
-            findOptimizedMatches();
-            
-            // Ajouter un gestionnaire d'événements pour le formulaire
-            document.getElementById('companyForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                addCompany();
             });
-            
-            // Ajouter des gestionnaires pour les formulaires de modification
-            document.getElementById('verifyEmailForm').addEventListener('submit', verifyEmail);
-            document.getElementById('editCompanyForm').addEventListener('submit', updateCompany);
         }
         
-        // Initialiser l'application au chargement de la page
-        window.addEventListener('DOMContentLoaded', initApp);
+        // Fonction pour ajouter un élément sélectionné
+        function addSelectedItem(selectId, listType) {
+            const select = document.getElementById(selectId);
+            const value = select.value;
+            
+            if (value === "") return;
+            
+            const targetList = listType === 'ressources' ? ressourcesList : besoinsList;
+            const targetElement = document.getElementById(`${listType}-selected`);
+            
+            // Ajouter seulement si l'élément n'est pas déjà dans la liste
+            if (!targetList.includes(value)) {
+                targetList.push(value);
+                
+                // Créer l'élément tag
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.innerHTML = `${value} <span class="tag-remove" onclick="removeItem('${value}', '${listType}')">✕</span>`;
+                targetElement.appendChild(tag);
+            }
+            
+            // Réinitialiser l'élément select
+            select.value = "";
+        }
+        
+        // Fonction pour supprimer un élément
+        function removeItem(value, listType) {
+            const targetList = listType === 'ressources' ? ressourcesList : besoinsList;
+            const targetElement = document.getElementById(`${listType}-selected`);
+            
+            // Supprimer de l'array
+            const index = targetList.indexOf(value);
+            if (index > -1) {
+                targetList.splice(index, 1);
+            }
+            
+            // Supprimer l'affichage visuel
+            const tags = targetElement.getElementsByClassName('tag');
+            for (let i = 0; i < tags.length; i++) {
+                if (tags[i].textContent.includes(value)) {
+                    targetElement.removeChild(tags[i]);
+                    break;
+                }
+            }
+        }
+        
+        // Fonction pour simuler la soumission du formulaire
+        function submitForm() {
+            // Récupération des données du formulaire
+            const formData = {
+                entreprise: {
+                    nom: document.getElementById('entreprise-nom').value,
+                    secteur: document.getElementById('entreprise-secteur').value,
+                    taille: document.getElementById('entreprise-taille').value,
+                    description: document.getElementById('entreprise-description').value,
+                    adresse: document.getElementById('entreprise-adresse').value,
+                    codePostal: document.getElementById('entreprise-code-postal').value,
+                    ville: document.getElementById('entreprise-ville').value,
+                    site: document.getElementById('entreprise-site').value
+                },
+                contact: {
+                    nom: document.getElementById('contact-nom').value,
+                    fonction: document.getElementById('contact-fonction').value,
+                    email: document.getElementById('contact-email').value,
+                    telephone: document.getElementById('contact-telephone').value
+                },
+                ressources: {
+                    liste: ressourcesList,
+                    details: document.getElementById('ressources-details').value
+                },
+                besoins: {
+                    liste: besoinsList,
+                    details: document.getElementById('besoins-details').value
+                },
+                notifications: {
+                    email: document.getElementById('notif-email-oui').checked,
+                    adresse: document.getElementById('notif-email-adresse').value,
+                    frequence: document.querySelector('input[name="notif-frequence"]:checked').value,
+                    types: {
+                        match: document.getElementById('notif-type-match').checked,
+                        message: document.getElementById('notif-type-message').checked,
+                        actualite: document.getElementById('notif-type-actualite').checked
+                    }
+                },
+                visibilite: document.querySelector('input[name="profil-visibilite"]:checked').value
+            };
+            
+            console.log('Données du formulaire:', formData);
+            
+            // Simulation d'envoi réussi
+            alert('Votre profil a été enregistré avec succès ! Vous recevrez des notifications lorsque des correspondances seront trouvées.');
+        }
     </script>
 </body>
 </html>
