@@ -252,6 +252,8 @@
             border-radius: 8px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
         }
         
         .close-btn {
@@ -335,6 +337,49 @@
         .save-btn:hover {
             background-color: #238C7F;
         }
+        
+        /* Styles pour les tags et sélections de catégories */
+        .category-select {
+            margin-bottom: 15px;
+        }
+        
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .tag {
+            background-color: #E9C46A;
+            color: #264653;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .tag .remove-tag {
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .add-category-btn {
+            background-color: #2A9D8F;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .multi-select {
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -407,7 +452,36 @@
                     
                     <div id="resources-edit" class="hidden">
                         <div class="form-group">
-                            <label for="editResources">Ressources disponibles</label>
+                            <label>Catégories de ressources</label>
+                            <div id="resources-categories-container">
+                                <!-- Catégories sélectionnées s'afficheront ici -->
+                            </div>
+                            <div class="category-select">
+                                <select id="resourceCategorySelect">
+                                    <option value="">Sélectionnez une catégorie</option>
+                                    <option value="Matières premières">Matières premières</option>
+                                    <option value="Papier/Carton">Papier/Carton</option>
+                                    <option value="Plastique">Plastique</option>
+                                    <option value="Métaux">Métaux</option>
+                                    <option value="Bois">Bois</option>
+                                    <option value="Textile">Textile</option>
+                                    <option value="Verre">Verre</option>
+                                    <option value="Organiques">Organiques</option>
+                                    <option value="Électroniques">Électroniques</option>
+                                    <option value="Équipements">Équipements</option>
+                                    <option value="Mobilier">Mobilier</option>
+                                    <option value="Espaces">Espaces</option>
+                                    <option value="Transport">Transport</option>
+                                    <option value="Compétences">Compétences</option>
+                                    <option value="Services">Services</option>
+                                    <option value="Énergie">Énergie</option>
+                                    <option value="Eau">Eau</option>
+                                </select>
+                                <button type="button" class="add-category-btn" onclick="addCategory('resource')">Ajouter</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editResources">Description détaillée</label>
                             <textarea id="editResources" rows="4" placeholder="Décrivez les ressources que votre entreprise peut offrir..."></textarea>
                         </div>
                         <button class="save-btn" onclick="saveSection('resources')">Enregistrer les modifications</button>
@@ -427,7 +501,36 @@
                     
                     <div id="needs-edit" class="hidden">
                         <div class="form-group">
-                            <label for="editNeeds">Besoins recherchés</label>
+                            <label>Catégories de besoins</label>
+                            <div id="needs-categories-container">
+                                <!-- Catégories sélectionnées s'afficheront ici -->
+                            </div>
+                            <div class="category-select">
+                                <select id="needCategorySelect">
+                                    <option value="">Sélectionnez une catégorie</option>
+                                    <option value="Matières premières">Matières premières</option>
+                                    <option value="Papier/Carton">Papier/Carton</option>
+                                    <option value="Plastique">Plastique</option>
+                                    <option value="Métaux">Métaux</option>
+                                    <option value="Bois">Bois</option>
+                                    <option value="Textile">Textile</option>
+                                    <option value="Verre">Verre</option>
+                                    <option value="Organiques">Organiques</option>
+                                    <option value="Électroniques">Électroniques</option>
+                                    <option value="Équipements">Équipements</option>
+                                    <option value="Mobilier">Mobilier</option>
+                                    <option value="Espaces">Espaces</option>
+                                    <option value="Transport">Transport</option>
+                                    <option value="Compétences">Compétences</option>
+                                    <option value="Services">Services</option>
+                                    <option value="Énergie">Énergie</option>
+                                    <option value="Eau">Eau</option>
+                                </select>
+                                <button type="button" class="add-category-btn" onclick="addCategory('need')">Ajouter</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editNeeds">Description détaillée</label>
                             <textarea id="editNeeds" rows="4" placeholder="Décrivez les ressources dont votre entreprise a besoin..."></textarea>
                         </div>
                         <button class="save-btn" onclick="saveSection('needs')">Enregistrer les modifications</button>
@@ -593,14 +696,73 @@
                         <label for="email">Email professionnel*</label>
                         <input type="email" id="email" required>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="resources">Ressources disponibles*</label>
-                        <textarea id="resources" rows="4" required placeholder="Décrivez les ressources que votre entreprise peut offrir (déchets, matériaux, équipements, espaces, compétences)..."></textarea>
+                        <label>Catégories de ressources disponibles*</label>
+                        <div id="register-resources-categories" class="tag-container"></div>
+                        <div class="category-select">
+                            <select id="registerResourceSelect">
+                                <option value="">Sélectionnez une catégorie</option>
+                                <option value="Matières premières">Matières premières</option>
+                                <option value="Papier/Carton">Papier/Carton</option>
+                                <option value="Plastique">Plastique</option>
+                                <option value="Métaux">Métaux</option>
+                                <option value="Bois">Bois</option>
+                                <option value="Textile">Textile</option>
+                                <option value="Verre">Verre</option>
+                                <option value="Organiques">Organiques</option>
+                                <option value="Électroniques">Électroniques</option>
+                                <option value="Équipements">Équipements</option>
+                                <option value="Mobilier">Mobilier</option>
+                                <option value="Espaces">Espaces</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Compétences">Compétences</option>
+                                <option value="Services">Services</option>
+                                <option value="Énergie">Énergie</option>
+                                <option value="Eau">Eau</option>
+                            </select>
+                            <button type="button" class="add-category-btn" onclick="addRegistrationCategory('resource')">Ajouter</button>
+                        </div>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="needs">Besoins recherchés*</label>
+                        <label for="resources">Description des ressources disponibles*</label>
+                        <textarea id="resources" rows="4" required placeholder="Décrivez les ressources que votre entreprise peut offrir (matériaux, équipements, espaces, compétences)..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Catégories de besoins recherchés*</label>
+                        <div id="register-needs-categories" class="tag-container"></div>
+                        <div class="category-select">
+                            <select id="registerNeedSelect">
+                                <option value="">Sélectionnez une catégorie</option>
+                                <option value="Matières premières">Matières premières</option>
+                                <option value="Papier/Carton">Papier/Carton</option>
+                                <option value="Plastique">Plastique</option>
+                                <option value="Métaux">Métaux</option>
+                                <option value="Bois">Bois</option>
+                                <option value="Textile">Textile</option>
+                                <option value="Verre">Verre</option>
+                                <option value="Organiques">Organiques</option>
+                                <option value="Électroniques">Électroniques</option>
+                                <option value="Équipements">Équipements</option>
+                                <option value="Mobilier">Mobilier</option>
+                                <option value="Espaces">Espaces</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Compétences">Compétences</option>
+                                <option value="Services">Services</option>
+                                <option value="Énergie">Énergie</option>
+                                <option value="Eau">Eau</option>
+                            </select>
+                            <button type="button" class="add-category-btn" onclick="addRegistrationCategory('need')">Ajouter</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="needs">Description des besoins recherchés*</label>
                         <textarea id="needs" rows="4" required placeholder="Décrivez les ressources dont votre entreprise a besoin..."></textarea>
                     </div>
+                    
                     <div class="form-group">
                         <label for="notifications">Préférences de notification</label>
                         <select id="notifications">
@@ -624,6 +786,10 @@
 </footer>
 
     <script>
+        // Variables pour stocker les catégories sélectionnées pendant l'inscription
+        let registerResourceCategories = [];
+        let registerNeedCategories = [];
+        
         // Fonctions pour gérer les modals
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
@@ -642,6 +808,151 @@
         window.onclick = function(event) {
             if (event.target.className === 'modal') {
                 event.target.style.display = 'none';
+            }
+        }
+        
+        // Fonction pour ajouter une catégorie dans le formulaire d'inscription
+        function addRegistrationCategory(type) {
+            const selectId = type === 'resource' ? 'registerResourceSelect' : 'registerNeedSelect';
+            const containerId = type === 'resource' ? 'register-resources-categories' : 'register-needs-categories';
+            const select = document.getElementById(selectId);
+            const container = document.getElementById(containerId);
+            const categoriesArray = type === 'resource' ? registerResourceCategories : registerNeedCategories;
+            
+            if (select.value && !categoriesArray.includes(select.value)) {
+                // Ajouter à l'array
+                categoriesArray.push(select.value);
+                
+                // Créer le tag visuel
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.innerHTML = select.value + '<span class="remove-tag" onclick="removeRegistrationCategory(\'' + type + '\', \'' + select.value + '\')">✕</span>';
+                container.appendChild(tag);
+                
+                // Réinitialiser le select
+                select.value = '';
+            }
+        }
+        
+        // Fonction pour supprimer une catégorie dans le formulaire d'inscription
+        function removeRegistrationCategory(type, category) {
+            const containerId = type === 'resource' ? 'register-resources-categories' : 'register-needs-categories';
+            const container = document.getElementById(containerId);
+            let categoriesArray = type === 'resource' ? registerResourceCategories : registerNeedCategories;
+            
+            // Supprimer de l'array
+            categoriesArray = categoriesArray.filter(item => item !== category);
+            if (type === 'resource') {
+                registerResourceCategories = categoriesArray;
+            } else {
+                registerNeedCategories = categoriesArray;
+            }
+            
+            // Rafraîchir l'affichage
+            refreshTagsContainer(containerId, categoriesArray, type);
+        }
+        
+        // Rafraîchir l'affichage des tags
+        function refreshTagsContainer(containerId, categoriesArray, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            categoriesArray.forEach(category => {
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.innerHTML = category + '<span class="remove-tag" onclick="removeRegistrationCategory(\'' + type + '\', \'' + category + '\')">✕</span>';
+                container.appendChild(tag);
+            });
+        }
+        
+        // Fonction pour ajouter une catégorie dans le profil
+        function addCategory(type) {
+            const selectId = type === 'resource' ? 'resourceCategorySelect' : 'needCategorySelect';
+            const select = document.getElementById(selectId);
+            
+            if (!select.value) return;
+            
+            const email = localStorage.getItem('currentLoggedIn');
+            if (!email) return;
+            
+            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
+            const companyIndex = companies.findIndex(c => c.email === email);
+            
+            if (companyIndex !== -1) {
+                const company = companies[companyIndex];
+                
+                // Initialiser les arrays si nécessaire
+                if (!company.resourceCategories) company.resourceCategories = [];
+                if (!company.needCategories) company.needCategories = [];
+                
+                const categoriesArray = type === 'resource' ? company.resourceCategories : company.needCategories;
+                
+                // Vérifier si la catégorie existe déjà
+                if (!categoriesArray.includes(select.value)) {
+                    categoriesArray.push(select.value);
+                    
+                    // Mettre à jour l'entreprise
+                    if (type === 'resource') {
+                        company.resourceCategories = categoriesArray;
+                    } else {
+                        company.needCategories = categoriesArray;
+                    }
+                    
+                    companies[companyIndex] = company;
+                    localStorage.setItem('companies', JSON.stringify(companies));
+                    
+                    // Rafraîchir l'affichage
+                    updateCategoriesDisplay(type, categoriesArray);
+                    
+                    // Réinitialiser le select
+                    select.value = '';
+                }
+            }
+        }
+        
+        // Mettre à jour l'affichage des catégories
+        function updateCategoriesDisplay(type, categories) {
+            const containerId = type === 'resource' ? 'resources-categories-container' : 'needs-categories-container';
+            const container = document.getElementById(containerId);
+            
+            container.innerHTML = '';
+            
+            if (categories && categories.length > 0) {
+                const tagContainer = document.createElement('div');
+                tagContainer.className = 'tag-container';
+                
+                categories.forEach(category => {
+                    const tag = document.createElement('div');
+                    tag.className = 'tag';
+                    tag.innerHTML = category + '<span class="remove-tag" onclick="removeCategory(\'' + type + '\', \'' + category + '\')">✕</span>';
+                    tagContainer.appendChild(tag);
+                });
+                
+                container.appendChild(tagContainer);
+            }
+        }
+        
+        // Supprimer une catégorie du profil
+        function removeCategory(type, category) {
+            const email = localStorage.getItem('currentLoggedIn');
+            if (!email) return;
+            
+            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
+            const companyIndex = companies.findIndex(c => c.email === email);
+            
+            if (companyIndex !== -1) {
+                const company = companies[companyIndex];
+                
+                if (type === 'resource' && company.resourceCategories) {
+                    company.resourceCategories = company.resourceCategories.filter(c => c !== category);
+                    updateCategoriesDisplay('resource', company.resourceCategories);
+                } else if (type === 'need' && company.needCategories) {
+                    company.needCategories = company.needCategories.filter(c => c !== category);
+                    updateCategoriesDisplay('need', company.needCategories);
+                }
+                
+                companies[companyIndex] = company;
+                localStorage.setItem('companies', JSON.stringify(companies));
             }
         }
         
@@ -697,16 +1008,32 @@
                 document.getElementById('editWebsite').value = company.website || '';
                 
                 // Charger les ressources
-                document.getElementById('resources-display').innerHTML = `
-                    <p>${company.resources || 'Aucune ressource spécifiée'}</p>
-                `;
+                let resourcesHtml = '';
+                if (company.resourceCategories && company.resourceCategories.length > 0) {
+                    resourcesHtml += '<p><strong>Catégories :</strong> ' + company.resourceCategories.join(', ') + '</p>';
+                }
+                resourcesHtml += `<p><strong>Description :</strong> ${company.resources || 'Aucune description'}</p>`;
+                document.getElementById('resources-display').innerHTML = resourcesHtml;
                 document.getElementById('editResources').value = company.resources || '';
                 
+                // Mettre à jour l'affichage des catégories de ressources
+                if (company.resourceCategories) {
+                    updateCategoriesDisplay('resource', company.resourceCategories);
+                }
+                
                 // Charger les besoins
-                document.getElementById('needs-display').innerHTML = `
-                    <p>${company.needs || 'Aucun besoin spécifié'}</p>
-                `;
+                let needsHtml = '';
+                if (company.needCategories && company.needCategories.length > 0) {
+                    needsHtml += '<p><strong>Catégories :</strong> ' + company.needCategories.join(', ') + '</p>';
+                }
+                needsHtml += `<p><strong>Description :</strong> ${company.needs || 'Aucune description'}</p>`;
+                document.getElementById('needs-display').innerHTML = needsHtml;
                 document.getElementById('editNeeds').value = company.needs || '';
+                
+                // Mettre à jour l'affichage des catégories de besoins
+                if (company.needCategories) {
+                    updateCategoriesDisplay('need', company.needCategories);
+                }
                 
                 // Charger les préférences
                 const prefText = {
@@ -799,7 +1126,7 @@
                 const now = new Date();
                 const date = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()}`;
                 
-                const exportText = `PROFIL ENTREPRISE SUR RÉ(GE)NÈRE
+                let exportText = `PROFIL ENTREPRISE SUR RÉ(GE)NÈRE
 Date d'exportation : ${date}
 
 INFORMATIONS DE L'ENTREPRISE
@@ -812,12 +1139,22 @@ Site web : ${company.website || ''}
 Email : ${company.email || ''}
 
 RESSOURCES DISPONIBLES
---------------------------
-${company.resources || 'Aucune ressource spécifiée'}
+--------------------------`;
+
+                if (company.resourceCategories && company.resourceCategories.length > 0) {
+                    exportText += `\nCatégories : ${company.resourceCategories.join(', ')}`;
+                }
+                
+                exportText += `\nDescription : ${company.resources || 'Aucune ressource spécifiée'}
 
 BESOINS RECHERCHÉS
---------------------------
-${company.needs || 'Aucun besoin spécifié'}
+--------------------------`;
+
+                if (company.needCategories && company.needCategories.length > 0) {
+                    exportText += `\nCatégories : ${company.needCategories.join(', ')}`;
+                }
+                
+                exportText += `\nDescription : ${company.needs || 'Aucun besoin spécifié'}
 
 PRÉFÉRENCES DE NOTIFICATION
 --------------------------
@@ -860,6 +1197,12 @@ Ces données sont stockées localement sur votre appareil. Conservez ce fichier 
                 return;
             }
             
+            // Vérifier que des catégories ont été sélectionnées
+            if (registerResourceCategories.length === 0 || registerNeedCategories.length === 0) {
+                alert('Veuillez sélectionner au moins une catégorie pour les ressources et les besoins.');
+                return;
+            }
+            
             // Vérifier si l'email existe déjà
             const companies = JSON.parse(localStorage.getItem('companies') || '[]');
             if (companies.some(c => c.email === email)) {
@@ -877,15 +1220,21 @@ Ces données sont stockées localement sur votre appareil. Conservez ce fichier 
                 email,
                 resources,
                 needs,
-                notifications
+                notifications,
+                resourceCategories: [...registerResourceCategories],
+                needCategories: [...registerNeedCategories]
             };
             
             // Ajouter à la liste et sauvegarder
             companies.push(company);
             localStorage.setItem('companies', JSON.stringify(companies));
             
-            // Réinitialiser le formulaire
+            // Réinitialiser le formulaire et les catégories
             document.getElementById('registrationForm').reset();
+            registerResourceCategories = [];
+            registerNeedCategories = [];
+            document.getElementById('register-resources-categories').innerHTML = '';
+            document.getElementById('register-needs-categories').innerHTML = '';
             
             // Message de confirmation
             alert('Votre entreprise a été inscrite avec succès ! Vous pouvez maintenant accéder à votre profil depuis le bouton "Accéder à mon profil".');
