@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Balises anti-cache renforcées -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <!-- Paramètre timestamp unique pour forcer le rechargement -->
+    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
     <title>Ré(GE)nère - Plateforme d'Écosystème Mutualisé</title>
     <style>
         :root {
             --primary-color: #3a7e6d;
             --secondary-color: #a1d4c6;
             --accent-color: #f0a849;
+            --warning-color: #e74c3c;
             --dark-text: #333333;
             --light-text: #ffffff;
             --background-light: #f5f5f5;
@@ -260,12 +264,27 @@
             color: var(--accent-color);
         }
         
-        .cache-info {
+        .cache-alert {
             background-color: #fff3cd;
-            border: 1px solid #ffecb5;
+            border: 2px solid #ffc107;
             border-radius: 5px;
             padding: 15px;
             margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .cache-alert.critical {
+            background-color: #ffe6e6;
+            border-color: var(--warning-color);
+        }
+        
+        .cache-alert h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        
+        .cache-alert.critical h3 {
+            color: var(--warning-color);
         }
         
         .cache-steps {
@@ -273,13 +292,66 @@
         }
         
         .cache-steps li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         
         .cache-toggle {
             color: #0066cc;
             text-decoration: underline;
             cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .cache-refresh-btn {
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        
+        .cache-refresh-btn.critical {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .cache-refresh-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .close-alert {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #856404;
+        }
+        
+        .close-alert:hover {
+            color: #533f03;
+        }
+        
+        .cache-status {
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .cache-status.ok {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .cache-status.problem {
+            background-color: #f8d7da;
+            color: #721c24;
         }
         
         .other-field {
@@ -307,12 +379,18 @@
     <div class="logo">Ré<span>(GE)</span>nère</div>
     <p style="text-align: center;">Plateforme d'Écosystème Mutualisé - Genève</p>
     
-    <div class="cache-info">
-        <h3>Problème d'affichage ?</h3>
-        <p>Si vous ne voyez pas la dernière version de l'interface, vous avez peut-être un problème de cache.</p>
-        <div class="cache-toggle" onclick="toggleCacheInstructions()">Afficher les instructions pour vider le cache</div>
-        <div id="cache-instructions" style="display: none;">
-            <div class="cache-steps">
+    <div class="cache-alert critical" id="cacheAlert">
+        <span class="close-alert" onclick="dismissCacheAlert()">&times;</span>
+        <h3>⚠️ Problème d'affichage détecté</h3>
+        <p>Notre système a détecté que vous pourriez voir une version obsolète de cette page à cause d'un problème de cache.</p>
+        <div id="cacheStatus" class="cache-status problem">Dernière mise à jour: aujourd'hui à 14:25</div>
+        
+        <div class="cache-steps">
+            <h4>Solution immédiate :</h4>
+            <button class="cache-refresh-btn critical" onclick="forceCacheRefresh()">Actualiser et vider le cache</button>
+            
+            <div class="cache-toggle" onclick="toggleCacheInstructions()">Afficher d'autres méthodes pour résoudre le problème</div>
+            <div id="cache-instructions" style="display: none; margin-top: 15px;">
                 <h4>Méthode 1 : Rechargement forcé</h4>
                 <p>Utilisez le raccourci clavier :</p>
                 <ul>
@@ -836,9 +914,60 @@
     </div>
 
     <script>
+        // Variables pour la vérification du cache
+        let cacheVersion = "1.0.5";
+        let lastUpdateTimestamp = new Date().getTime();
+        
         // Listes pour stocker les sélections
         let ressourcesList = [];
         let besoinsList = [];
+        
+        // Vérifier si un rechargement forcé est nécessaire au chargement
+        window.onload = function() {
+            checkCacheStatus();
+        };
+        
+        // Fonction pour vérifier le statut du cache
+        function checkCacheStatus() {
+            // Générer un identifiant unique pour cette session
+            if (!sessionStorage.getItem('sessionId')) {
+                sessionStorage.setItem('sessionId', new Date().getTime());
+            }
+            
+            // Vérifier si c'est la première visite ou un rechargement
+            if (!sessionStorage.getItem('cacheChecked')) {
+                sessionStorage.setItem('cacheChecked', 'true');
+                document.getElementById('cacheAlert').style.display = 'block';
+            } else {
+                document.getElementById('cacheAlert').style.display = 'none';
+            }
+            
+            // Vérifier la version du cache stockée
+            if (localStorage.getItem('cacheVersion') !== cacheVersion) {
+                localStorage.setItem('cacheVersion', cacheVersion);
+                document.getElementById('cacheStatus').textContent = 'Nouvelle version disponible: ' + cacheVersion;
+                document.getElementById('cacheStatus').className = 'cache-status problem';
+            } else {
+                document.getElementById('cacheStatus').textContent = 'Version à jour: ' + cacheVersion;
+                document.getElementById('cacheStatus').className = 'cache-status ok';
+                document.getElementById('cacheAlert').classList.remove('critical');
+            }
+        }
+        
+        // Fonction pour forcer le rechargement de la page
+        function forceCacheRefresh() {
+            // Effacer les données de cache local
+            localStorage.removeItem('cacheVersion');
+            
+            // Utiliser un paramètre timestamp unique pour forcer le rechargement
+            const timestamp = new Date().getTime();
+            window.location.href = window.location.pathname + '?nocache=' + timestamp;
+        }
+        
+        // Fonction pour fermer l'alerte de cache
+        function dismissCacheAlert() {
+            document.getElementById('cacheAlert').style.display = 'none';
+        }
         
         // Fonction pour naviguer entre les onglets
         function navigateToTab(tabNumber) {
@@ -907,7 +1036,17 @@
                 // Créer l'élément tag
                 const tag = document.createElement('div');
                 tag.className = 'tag';
-                tag.innerHTML = `${value} <span class="tag-remove" onclick="removeItem('${value}', '${listType}')">✕</span>`;
+                // Échapper les caractères spéciaux pour le HTML
+                const escapedValue = value.replace(/[&<>"']/g, function(m) {
+                    return {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;'
+                    }[m];
+                });
+                tag.innerHTML = `${escapedValue} <span class="tag-remove" onclick="removeItem('${escapedValue}', '${listType}')">✕</span>`;
                 targetElement.appendChild(tag);
                 
                 // Masquer le champ après l'ajout
