@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ré(GE)nère - Plateforme d'Économie Circulaire</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Ré(GE)nère - Plateforme d'Écosystème Mutualisé</title>
     <style>
         :root {
             --primary-color: #3a7e6d;
@@ -257,6 +260,33 @@
             color: var(--accent-color);
         }
         
+        .cache-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffecb5;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .cache-steps {
+            margin-top: 10px;
+        }
+        
+        .cache-steps li {
+            margin-bottom: 8px;
+        }
+        
+        .cache-toggle {
+            color: #0066cc;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .other-field {
+            display: none;
+            margin-top: 8px;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 gap: 20px;
@@ -275,7 +305,51 @@
 </head>
 <body>
     <div class="logo">Ré<span>(GE)</span>nère</div>
-    <p style="text-align: center;">Plateforme d'Économie Circulaire - Genève</p>
+    <p style="text-align: center;">Plateforme d'Écosystème Mutualisé - Genève</p>
+    
+    <div class="cache-info">
+        <h3>Problème d'affichage ?</h3>
+        <p>Si vous ne voyez pas la dernière version de l'interface, vous avez peut-être un problème de cache.</p>
+        <div class="cache-toggle" onclick="toggleCacheInstructions()">Afficher les instructions pour vider le cache</div>
+        <div id="cache-instructions" style="display: none;">
+            <div class="cache-steps">
+                <h4>Méthode 1 : Rechargement forcé</h4>
+                <p>Utilisez le raccourci clavier :</p>
+                <ul>
+                    <li><strong>Windows/Linux :</strong> Ctrl + F5 ou Ctrl + Maj + R</li>
+                    <li><strong>Mac :</strong> Cmd + Maj + R ou Cmd + Option + E (puis Cmd + R)</li>
+                </ul>
+                
+                <h4>Méthode 2 : Vider le cache du navigateur</h4>
+                <p><strong>Chrome :</strong></p>
+                <ol>
+                    <li>Ouvrez Chrome et appuyez sur Ctrl+Maj+Suppr (Windows) ou Cmd+Maj+Suppr (Mac)</li>
+                    <li>Sélectionnez "Toutes les périodes" pour la plage de temps</li>
+                    <li>Cochez "Images et fichiers en cache" et "Cookies et données de site"</li>
+                    <li>Cliquez sur "Effacer les données"</li>
+                </ol>
+                
+                <p><strong>Firefox :</strong></p>
+                <ol>
+                    <li>Ouvrez Firefox et appuyez sur Ctrl+Maj+Suppr (Windows) ou Cmd+Maj+Suppr (Mac)</li>
+                    <li>Sélectionnez "Tout" pour la plage de temps</li>
+                    <li>Cochez "Cache" et "Cookies"</li>
+                    <li>Cliquez sur "Effacer maintenant"</li>
+                </ol>
+                
+                <p><strong>Safari :</strong></p>
+                <ol>
+                    <li>Ouvrez Safari et cliquez sur "Safari" dans la barre de menu</li>
+                    <li>Sélectionnez "Préférences" puis l'onglet "Avancées"</li>
+                    <li>Cochez "Afficher le menu Développement"</li>
+                    <li>Fermez et dans le menu "Développement", choisissez "Vider les caches"</li>
+                </ol>
+                
+                <h4>Méthode 3 : Mode navigation privée</h4>
+                <p>Ouvrez une fenêtre de navigation privée/incognito et accédez à nouveau à la page.</p>
+            </div>
+        </div>
+    </div>
     
     <div class="progress-indicator">
         <div class="progress-step active">
@@ -312,7 +386,7 @@
                 <div class="form-col">
                     <div class="form-group">
                         <label for="entreprise-secteur">Secteur d'activité *</label>
-                        <select id="entreprise-secteur" required>
+                        <select id="entreprise-secteur" required onchange="toggleOtherField('entreprise-secteur', 'autre-secteur')">
                             <option value="">-- Sélectionnez un secteur --</option>
                             <option value="Agriculture">Agriculture, Sylviculture et Pêche</option>
                             <option value="Industrie">Industrie manufacturière</option>
@@ -328,6 +402,10 @@
                             <option value="Arts">Arts, Spectacles et Activités récréatives</option>
                             <option value="Autre">Autre</option>
                         </select>
+                        <div id="autre-secteur" class="other-field">
+                            <label for="entreprise-secteur-autre">Précisez le secteur *</label>
+                            <input type="text" id="entreprise-secteur-autre">
+                        </div>
                     </div>
                 </div>
                 <div class="form-col">
@@ -384,19 +462,9 @@
                 </div>
             </div>
             
-            <div class="form-row">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="contact-email">Email *</label>
-                        <input type="email" id="contact-email" required>
-                    </div>
-                </div>
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="contact-telephone">Téléphone *</label>
-                        <input type="tel" id="contact-telephone" required>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="contact-email">Email *</label>
+                <input type="email" id="contact-email" required>
             </div>
             
             <div class="form-group">
@@ -417,7 +485,7 @@
             
             <div class="category-group">
                 <h3>Espaces et Locaux</h3>
-                <select id="select-espace" onchange="addSelectedItem('select-espace', 'ressources')">
+                <select id="select-espace" onchange="handleResourceSelection(this, 'ressources')">
                     <option value="">-- Sélectionnez un espace --</option>
                     <option value="Bureau partagé">Bureau partagé</option>
                     <option value="Espace de coworking">Espace de coworking</option>
@@ -430,12 +498,17 @@
                     <option value="Parking">Parking</option>
                     <option value="Surface extérieure">Surface extérieure</option>
                     <option value="Local commercial">Local commercial</option>
+                    <option value="Autre">Autre...</option>
                 </select>
+                <div id="autre-espace" class="other-field">
+                    <label for="espace-autre">Précisez l'espace *</label>
+                    <input type="text" id="espace-autre" onblur="addCustomResource('espace-autre', 'ressources')">
+                </div>
             </div>
             
             <div class="category-group">
                 <h3>Équipements et Matériel</h3>
-                <select id="select-equipement" onchange="addSelectedItem('select-equipement', 'ressources')">
+                <select id="select-equipement" onchange="handleResourceSelection(this, 'ressources')">
                     <option value="">-- Sélectionnez un équipement --</option>
                     <option value="Matériel informatique">Matériel informatique</option>
                     <option value="Imprimante / Scanner">Imprimante / Scanner</option>
@@ -448,12 +521,17 @@
                     <option value="Mobilier de bureau">Mobilier de bureau</option>
                     <option value="Outillage spécialisé">Outillage spécialisé</option>
                     <option value="Équipement médical">Équipement médical</option>
+                    <option value="Autre">Autre...</option>
                 </select>
+                <div id="autre-equipement" class="other-field">
+                    <label for="equipement-autre">Précisez l'équipement *</label>
+                    <input type="text" id="equipement-autre" onblur="addCustomResource('equipement-autre', 'ressources')">
+                </div>
             </div>
             
             <div class="category-group">
                 <h3>Ressources Humaines et Compétences</h3>
-                <select id="select-competence" onchange="addSelectedItem('select-competence', 'ressources')">
+                <select id="select-competence" onchange="handleResourceSelection(this, 'ressources')">
                     <option value="">-- Sélectionnez une compétence --</option>
                     <option value="Expertise comptable">Expertise comptable</option>
                     <option value="Compétences juridiques">Compétences juridiques</option>
@@ -466,12 +544,17 @@
                     <option value="Gestion de projet">Gestion de projet</option>
                     <option value="Ressources humaines">Ressources humaines</option>
                     <option value="Maintenance technique">Maintenance technique</option>
+                    <option value="Autre">Autre...</option>
                 </select>
+                <div id="autre-competence" class="other-field">
+                    <label for="competence-autre">Précisez la compétence *</label>
+                    <input type="text" id="competence-autre" onblur="addCustomResource('competence-autre', 'ressources')">
+                </div>
             </div>
             
             <div class="category-group">
                 <h3>Matières et Ressources Matérielles</h3>
-                <select id="select-matiere" onchange="addSelectedItem('select-matiere', 'ressources')">
+                <select id="select-matiere" onchange="handleResourceSelection(this, 'ressources')">
                     <option value="">-- Sélectionnez une matière --</option>
                     <option value="Matières premières">Matières premières</option>
                     <option value="Matériaux recyclés">Matériaux recyclés</option>
@@ -484,12 +567,17 @@
                     <option value="Métaux">Métaux</option>
                     <option value="Plastiques">Plastiques</option>
                     <option value="Produits chimiques">Produits chimiques</option>
+                    <option value="Autre">Autre...</option>
                 </select>
+                <div id="autre-matiere" class="other-field">
+                    <label for="matiere-autre">Précisez la matière *</label>
+                    <input type="text" id="matiere-autre" onblur="addCustomResource('matiere-autre', 'ressources')">
+                </div>
             </div>
             
             <div class="category-group">
                 <h3>Services</h3>
-                <select id="select-service" onchange="addSelectedItem('select-service', 'ressources')">
+                <select id="select-service" onchange="handleResourceSelection(this, 'ressources')">
                     <option value="">-- Sélectionnez un service --</option>
                     <option value="Livraison / Transport">Livraison / Transport</option>
                     <option value="Accueil / Réception">Accueil / Réception</option>
@@ -502,7 +590,12 @@
                     <option value="Gestion déchets">Gestion déchets</option>
                     <option value="Conciergerie">Conciergerie</option>
                     <option value="Formation">Formation</option>
+                    <option value="Autre">Autre...</option>
                 </select>
+                <div id="autre-service" class="other-field">
+                    <label for="service-autre">Précisez le service *</label>
+                    <input type="text" id="service-autre" onblur="addCustomResource('service-autre', 'ressources')">
+                </div>
             </div>
             
             <h3>Ressources sélectionnées</h3>
@@ -529,7 +622,7 @@
             
             <div class="category-group">
                 <h3>Espaces et Locaux</h3>
-                <select id="select-espace-besoin" onchange="addSelectedItem('select-espace-besoin', 'besoins')">
+                <select id="select-espace-besoin" onchange="handleResourceSelection(this, 'besoins')">
                     <option value="">-- Sélectionnez un espace --</option>
                     <option value="Bureau partagé">Bureau partagé</option>
                     <option value="Espace de coworking">Espace de coworking</option>
@@ -542,12 +635,17 @@
                     <option value="Parking">Parking</option>
                     <option value="Surface extérieure">Surface extérieure</option>
                     <option value="Local commercial">Local commercial</option>
+                    <option value="Autre">Autre...</option>
                 </select>
+                <div id="autre-espace-besoin" class="other-field">
+                    <label for="espace-besoin-autre">Précisez l'espace *</label>
+                    <input type="text" id="espace-besoin-autre" onblur="addCustomResource('espace-besoin-autre', 'besoins')">
+                </div>
             </div>
             
             <div class="category-group">
                 <h3>Équipements et Matériel</h3>
-                <select id="select-equipement-besoin" onchange="addSelectedItem('select-equipement-besoin', 'besoins')">
+                <select id="select-equipement-besoin" onchange="handleResourceSelection(this, 'besoins')">
                     <option value="">-- Sélectionnez un équipement --</option>
                     <option value="Matériel informatique">Matériel informatique</option>
                     <option value="Imprimante / Scanner">Imprimante / Scanner</option>
@@ -560,12 +658,17 @@
                     <option value="Mobilier de bureau">Mobilier de bureau</option>
                     <option value="Outillage spécialisé">Outillage spécialisé</option>
                     <option value="Équipement médical">Équipement médical</option>
+                    <option value="Autre">Autre...</option>
                 </select>
+                <div id="autre-equipement-besoin" class="other-field">
+                    <label for="equipement-besoin-autre">Précisez l'équipement *</label>
+                    <input type="text" id="equipement-besoin-autre" onblur="addCustomResource('equipement-besoin-autre', 'besoins')">
+                </div>
             </div>
             
             <div class="category-group">
                 <h3>Ressources Humaines et Compétences</h3>
-                <select id="select-competence-besoin" onchange="addSelectedItem('select-competence-besoin', 'besoins')">
+                <select id="select-competence-besoin" onchange="handleResourceSelection(this, 'besoins')">
                     <option value="">-- Sélectionnez une compétence --</option>
                     <option value="Expertise comptable">Expertise comptable</option>
                     <option value="Compétences juridiques">Compétences juridiques</option>
@@ -578,12 +681,17 @@
                     <option value="Gestion de projet">Gestion de projet</option>
                     <option value="Ressources humaines">Ressources humaines</option>
                     <option value="Maintenance technique">Maintenance technique</option>
+                    <option value="Autre">Autre...</option>
                 </select>
+                <div id="autre-competence-besoin" class="other-field">
+                    <label for="competence-besoin-autre">Précisez la compétence *</label>
+                    <input type="text" id="competence-besoin-autre" onblur="addCustomResource('competence-besoin-autre', 'besoins')">
+                </div>
             </div>
             
             <div class="category-group">
                 <h3>Matières et Ressources Matérielles</h3>
-                <select id="select-matiere-besoin" onchange="addSelectedItem('select-matiere-besoin', 'besoins')">
+                <select id="select-matiere-besoin" onchange="handleResourceSelection(this, 'besoins')">
                     <option value="">-- Sélectionnez une matière --</option>
                     <option value="Matières premières">Matières premières</option>
                     <option value="Matériaux recyclés">Matériaux recyclés</option>
@@ -596,12 +704,17 @@
                     <option value="Métaux">Métaux</option>
                     <option value="Plastiques">Plastiques</option>
                     <option value="Produits chimiques">Produits chimiques</option>
+                    <option value="Autre">Autre...</option>
                 </select>
+                <div id="autre-matiere-besoin" class="other-field">
+                    <label for="matiere-besoin-autre">Précisez la matière *</label>
+                    <input type="text" id="matiere-besoin-autre" onblur="addCustomResource('matiere-besoin-autre', 'besoins')">
+                </div>
             </div>
             
             <div class="category-group">
                 <h3>Services</h3>
-                <select id="select-service-besoin" onchange="addSelectedItem('select-service-besoin', 'besoins')">
+                <select id="select-service-besoin" onchange="handleResourceSelection(this, 'besoins')">
                     <option value="">-- Sélectionnez un service --</option>
                     <option value="Livraison / Transport">Livraison / Transport</option>
                     <option value="Accueil / Réception">Accueil / Réception</option>
@@ -614,7 +727,12 @@
                     <option value="Gestion déchets">Gestion déchets</option>
                     <option value="Conciergerie">Conciergerie</option>
                     <option value="Formation">Formation</option>
+                    <option value="Autre">Autre...</option>
                 </select>
+                <div id="autre-service-besoin" class="other-field">
+                    <label for="service-besoin-autre">Précisez le service *</label>
+                    <input type="text" id="service-besoin-autre" onblur="addCustomResource('service-besoin-autre', 'besoins')">
+                </div>
             </div>
             
             <h3>Besoins sélectionnés</h3>
@@ -744,6 +862,64 @@
             });
         }
         
+        // Fonction pour gérer l'affichage du champ "Autre"
+        function toggleOtherField(selectId, otherId) {
+            const select = document.getElementById(selectId);
+            const otherField = document.getElementById(otherId);
+            
+            if (select.value === "Autre") {
+                otherField.style.display = "block";
+            } else {
+                otherField.style.display = "none";
+            }
+        }
+        
+        // Fonction pour gérer la sélection de ressources, y compris l'option "Autre"
+        function handleResourceSelection(selectElement, listType) {
+            if (selectElement.value === "Autre") {
+                // Afficher le champ de texte pour l'entrée personnalisée
+                const categoryId = selectElement.id.replace('select-', '').replace('-besoin', '');
+                const otherFieldId = `autre-${categoryId}${listType === 'besoins' ? '-besoin' : ''}`;
+                document.getElementById(otherFieldId).style.display = "block";
+                
+                // Ne pas ajouter "Autre" comme tag
+                selectElement.value = "";
+            } else if (selectElement.value !== "") {
+                // Pour les options standard, ajouter directement un tag
+                addSelectedItem(selectElement.id, listType);
+            }
+        }
+        
+        // Fonction pour ajouter une ressource personnalisée depuis un champ "Autre"
+        function addCustomResource(inputId, listType) {
+            const input = document.getElementById(inputId);
+            if (input.value.trim() === "") return;
+            
+            const targetList = listType === 'ressources' ? ressourcesList : besoinsList;
+            const targetElement = document.getElementById(`${listType}-selected`);
+            
+            const value = input.value.trim();
+            
+            // Ajouter seulement si l'élément n'est pas déjà dans la liste
+            if (!targetList.includes(value)) {
+                targetList.push(value);
+                
+                // Créer l'élément tag
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.innerHTML = `${value} <span class="tag-remove" onclick="removeItem('${value}', '${listType}')">✕</span>`;
+                targetElement.appendChild(tag);
+                
+                // Masquer le champ après l'ajout
+                const categoryId = inputId.split('-')[0];
+                const otherFieldId = `autre-${categoryId}${listType === 'besoins' ? '-besoin' : ''}`;
+                document.getElementById(otherFieldId).style.display = "none";
+                
+                // Réinitialiser le champ
+                input.value = "";
+            }
+        }
+        
         // Fonction pour ajouter un élément sélectionné
         function addSelectedItem(selectId, listType) {
             const select = document.getElementById(selectId);
@@ -790,13 +966,28 @@
             }
         }
         
+        // Fonction pour afficher/masquer les instructions de cache
+        function toggleCacheInstructions() {
+            const instructions = document.getElementById('cache-instructions');
+            if (instructions.style.display === 'none') {
+                instructions.style.display = 'block';
+            } else {
+                instructions.style.display = 'none';
+            }
+        }
+        
         // Fonction pour simuler la soumission du formulaire
         function submitForm() {
             // Récupération des données du formulaire
+            const secteur = document.getElementById('entreprise-secteur').value;
+            const secteurValue = secteur === 'Autre' 
+                ? document.getElementById('entreprise-secteur-autre').value 
+                : secteur;
+            
             const formData = {
                 entreprise: {
                     nom: document.getElementById('entreprise-nom').value,
-                    secteur: document.getElementById('entreprise-secteur').value,
+                    secteur: secteurValue,
                     taille: document.getElementById('entreprise-taille').value,
                     description: document.getElementById('entreprise-description').value,
                     adresse: document.getElementById('entreprise-adresse').value,
@@ -807,8 +998,7 @@
                 contact: {
                     nom: document.getElementById('contact-nom').value,
                     fonction: document.getElementById('contact-fonction').value,
-                    email: document.getElementById('contact-email').value,
-                    telephone: document.getElementById('contact-telephone').value
+                    email: document.getElementById('contact-email').value
                 },
                 ressources: {
                     liste: ressourcesList,
