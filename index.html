@@ -3,1167 +3,906 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Balises anti-cache renforcées -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <!-- Paramètre timestamp unique pour forcer le rechargement -->
-    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
     <title>Ré(GE)nère - Plateforme d'Écosystème Mutualisé</title>
     <style>
-        :root {
-            --primary-color: #3a7e6d;
-            --secondary-color: #a1d4c6;
-            --accent-color: #f0a849;
-            --warning-color: #e74c3c;
-            --dark-text: #333333;
-            --light-text: #ffffff;
-            --background-light: #f5f5f5;
-        }
-        
+        /* Styles généraux */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: var(--background-light);
-            color: var(--dark-text);
-        }
-        
-        h1, h2, h3 {
-            color: var(--primary-color);
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fc;
         }
         
         .container {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
-        .section {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-bottom: 25px;
-        }
-        
-        .selection-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .category-group {
-            margin-bottom: 20px;
-        }
-        
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            background-color: white;
-            margin-bottom: 10px;
-        }
-        
-        .selected-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .tag {
-            background-color: var(--secondary-color);
-            padding: 8px 12px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .tag-remove {
-            cursor: pointer;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        .output-area {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-        
-        .btn {
-            background-color: var(--primary-color);
+        header {
+            background-color: #2A9D8F;
             color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: background-color 0.3s;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
-        .btn:hover {
-            background-color: #2d6354;
-        }
-        
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .tab {
-            padding: 10px 20px;
-            background-color: #e0e0e0;
-            border-radius: 5px 5px 0 0;
-            cursor: pointer;
-        }
-        
-        .tab.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        
-        .form-group textarea {
-            height: 100px;
-            resize: vertical;
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .form-col {
-            flex: 1;
-        }
-        
-        .radio-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 8px;
-        }
-        
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .notification-settings {
-            background-color: #f5f8ff;
-            border: 1px solid #dde5ff;
-            border-radius: 5px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .section-header {
+        header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
         }
         
-        .section-title {
+        header h1 {
             margin: 0;
+            font-size: 2.2rem;
         }
         
-        .progress-indicator {
-            display: flex;
-            margin-top: 30px;
-            margin-bottom: 10px;
-        }
-        
-        .progress-step {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            position: relative;
-        }
-        
-        .progress-step::after {
-            content: '';
-            position: absolute;
-            height: 2px;
-            background-color: #ddd;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            z-index: -1;
-        }
-        
-        .progress-step:last-child::after {
-            display: none;
-        }
-        
-        .progress-step.active {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        .progress-step-number {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            background-color: #ddd;
-            border-radius: 50%;
-            line-height: 30px;
-            margin-bottom: 8px;
-        }
-        
-        .progress-step.active .progress-step-number {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .logo {
-            font-size: 32px;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .logo span {
-            color: var(--accent-color);
-        }
-        
-        .cache-alert {
-            background-color: #fff3cd;
-            border: 2px solid #ffc107;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        .cache-alert.critical {
-            background-color: #ffe6e6;
-            border-color: var(--warning-color);
-        }
-        
-        .cache-alert h3 {
-            margin-top: 0;
-            color: #856404;
-        }
-        
-        .cache-alert.critical h3 {
-            color: var(--warning-color);
-        }
-        
-        .cache-steps {
-            margin-top: 10px;
-        }
-        
-        .cache-steps li {
-            margin-bottom: 10px;
-        }
-        
-        .cache-toggle {
-            color: #0066cc;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .cache-refresh-btn {
-            background-color: #ffc107;
-            color: #333;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 15px;
-            display: inline-block;
-        }
-        
-        .cache-refresh-btn.critical {
-            background-color: var(--warning-color);
-            color: white;
-        }
-        
-        .cache-refresh-btn:hover {
+        header h2 {
+            margin: 0;
+            font-weight: normal;
+            font-size: 1.2rem;
             opacity: 0.9;
         }
         
-        .close-alert {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 20px;
-            color: #856404;
+        nav {
+            background-color: #264653;
+            color: white;
         }
         
-        .close-alert:hover {
-            color: #533f03;
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
         
-        .cache-status {
-            padding: 8px 12px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-top: 10px;
+        nav li {
+            padding: 15px 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        nav a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Sections */
+        section {
+            padding: 50px 0;
+        }
+        
+        section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #264653;
+        }
+        
+        .intro {
+            background-color: #E9C46A;
+            color: #264653;
+        }
+        
+        .intro p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .benefits {
+            background-color: white;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .benefit-card {
+            background-color: #f7f9fc;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .benefit-card h3 {
+            color: #2A9D8F;
+            margin-top: 0;
+        }
+        
+        .how-it-works {
+            background-color: #f7f9fc;
+        }
+        
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+        
+        .step-number {
+            background-color: #E76F51;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
             font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
         }
         
-        .cache-status.ok {
-            background-color: #d4edda;
-            color: #155724;
+        .registration {
+            background-color: white;
         }
         
-        .cache-status.problem {
-            background-color: #f8d7da;
-            color: #721c24;
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f7f9fc;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
-        .other-field {
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #264653;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .submit-btn {
+            background-color: #2A9D8F;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #238C7F;
+        }
+        
+        footer {
+            background-color: #264653;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        footer a {
+            color: #E9C46A;
+        }
+        
+        /* Nouveaux styles pour les fonctionnalités d'édition */
+        .profile-btn {
+            background-color: #F4A261;
+            color: #264653;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+        
+        .profile-btn:hover {
+            background-color: #E76F51;
+            color: white;
+        }
+        
+        .modal {
             display: none;
-            margin-top: 8px;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
         }
         
-        @media (max-width: 768px) {
-            .container {
-                gap: 20px;
-            }
-            
-            .section {
-                padding: 15px;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 10px;
-            }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .edit-btn {
+            background: none;
+            border: none;
+            color: #2A9D8F;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+        
+        .edit-btn:hover {
+            color: #E76F51;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .export-btn {
+            background-color: #264653;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .export-btn:hover {
+            background-color: #1A323E;
+        }
+        
+        .data-notice {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #FDF5E8;
+            border-left: 4px solid #F4A261;
+            border-radius: 4px;
+        }
+        
+        .profile-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .save-btn {
+            background-color: #2A9D8F;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .save-btn:hover {
+            background-color: #238C7F;
         }
     </style>
 </head>
 <body>
-    <div class="logo">Ré<span>(GE)</span>nère</div>
-    <p style="text-align: center;">Plateforme d'Écosystème Mutualisé - Genève</p>
-    
-    <div class="cache-alert critical" id="cacheAlert">
-        <span class="close-alert" onclick="dismissCacheAlert()">&times;</span>
-        <h3>⚠️ Problème d'affichage détecté</h3>
-        <p>Notre système a détecté que vous pourriez voir une version obsolète de cette page à cause d'un problème de cache.</p>
-        <div id="cacheStatus" class="cache-status problem">Dernière mise à jour: aujourd'hui à 14:25</div>
-        
-        <div class="cache-steps">
-            <h4>Solution immédiate :</h4>
-            <button class="cache-refresh-btn critical" onclick="forceCacheRefresh()">Actualiser et vider le cache</button>
-            
-            <div class="cache-toggle" onclick="toggleCacheInstructions()">Afficher d'autres méthodes pour résoudre le problème</div>
-            <div id="cache-instructions" style="display: none; margin-top: 15px;">
-                <h4>Méthode 1 : Rechargement forcé</h4>
-                <p>Utilisez le raccourci clavier :</p>
-                <ul>
-                    <li><strong>Windows/Linux :</strong> Ctrl + F5 ou Ctrl + Maj + R</li>
-                    <li><strong>Mac :</strong> Cmd + Maj + R ou Cmd + Option + E (puis Cmd + R)</li>
-                </ul>
-                
-                <h4>Méthode 2 : Vider le cache du navigateur</h4>
-                <p><strong>Chrome :</strong></p>
-                <ol>
-                    <li>Ouvrez Chrome et appuyez sur Ctrl+Maj+Suppr (Windows) ou Cmd+Maj+Suppr (Mac)</li>
-                    <li>Sélectionnez "Toutes les périodes" pour la plage de temps</li>
-                    <li>Cochez "Images et fichiers en cache" et "Cookies et données de site"</li>
-                    <li>Cliquez sur "Effacer les données"</li>
-                </ol>
-                
-                <p><strong>Firefox :</strong></p>
-                <ol>
-                    <li>Ouvrez Firefox et appuyez sur Ctrl+Maj+Suppr (Windows) ou Cmd+Maj+Suppr (Mac)</li>
-                    <li>Sélectionnez "Tout" pour la plage de temps</li>
-                    <li>Cochez "Cache" et "Cookies"</li>
-                    <li>Cliquez sur "Effacer maintenant"</li>
-                </ol>
-                
-                <p><strong>Safari :</strong></p>
-                <ol>
-                    <li>Ouvrez Safari et cliquez sur "Safari" dans la barre de menu</li>
-                    <li>Sélectionnez "Préférences" puis l'onglet "Avancées"</li>
-                    <li>Cochez "Afficher le menu Développement"</li>
-                    <li>Fermez et dans le menu "Développement", choisissez "Vider les caches"</li>
-                </ol>
-                
-                <h4>Méthode 3 : Mode navigation privée</h4>
-                <p>Ouvrez une fenêtre de navigation privée/incognito et accédez à nouveau à la page.</p>
+    <!-- Modal de connexion -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Accéder à mon profil</h2>
+            <p>Veuillez entrer l'email professionnel utilisé lors de l'inscription.</p>
+            <div class="form-group">
+                <label for="loginEmail">Email professionnel</label>
+                <input type="email" id="loginEmail" required>
             </div>
+            <button class="submit-btn" onclick="loginProfile()">Accéder à mon profil</button>
         </div>
     </div>
     
-    <div class="progress-indicator">
-        <div class="progress-step active">
-            <div class="progress-step-number">1</div>
-            <div>Informations</div>
-        </div>
-        <div class="progress-step">
-            <div class="progress-step-number">2</div>
-            <div>Ressources</div>
-        </div>
-        <div class="progress-step">
-            <div class="progress-step-number">3</div>
-            <div>Besoins</div>
-        </div>
-        <div class="progress-step">
-            <div class="progress-step-number">4</div>
-            <div>Notifications</div>
-        </div>
-    </div>
-    
-    <div class="container">
-        <!-- SECTION 1: INFORMATIONS DE L'ENTREPRISE -->
-        <div class="section tab-content active" id="tab-1">
-            <div class="section-header">
-                <h2 class="section-title">Informations de l'entreprise</h2>
-            </div>
-            
-            <div class="form-group">
-                <label for="entreprise-nom">Nom de l'entreprise *</label>
-                <input type="text" id="entreprise-nom" required>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="entreprise-secteur">Secteur d'activité *</label>
-                        <select id="entreprise-secteur" required onchange="toggleOtherField('entreprise-secteur', 'autre-secteur')">
-                            <option value="">-- Sélectionnez un secteur --</option>
-                            <option value="Agriculture">Agriculture, Sylviculture et Pêche</option>
-                            <option value="Industrie">Industrie manufacturière</option>
-                            <option value="Construction">Construction</option>
-                            <option value="Commerce">Commerce</option>
-                            <option value="Transport">Transport et Entreposage</option>
-                            <option value="Restauration">Hébergement et Restauration</option>
-                            <option value="Information">Information et Communication</option>
-                            <option value="Finance">Activités financières et Assurance</option>
-                            <option value="Immobilier">Activités immobilières</option>
-                            <option value="Services">Services aux entreprises</option>
-                            <option value="Santé">Santé humaine et Action sociale</option>
-                            <option value="Arts">Arts, Spectacles et Activités récréatives</option>
-                            <option value="Autre">Autre</option>
-                        </select>
-                        <div id="autre-secteur" class="other-field">
-                            <label for="entreprise-secteur-autre">Précisez le secteur *</label>
-                            <input type="text" id="entreprise-secteur-autre">
+    <!-- Modal du profil -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="close-btn" onclick="closeModal('profileModal')">&times;</span>
+            <h2>Profil de l'entreprise</h2>
+            <div id="profileContent">
+                <!-- Section d'information d'entreprise -->
+                <div class="profile-section">
+                    <div class="section-title">
+                        <h3>Informations de l'entreprise</h3>
+                        <button class="edit-btn" onclick="toggleEdit('company-info')">✏️</button>
+                    </div>
+                    
+                    <div id="company-info-display">
+                        <!-- Informations affichées ici -->
+                    </div>
+                    
+                    <div id="company-info-edit" class="hidden">
+                        <div class="form-group">
+                            <label for="editName">Nom de l'entreprise</label>
+                            <input type="text" id="editName">
                         </div>
-                    </div>
-                </div>
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="entreprise-taille">Taille de l'entreprise *</label>
-                        <select id="entreprise-taille" required>
-                            <option value="">-- Sélectionnez une taille --</option>
-                            <option value="TPE">1-9 employés (TPE)</option>
-                            <option value="PME">10-249 employés (PME)</option>
-                            <option value="ETI">250-4999 employés (ETI)</option>
-                            <option value="GE">5000+ employés (Grande Entreprise)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="entreprise-description">Description de l'entreprise *</label>
-                <textarea id="entreprise-description" required placeholder="Décrivez brièvement votre entreprise, ses activités et sa mission..."></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="entreprise-adresse">Adresse *</label>
-                <input type="text" id="entreprise-adresse" required>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="entreprise-code-postal">Code postal *</label>
-                        <input type="text" id="entreprise-code-postal" required>
-                    </div>
-                </div>
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="entreprise-ville">Ville *</label>
-                        <input type="text" id="entreprise-ville" value="Genève" required>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="contact-nom">Nom du contact *</label>
-                        <input type="text" id="contact-nom" required>
-                    </div>
-                </div>
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="contact-fonction">Fonction *</label>
-                        <input type="text" id="contact-fonction" required>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="contact-email">Email *</label>
-                <input type="email" id="contact-email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="entreprise-site">Site web</label>
-                <input type="url" id="entreprise-site" placeholder="https://...">
-            </div>
-            
-            <button class="btn" onclick="navigateToTab(2)">Continuer vers les ressources</button>
-        </div>
-        
-        <!-- SECTION 2: RESSOURCES DISPONIBLES -->
-        <div class="section tab-content" id="tab-2">
-            <div class="section-header">
-                <h2 class="section-title">Ressources disponibles</h2>
-            </div>
-            
-            <p>Sélectionnez les ressources que votre entreprise peut mettre à disposition d'autres entreprises.</p>
-            
-            <div class="category-group">
-                <h3>Espaces et Locaux</h3>
-                <select id="select-espace" onchange="handleResourceSelection(this, 'ressources')">
-                    <option value="">-- Sélectionnez un espace --</option>
-                    <option value="Bureau partagé">Bureau partagé</option>
-                    <option value="Espace de coworking">Espace de coworking</option>
-                    <option value="Salle de réunion">Salle de réunion</option>
-                    <option value="Espace d'événement">Espace d'événement</option>
-                    <option value="Espace de stockage">Espace de stockage</option>
-                    <option value="Atelier">Atelier</option>
-                    <option value="Cuisine professionnelle">Cuisine professionnelle</option>
-                    <option value="Laboratoire">Laboratoire</option>
-                    <option value="Parking">Parking</option>
-                    <option value="Surface extérieure">Surface extérieure</option>
-                    <option value="Local commercial">Local commercial</option>
-                    <option value="Autre">Autre...</option>
-                </select>
-                <div id="autre-espace" class="other-field">
-                    <label for="espace-autre">Précisez l'espace *</label>
-                    <input type="text" id="espace-autre" onblur="addCustomResource('espace-autre', 'ressources')">
-                </div>
-            </div>
-            
-            <div class="category-group">
-                <h3>Équipements et Matériel</h3>
-                <select id="select-equipement" onchange="handleResourceSelection(this, 'ressources')">
-                    <option value="">-- Sélectionnez un équipement --</option>
-                    <option value="Matériel informatique">Matériel informatique</option>
-                    <option value="Imprimante / Scanner">Imprimante / Scanner</option>
-                    <option value="Vidéoprojecteur">Vidéoprojecteur</option>
-                    <option value="Machine-outil">Machine-outil</option>
-                    <option value="Équipement de manutention">Équipement de manutention</option>
-                    <option value="Véhicule professionnel">Véhicule professionnel</option>
-                    <option value="Équipement audio/vidéo">Équipement audio/vidéo</option>
-                    <option value="Matériel événementiel">Matériel événementiel</option>
-                    <option value="Mobilier de bureau">Mobilier de bureau</option>
-                    <option value="Outillage spécialisé">Outillage spécialisé</option>
-                    <option value="Équipement médical">Équipement médical</option>
-                    <option value="Autre">Autre...</option>
-                </select>
-                <div id="autre-equipement" class="other-field">
-                    <label for="equipement-autre">Précisez l'équipement *</label>
-                    <input type="text" id="equipement-autre" onblur="addCustomResource('equipement-autre', 'ressources')">
-                </div>
-            </div>
-            
-            <div class="category-group">
-                <h3>Ressources Humaines et Compétences</h3>
-                <select id="select-competence" onchange="handleResourceSelection(this, 'ressources')">
-                    <option value="">-- Sélectionnez une compétence --</option>
-                    <option value="Expertise comptable">Expertise comptable</option>
-                    <option value="Compétences juridiques">Compétences juridiques</option>
-                    <option value="Développement informatique">Développement informatique</option>
-                    <option value="Design / Graphisme">Design / Graphisme</option>
-                    <option value="Communication / Marketing">Communication / Marketing</option>
-                    <option value="Traduction">Traduction</option>
-                    <option value="Conseil en stratégie">Conseil en stratégie</option>
-                    <option value="Formation professionnelle">Formation professionnelle</option>
-                    <option value="Gestion de projet">Gestion de projet</option>
-                    <option value="Ressources humaines">Ressources humaines</option>
-                    <option value="Maintenance technique">Maintenance technique</option>
-                    <option value="Autre">Autre...</option>
-                </select>
-                <div id="autre-competence" class="other-field">
-                    <label for="competence-autre">Précisez la compétence *</label>
-                    <input type="text" id="competence-autre" onblur="addCustomResource('competence-autre', 'ressources')">
-                </div>
-            </div>
-            
-            <div class="category-group">
-                <h3>Matières et Ressources Matérielles</h3>
-                <select id="select-matiere" onchange="handleResourceSelection(this, 'ressources')">
-                    <option value="">-- Sélectionnez une matière --</option>
-                    <option value="Matières premières">Matières premières</option>
-                    <option value="Matériaux recyclés">Matériaux recyclés</option>
-                    <option value="Emballages">Emballages</option>
-                    <option value="Palettes">Palettes</option>
-                    <option value="Chutes de production">Chutes de production</option>
-                    <option value="Papier / Carton">Papier / Carton</option>
-                    <option value="Textiles">Textiles</option>
-                    <option value="Bois">Bois</option>
-                    <option value="Métaux">Métaux</option>
-                    <option value="Plastiques">Plastiques</option>
-                    <option value="Produits chimiques">Produits chimiques</option>
-                    <option value="Autre">Autre...</option>
-                </select>
-                <div id="autre-matiere" class="other-field">
-                    <label for="matiere-autre">Précisez la matière *</label>
-                    <input type="text" id="matiere-autre" onblur="addCustomResource('matiere-autre', 'ressources')">
-                </div>
-            </div>
-            
-            <div class="category-group">
-                <h3>Services</h3>
-                <select id="select-service" onchange="handleResourceSelection(this, 'ressources')">
-                    <option value="">-- Sélectionnez un service --</option>
-                    <option value="Livraison / Transport">Livraison / Transport</option>
-                    <option value="Accueil / Réception">Accueil / Réception</option>
-                    <option value="Services administratifs">Services administratifs</option>
-                    <option value="Nettoyage">Nettoyage</option>
-                    <option value="Maintenance">Maintenance</option>
-                    <option value="Sécurité">Sécurité</option>
-                    <option value="Restauration collective">Restauration collective</option>
-                    <option value="Services informatiques">Services informatiques</option>
-                    <option value="Gestion déchets">Gestion déchets</option>
-                    <option value="Conciergerie">Conciergerie</option>
-                    <option value="Formation">Formation</option>
-                    <option value="Autre">Autre...</option>
-                </select>
-                <div id="autre-service" class="other-field">
-                    <label for="service-autre">Précisez le service *</label>
-                    <input type="text" id="service-autre" onblur="addCustomResource('service-autre', 'ressources')">
-                </div>
-            </div>
-            
-            <h3>Ressources sélectionnées</h3>
-            <div id="ressources-selected" class="selected-items"></div>
-            
-            <div class="form-group">
-                <label for="ressources-details">Informations complémentaires (optionnel)</label>
-                <textarea id="ressources-details" placeholder="Précisez des détails sur les ressources disponibles, conditions, quantités, fréquence..."></textarea>
-            </div>
-            
-            <div class="form-row">
-                <button class="btn" onclick="navigateToTab(1)" style="background-color: #888;">Retour</button>
-                <button class="btn" onclick="navigateToTab(3)">Continuer vers les besoins</button>
-            </div>
-        </div>
-        
-        <!-- SECTION 3: BESOINS RECHERCHÉS -->
-        <div class="section tab-content" id="tab-3">
-            <div class="section-header">
-                <h2 class="section-title">Besoins recherchés</h2>
-            </div>
-            
-            <p>Sélectionnez les besoins que votre entreprise recherche auprès d'autres entreprises.</p>
-            
-            <div class="category-group">
-                <h3>Espaces et Locaux</h3>
-                <select id="select-espace-besoin" onchange="handleResourceSelection(this, 'besoins')">
-                    <option value="">-- Sélectionnez un espace --</option>
-                    <option value="Bureau partagé">Bureau partagé</option>
-                    <option value="Espace de coworking">Espace de coworking</option>
-                    <option value="Salle de réunion">Salle de réunion</option>
-                    <option value="Espace d'événement">Espace d'événement</option>
-                    <option value="Espace de stockage">Espace de stockage</option>
-                    <option value="Atelier">Atelier</option>
-                    <option value="Cuisine professionnelle">Cuisine professionnelle</option>
-                    <option value="Laboratoire">Laboratoire</option>
-                    <option value="Parking">Parking</option>
-                    <option value="Surface extérieure">Surface extérieure</option>
-                    <option value="Local commercial">Local commercial</option>
-                    <option value="Autre">Autre...</option>
-                </select>
-                <div id="autre-espace-besoin" class="other-field">
-                    <label for="espace-besoin-autre">Précisez l'espace *</label>
-                    <input type="text" id="espace-besoin-autre" onblur="addCustomResource('espace-besoin-autre', 'besoins')">
-                </div>
-            </div>
-            
-            <div class="category-group">
-                <h3>Équipements et Matériel</h3>
-                <select id="select-equipement-besoin" onchange="handleResourceSelection(this, 'besoins')">
-                    <option value="">-- Sélectionnez un équipement --</option>
-                    <option value="Matériel informatique">Matériel informatique</option>
-                    <option value="Imprimante / Scanner">Imprimante / Scanner</option>
-                    <option value="Vidéoprojecteur">Vidéoprojecteur</option>
-                    <option value="Machine-outil">Machine-outil</option>
-                    <option value="Équipement de manutention">Équipement de manutention</option>
-                    <option value="Véhicule professionnel">Véhicule professionnel</option>
-                    <option value="Équipement audio/vidéo">Équipement audio/vidéo</option>
-                    <option value="Matériel événementiel">Matériel événementiel</option>
-                    <option value="Mobilier de bureau">Mobilier de bureau</option>
-                    <option value="Outillage spécialisé">Outillage spécialisé</option>
-                    <option value="Équipement médical">Équipement médical</option>
-                    <option value="Autre">Autre...</option>
-                </select>
-                <div id="autre-equipement-besoin" class="other-field">
-                    <label for="equipement-besoin-autre">Précisez l'équipement *</label>
-                    <input type="text" id="equipement-besoin-autre" onblur="addCustomResource('equipement-besoin-autre', 'besoins')">
-                </div>
-            </div>
-            
-            <div class="category-group">
-                <h3>Ressources Humaines et Compétences</h3>
-                <select id="select-competence-besoin" onchange="handleResourceSelection(this, 'besoins')">
-                    <option value="">-- Sélectionnez une compétence --</option>
-                    <option value="Expertise comptable">Expertise comptable</option>
-                    <option value="Compétences juridiques">Compétences juridiques</option>
-                    <option value="Développement informatique">Développement informatique</option>
-                    <option value="Design / Graphisme">Design / Graphisme</option>
-                    <option value="Communication / Marketing">Communication / Marketing</option>
-                    <option value="Traduction">Traduction</option>
-                    <option value="Conseil en stratégie">Conseil en stratégie</option>
-                    <option value="Formation professionnelle">Formation professionnelle</option>
-                    <option value="Gestion de projet">Gestion de projet</option>
-                    <option value="Ressources humaines">Ressources humaines</option>
-                    <option value="Maintenance technique">Maintenance technique</option>
-                    <option value="Autre">Autre...</option>
-                </select>
-                <div id="autre-competence-besoin" class="other-field">
-                    <label for="competence-besoin-autre">Précisez la compétence *</label>
-                    <input type="text" id="competence-besoin-autre" onblur="addCustomResource('competence-besoin-autre', 'besoins')">
-                </div>
-            </div>
-            
-            <div class="category-group">
-                <h3>Matières et Ressources Matérielles</h3>
-                <select id="select-matiere-besoin" onchange="handleResourceSelection(this, 'besoins')">
-                    <option value="">-- Sélectionnez une matière --</option>
-                    <option value="Matières premières">Matières premières</option>
-                    <option value="Matériaux recyclés">Matériaux recyclés</option>
-                    <option value="Emballages">Emballages</option>
-                    <option value="Palettes">Palettes</option>
-                    <option value="Chutes de production">Chutes de production</option>
-                    <option value="Papier / Carton">Papier / Carton</option>
-                    <option value="Textiles">Textiles</option>
-                    <option value="Bois">Bois</option>
-                    <option value="Métaux">Métaux</option>
-                    <option value="Plastiques">Plastiques</option>
-                    <option value="Produits chimiques">Produits chimiques</option>
-                    <option value="Autre">Autre...</option>
-                </select>
-                <div id="autre-matiere-besoin" class="other-field">
-                    <label for="matiere-besoin-autre">Précisez la matière *</label>
-                    <input type="text" id="matiere-besoin-autre" onblur="addCustomResource('matiere-besoin-autre', 'besoins')">
-                </div>
-            </div>
-            
-            <div class="category-group">
-                <h3>Services</h3>
-                <select id="select-service-besoin" onchange="handleResourceSelection(this, 'besoins')">
-                    <option value="">-- Sélectionnez un service --</option>
-                    <option value="Livraison / Transport">Livraison / Transport</option>
-                    <option value="Accueil / Réception">Accueil / Réception</option>
-                    <option value="Services administratifs">Services administratifs</option>
-                    <option value="Nettoyage">Nettoyage</option>
-                    <option value="Maintenance">Maintenance</option>
-                    <option value="Sécurité">Sécurité</option>
-                    <option value="Restauration collective">Restauration collective</option>
-                    <option value="Services informatiques">Services informatiques</option>
-                    <option value="Gestion déchets">Gestion déchets</option>
-                    <option value="Conciergerie">Conciergerie</option>
-                    <option value="Formation">Formation</option>
-                    <option value="Autre">Autre...</option>
-                </select>
-                <div id="autre-service-besoin" class="other-field">
-                    <label for="service-besoin-autre">Précisez le service *</label>
-                    <input type="text" id="service-besoin-autre" onblur="addCustomResource('service-besoin-autre', 'besoins')">
-                </div>
-            </div>
-            
-            <h3>Besoins sélectionnés</h3>
-            <div id="besoins-selected" class="selected-items"></div>
-            
-            <div class="form-group">
-                <label for="besoins-details">Informations complémentaires (optionnel)</label>
-                <textarea id="besoins-details" placeholder="Précisez des détails sur vos besoins, quantités souhaitées, fréquence, etc."></textarea>
-            </div>
-            
-            <div class="form-row">
-                <button class="btn" onclick="navigateToTab(2)" style="background-color: #888;">Retour</button>
-                <button class="btn" onclick="navigateToTab(4)">Continuer vers les notifications</button>
-            </div>
-        </div>
-        
-        <!-- SECTION 4: PRÉFÉRENCES DE NOTIFICATION -->
-        <div class="section tab-content" id="tab-4">
-            <div class="section-header">
-                <h2 class="section-title">Préférences de notification</h2>
-            </div>
-            
-            <p>Paramétrez vos préférences de notification pour être informé des correspondances potentielles.</p>
-            
-            <div class="form-group">
-                <label>Recevoir des notifications par email</label>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="notif-email-oui" name="notif-email" value="oui" checked>
-                        <label for="notif-email-oui">Oui</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="notif-email-non" name="notif-email" value="non">
-                        <label for="notif-email-non">Non</label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="notification-settings">
-                <div class="form-group">
-                    <label for="notif-email-adresse">Email pour les notifications</label>
-                    <input type="email" id="notif-email-adresse">
-                </div>
-                
-                <div class="form-group">
-                    <label>Fréquence des notifications</label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="freq-immediate" name="notif-frequence" value="immediate" checked>
-                            <label for="freq-immediate">Immédiate</label>
+                        <div class="form-group">
+                            <label for="editAddress">Adresse</label>
+                            <input type="text" id="editAddress">
                         </div>
-                        <div class="radio-option">
-                            <input type="radio" id="freq-quotidienne" name="notif-frequence" value="quotidienne">
-                            <label for="freq-quotidienne">Quotidienne</label>
+                        <div class="form-group">
+                            <label for="editZip">Code postal</label>
+                            <input type="text" id="editZip">
                         </div>
-                        <div class="radio-option">
-                            <input type="radio" id="freq-hebdomadaire" name="notif-frequence" value="hebdomadaire">
-                            <label for="freq-hebdomadaire">Hebdomadaire</label>
+                        <div class="form-group">
+                            <label for="editCity">Ville</label>
+                            <input type="text" id="editCity">
                         </div>
+                        <div class="form-group">
+                            <label for="editWebsite">Site web</label>
+                            <input type="url" id="editWebsite">
+                        </div>
+                        <div class="form-group">
+                            <label for="editPhone">Téléphone</label>
+                            <input type="tel" id="editPhone">
+                        </div>
+                        <button class="save-btn" onclick="saveSection('company-info')">Enregistrer les modifications</button>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label>Types de notifications</label>
-                    <div class="form-group">
-                        <div class="radio-option">
-                            <input type="checkbox" id="notif-type-match" checked>
-                            <label for="notif-type-match">Nouvelles correspondances</label>
+                <!-- Section des ressources -->
+                <div class="profile-section">
+                    <div class="section-title">
+                        <h3>Ressources disponibles</h3>
+                        <button class="edit-btn" onclick="toggleEdit('resources')">✏️</button>
+                    </div>
+                    
+                    <div id="resources-display">
+                        <!-- Ressources affichées ici -->
+                    </div>
+                    
+                    <div id="resources-edit" class="hidden">
+                        <div class="form-group">
+                            <label for="editResources">Ressources disponibles</label>
+                            <textarea id="editResources" rows="4" placeholder="Décrivez les ressources que votre entreprise peut offrir..."></textarea>
                         </div>
-                        <div class="radio-option">
-                            <input type="checkbox" id="notif-type-message" checked>
-                            <label for="notif-type-message">Messages reçus</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="checkbox" id="notif-type-actualite">
-                            <label for="notif-type-actualite">Actualités et événements Ré(GE)nère</label>
-                        </div>
+                        <button class="save-btn" onclick="saveSection('resources')">Enregistrer les modifications</button>
                     </div>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Visibilité de votre profil</label>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="visibilite-public" name="profil-visibilite" value="public" checked>
-                        <label for="visibilite-public">Public (visible par toutes les entreprises)</label>
+                
+                <!-- Section des besoins -->
+                <div class="profile-section">
+                    <div class="section-title">
+                        <h3>Besoins recherchés</h3>
+                        <button class="edit-btn" onclick="toggleEdit('needs')">✏️</button>
                     </div>
-                    <div class="radio-option">
-                        <input type="radio" id="visibilite-prive" name="profil-visibilite" value="prive">
-                        <label for="visibilite-prive">Privé (visible uniquement en cas de correspondance)</label>
+                    
+                    <div id="needs-display">
+                        <!-- Besoins affichés ici -->
+                    </div>
+                    
+                    <div id="needs-edit" class="hidden">
+                        <div class="form-group">
+                            <label for="editNeeds">Besoins recherchés</label>
+                            <textarea id="editNeeds" rows="4" placeholder="Décrivez les ressources dont votre entreprise a besoin..."></textarea>
+                        </div>
+                        <button class="save-btn" onclick="saveSection('needs')">Enregistrer les modifications</button>
                     </div>
                 </div>
-            </div>
-            
-            <div class="form-row">
-                <button class="btn" onclick="navigateToTab(3)" style="background-color: #888;">Retour</button>
-                <button class="btn" onclick="submitForm()">Enregistrer</button>
+                
+                <!-- Section des préférences -->
+                <div class="profile-section">
+                    <div class="section-title">
+                        <h3>Préférences de notification</h3>
+                        <button class="edit-btn" onclick="toggleEdit('preferences')">✏️</button>
+                    </div>
+                    
+                    <div id="preferences-display">
+                        <!-- Préférences affichées ici -->
+                    </div>
+                    
+                    <div id="preferences-edit" class="hidden">
+                        <div class="form-group">
+                            <label for="editPreferences">Préférences de notification</label>
+                            <select id="editPreferences">
+                                <option value="all">Toutes les correspondances</option>
+                                <option value="weekly">Résumé hebdomadaire</option>
+                                <option value="important">Correspondances importantes uniquement</option>
+                                <option value="none">Aucune notification</option>
+                            </select>
+                        </div>
+                        <button class="save-btn" onclick="saveSection('preferences')">Enregistrer les modifications</button>
+                    </div>
+                </div>
+                
+                <button class="export-btn" onclick="exportData()">📥 Exporter mes données</button>
+                
+                <div class="data-notice">
+                    <p><strong>⚠️ Important :</strong> Vos données sont stockées localement sur cet appareil uniquement. Pour éviter toute perte d'information en cas de changement d'appareil ou de navigateur, veuillez utiliser le bouton "Exporter mes données" et conserver ce fichier en lieu sûr.</p>
+                </div>
             </div>
         </div>
     </div>
 
+    <header>
+        <div class="container">
+            <div>
+                <h1>Ré(GE)nère</h1>
+                <h2>Plateforme d'Écosystème Mutualisé - Genève</h2>
+            </div>
+            <button class="profile-btn" onclick="openModal('loginModal')">👤 Accéder à mon profil</button>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#intro">Accueil</a></li>
+                <li><a href="#benefits">Avantages</a></li>
+                <li><a href="#how">Comment ça marche</a></li>
+                <li><a href="#register">S'inscrire</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section id="intro" class="intro">
+        <div class="container">
+            <h2>Transformez vos déchets en ressources</h2>
+            <p>Ré(GE)nère connecte les entreprises genevoises pour créer des synergies locales, valoriser les déchets et optimiser l'utilisation des ressources dans une démarche d'économie circulaire.</p>
+        </div>
+    </section>
+    
+    <section id="benefits" class="benefits">
+        <div class="container">
+            <h2>Pourquoi rejoindre notre écosystème ?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h3>Économies significatives</h3>
+                    <p>Réduisez vos coûts d'élimination des déchets et trouvez des ressources à moindre coût auprès d'autres entreprises locales.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Impact environnemental positif</h3>
+                    <p>Contribuez à réduire l'empreinte carbone de votre entreprise en donnant une seconde vie à vos ressources inutilisées.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Réseautage local</h3>
+                    <p>Développez votre réseau professionnel en collaborant avec d'autres entreprises genevoises partageant vos valeurs.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Image responsable</h3>
+                    <p>Renforcez votre image d'entreprise engagée dans le développement durable et l'économie locale.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Innovation collaborative</h3>
+                    <p>Découvrez de nouvelles façons d'utiliser vos ressources et inspirez-vous des pratiques d'autres entreprises.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Simplicité d'utilisation</h3>
+                    <p>Une plateforme intuitive pour publier vos offres et demandes, et être mis en relation automatiquement avec des correspondances pertinentes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="how" class="how-it-works">
+        <div class="container">
+            <h2>Comment ça marche</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Inscrivez votre entreprise</h3>
+                        <p>Remplissez le formulaire d'inscription avec les informations de votre entreprise. C'est gratuit et prend moins de 5 minutes.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Publiez vos ressources et besoins</h3>
+                        <p>Indiquez les ressources que vous pouvez offrir (déchets, matériaux, équipements, espaces, compétences) et celles dont vous avez besoin.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Recevez des correspondances</h3>
+                        <p>Notre algorithme identifie automatiquement les entreprises dont les besoins correspondent à vos ressources, et vice-versa.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Collaborez localement</h3>
+                        <p>Entrez en contact avec les entreprises suggérées et établissez des partenariats bénéfiques pour tous, dans une logique d'économie circulaire locale.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="register" class="registration">
+        <div class="container">
+            <h2>Inscrivez votre entreprise</h2>
+            <div class="form-container">
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="companyName">Nom de l'entreprise*</label>
+                        <input type="text" id="companyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Adresse*</label>
+                        <input type="text" id="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode">Code postal*</label>
+                        <input type="text" id="zipCode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Ville*</label>
+                        <input type="text" id="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="website">Site web</label>
+                        <input type="url" id="website">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email professionnel*</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Téléphone*</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="resources">Ressources disponibles*</label>
+                        <textarea id="resources" rows="4" required placeholder="Décrivez les ressources que votre entreprise peut offrir (déchets, matériaux, équipements, espaces, compétences)..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="needs">Besoins recherchés*</label>
+                        <textarea id="needs" rows="4" required placeholder="Décrivez les ressources dont votre entreprise a besoin..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="notifications">Préférences de notification</label>
+                        <select id="notifications">
+                            <option value="all">Toutes les correspondances</option>
+                            <option value="weekly">Résumé hebdomadaire</option>
+                            <option value="important">Correspondances importantes uniquement</option>
+                            <option value="none">Aucune notification</option>
+                        </select>
+                    </div>
+                    <button type="button" class="submit-btn" onclick="registerCompany()">S'inscrire</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ré(GE)nère - Plateforme d'Écosystème Mutualisé Genève</p>
+            <p>Contact : <a href="mailto:info@regenere.ch">info@regenere.ch</a></p>
+        </div>
+    </footer>
+
     <script>
-        // Variables pour la vérification du cache
-        let cacheVersion = "1.0.5";
-        let lastUpdateTimestamp = new Date().getTime();
+        // Fonctions pour gérer les modals
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            
+            // Si on ouvre le profil, charger les données
+            if (modalId === 'profileModal') {
+                loadProfileData();
+            }
+        }
         
-        // Listes pour stocker les sélections
-        let ressourcesList = [];
-        let besoinsList = [];
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
         
-        // Vérifier si un rechargement forcé est nécessaire au chargement
-        window.onload = function() {
-            checkCacheStatus();
-        };
+        // Fermer le modal si on clique en dehors
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        }
         
-        // Fonction pour vérifier le statut du cache
-        function checkCacheStatus() {
-            // Générer un identifiant unique pour cette session
-            if (!sessionStorage.getItem('sessionId')) {
-                sessionStorage.setItem('sessionId', new Date().getTime());
+        // Fonction pour s'identifier et accéder au profil
+        function loginProfile() {
+            const email = document.getElementById('loginEmail').value;
+            
+            if (!email) {
+                alert('Veuillez entrer votre email professionnel');
+                return;
             }
             
-            // Vérifier si c'est la première visite ou un rechargement
-            if (!sessionStorage.getItem('cacheChecked')) {
-                sessionStorage.setItem('cacheChecked', 'true');
-                document.getElementById('cacheAlert').style.display = 'block';
+            // Vérifier si l'entreprise existe dans le stockage local
+            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
+            const company = companies.find(c => c.email === email);
+            
+            if (company) {
+                // Stocker l'email actuellement connecté
+                localStorage.setItem('currentLoggedIn', email);
+                
+                // Fermer le modal de login et ouvrir le profil
+                closeModal('loginModal');
+                openModal('profileModal');
             } else {
-                document.getElementById('cacheAlert').style.display = 'none';
-            }
-            
-            // Vérifier la version du cache stockée
-            if (localStorage.getItem('cacheVersion') !== cacheVersion) {
-                localStorage.setItem('cacheVersion', cacheVersion);
-                document.getElementById('cacheStatus').textContent = 'Nouvelle version disponible: ' + cacheVersion;
-                document.getElementById('cacheStatus').className = 'cache-status problem';
-            } else {
-                document.getElementById('cacheStatus').textContent = 'Version à jour: ' + cacheVersion;
-                document.getElementById('cacheStatus').className = 'cache-status ok';
-                document.getElementById('cacheAlert').classList.remove('critical');
+                alert("Aucune entreprise trouvée avec cet email. Veuillez vérifier votre adresse ou vous inscrire.");
             }
         }
         
-        // Fonction pour forcer le rechargement de la page
-        function forceCacheRefresh() {
-            // Effacer les données de cache local
-            localStorage.removeItem('cacheVersion');
+        // Fonction pour charger les données du profil
+        function loadProfileData() {
+            const email = localStorage.getItem('currentLoggedIn');
+            if (!email) return;
             
-            // Utiliser un paramètre timestamp unique pour forcer le rechargement
-            const timestamp = new Date().getTime();
-            window.location.href = window.location.pathname + '?nocache=' + timestamp;
+            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
+            const company = companies.find(c => c.email === email);
+            
+            if (company) {
+                // Charger les informations de l'entreprise
+                document.getElementById('company-info-display').innerHTML = `
+                    <p><strong>Nom :</strong> ${company.name || ''}</p>
+                    <p><strong>Adresse :</strong> ${company.address || ''}</p>
+                    <p><strong>Code postal :</strong> ${company.zipCode || ''}</p>
+                    <p><strong>Ville :</strong> ${company.city || ''}</p>
+                    <p><strong>Site web :</strong> ${company.website || 'Non spécifié'}</p>
+                    <p><strong>Email :</strong> ${company.email || ''}</p>
+                    <p><strong>Téléphone :</strong> ${company.phone || ''}</p>
+                `;
+                
+                // Charger les valeurs dans le formulaire d'édition
+                document.getElementById('editName').value = company.name || '';
+                document.getElementById('editAddress').value = company.address || '';
+                document.getElementById('editZip').value = company.zipCode || '';
+                document.getElementById('editCity').value = company.city || '';
+                document.getElementById('editWebsite').value = company.website || '';
+                document.getElementById('editPhone').value = company.phone || '';
+                
+                // Charger les ressources
+                document.getElementById('resources-display').innerHTML = `
+                    <p>${company.resources || 'Aucune ressource spécifiée'}</p>
+                `;
+                document.getElementById('editResources').value = company.resources || '';
+                
+                // Charger les besoins
+                document.getElementById('needs-display').innerHTML = `
+                    <p>${company.needs || 'Aucun besoin spécifié'}</p>
+                `;
+                document.getElementById('editNeeds').value = company.needs || '';
+                
+                // Charger les préférences
+                const prefText = {
+                    'all': 'Toutes les correspondances',
+                    'weekly': 'Résumé hebdomadaire',
+                    'important': 'Correspondances importantes uniquement',
+                    'none': 'Aucune notification'
+                };
+                document.getElementById('preferences-display').innerHTML = `
+                    <p>${prefText[company.notifications] || 'Toutes les correspondances'}</p>
+                `;
+                document.getElementById('editPreferences').value = company.notifications || 'all';
+            }
         }
         
-        // Fonction pour fermer l'alerte de cache
-        function dismissCacheAlert() {
-            document.getElementById('cacheAlert').style.display = 'none';
-        }
-        
-        // Fonction pour naviguer entre les onglets
-        function navigateToTab(tabNumber) {
-            // Masquer tous les onglets
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
+        // Fonction pour basculer l'affichage/édition d'une section
+        function toggleEdit(section) {
+            const displayElement = document.getElementById(section + '-display');
+            const editElement = document.getElementById(section + '-edit');
             
-            // Afficher l'onglet sélectionné
-            document.getElementById(`tab-${tabNumber}`).classList.add('active');
-            
-            // Mettre à jour l'indicateur de progression
-            document.querySelectorAll('.progress-step').forEach((step, index) => {
-                if (index + 1 === tabNumber) {
-                    step.classList.add('active');
-                } else if (index + 1 < tabNumber) {
-                    step.classList.add('active');
+            if (displayElement && editElement) {
+                if (displayElement.classList.contains('hidden')) {
+                    displayElement.classList.remove('hidden');
+                    editElement.classList.add('hidden');
                 } else {
-                    step.classList.remove('active');
-                }
-            });
-        }
-        
-        // Fonction pour gérer l'affichage du champ "Autre"
-        function toggleOtherField(selectId, otherId) {
-            const select = document.getElementById(selectId);
-            const otherField = document.getElementById(otherId);
-            
-            if (select.value === "Autre") {
-                otherField.style.display = "block";
-            } else {
-                otherField.style.display = "none";
-            }
-        }
-        
-        // Fonction pour gérer la sélection de ressources, y compris l'option "Autre"
-        function handleResourceSelection(selectElement, listType) {
-            if (selectElement.value === "Autre") {
-                // Afficher le champ de texte pour l'entrée personnalisée
-                const categoryId = selectElement.id.replace('select-', '').replace('-besoin', '');
-                const otherFieldId = `autre-${categoryId}${listType === 'besoins' ? '-besoin' : ''}`;
-                document.getElementById(otherFieldId).style.display = "block";
-                
-                // Ne pas ajouter "Autre" comme tag
-                selectElement.value = "";
-            } else if (selectElement.value !== "") {
-                // Pour les options standard, ajouter directement un tag
-                addSelectedItem(selectElement.id, listType);
-            }
-        }
-        
-        // Fonction pour ajouter une ressource personnalisée depuis un champ "Autre"
-        function addCustomResource(inputId, listType) {
-            const input = document.getElementById(inputId);
-            if (input.value.trim() === "") return;
-            
-            const targetList = listType === 'ressources' ? ressourcesList : besoinsList;
-            const targetElement = document.getElementById(`${listType}-selected`);
-            
-            const value = input.value.trim();
-            
-            // Ajouter seulement si l'élément n'est pas déjà dans la liste
-            if (!targetList.includes(value)) {
-                targetList.push(value);
-                
-                // Créer l'élément tag
-                const tag = document.createElement('div');
-                tag.className = 'tag';
-                // Échapper les caractères spéciaux pour le HTML
-                const escapedValue = value.replace(/[&<>"']/g, function(m) {
-                    return {
-                        '&': '&amp;',
-                        '<': '&lt;',
-                        '>': '&gt;',
-                        '"': '&quot;',
-                        "'": '&#39;'
-                    }[m];
-                });
-                tag.innerHTML = `${escapedValue} <span class="tag-remove" onclick="removeItem('${escapedValue}', '${listType}')">✕</span>`;
-                targetElement.appendChild(tag);
-                
-                // Masquer le champ après l'ajout
-                const categoryId = inputId.split('-')[0];
-                const otherFieldId = `autre-${categoryId}${listType === 'besoins' ? '-besoin' : ''}`;
-                document.getElementById(otherFieldId).style.display = "none";
-                
-                // Réinitialiser le champ
-                input.value = "";
-            }
-        }
-        
-        // Fonction pour ajouter un élément sélectionné
-        function addSelectedItem(selectId, listType) {
-            const select = document.getElementById(selectId);
-            const value = select.value;
-            
-            if (value === "") return;
-            
-            const targetList = listType === 'ressources' ? ressourcesList : besoinsList;
-            const targetElement = document.getElementById(`${listType}-selected`);
-            
-            // Ajouter seulement si l'élément n'est pas déjà dans la liste
-            if (!targetList.includes(value)) {
-                targetList.push(value);
-                
-                // Créer l'élément tag
-                const tag = document.createElement('div');
-                tag.className = 'tag';
-                tag.innerHTML = `${value} <span class="tag-remove" onclick="removeItem('${value}', '${listType}')">✕</span>`;
-                targetElement.appendChild(tag);
-            }
-            
-            // Réinitialiser l'élément select
-            select.value = "";
-        }
-        
-        // Fonction pour supprimer un élément
-        function removeItem(value, listType) {
-            const targetList = listType === 'ressources' ? ressourcesList : besoinsList;
-            const targetElement = document.getElementById(`${listType}-selected`);
-            
-            // Supprimer de l'array
-            const index = targetList.indexOf(value);
-            if (index > -1) {
-                targetList.splice(index, 1);
-            }
-            
-            // Supprimer l'affichage visuel
-            const tags = targetElement.getElementsByClassName('tag');
-            for (let i = 0; i < tags.length; i++) {
-                if (tags[i].textContent.includes(value)) {
-                    targetElement.removeChild(tags[i]);
-                    break;
+                    displayElement.classList.add('hidden');
+                    editElement.classList.remove('hidden');
                 }
             }
         }
         
-        // Fonction pour afficher/masquer les instructions de cache
-        function toggleCacheInstructions() {
-            const instructions = document.getElementById('cache-instructions');
-            if (instructions.style.display === 'none') {
-                instructions.style.display = 'block';
-            } else {
-                instructions.style.display = 'none';
+        // Fonction pour enregistrer les modifications d'une section
+        function saveSection(section) {
+            const email = localStorage.getItem('currentLoggedIn');
+            if (!email) return;
+            
+            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
+            const companyIndex = companies.findIndex(c => c.email === email);
+            
+            if (companyIndex !== -1) {
+                const company = companies[companyIndex];
+                
+                // Mettre à jour selon la section
+                if (section === 'company-info') {
+                    company.name = document.getElementById('editName').value;
+                    company.address = document.getElementById('editAddress').value;
+                    company.zipCode = document.getElementById('editZip').value;
+                    company.city = document.getElementById('editCity').value;
+                    company.website = document.getElementById('editWebsite').value;
+                    company.phone = document.getElementById('editPhone').value;
+                } else if (section === 'resources') {
+                    company.resources = document.getElementById('editResources').value;
+                } else if (section === 'needs') {
+                    company.needs = document.getElementById('editNeeds').value;
+                } else if (section === 'preferences') {
+                    company.notifications = document.getElementById('editPreferences').value;
+                }
+                
+                // Enregistrer les modifications
+                companies[companyIndex] = company;
+                localStorage.setItem('companies', JSON.stringify(companies));
+                
+                // Recharger les données pour afficher les modifications
+                loadProfileData();
+                
+                // Basculer vers l'affichage
+                toggleEdit(section);
+                
+                // Message de confirmation
+                alert('Vos modifications ont été enregistrées avec succès.');
             }
         }
         
-        // Fonction pour simuler la soumission du formulaire
-        function submitForm() {
-            // Récupération des données du formulaire
-            const secteur = document.getElementById('entreprise-secteur').value;
-            const secteurValue = secteur === 'Autre' 
-                ? document.getElementById('entreprise-secteur-autre').value 
-                : secteur;
+        // Fonction pour exporter les données de l'entreprise
+        function exportData() {
+            const email = localStorage.getItem('currentLoggedIn');
+            if (!email) return;
             
-            const formData = {
-                entreprise: {
-                    nom: document.getElementById('entreprise-nom').value,
-                    secteur: secteurValue,
-                    taille: document.getElementById('entreprise-taille').value,
-                    description: document.getElementById('entreprise-description').value,
-                    adresse: document.getElementById('entreprise-adresse').value,
-                    codePostal: document.getElementById('entreprise-code-postal').value,
-                    ville: document.getElementById('entreprise-ville').value,
-                    site: document.getElementById('entreprise-site').value
-                },
-                contact: {
-                    nom: document.getElementById('contact-nom').value,
-                    fonction: document.getElementById('contact-fonction').value,
-                    email: document.getElementById('contact-email').value
-                },
-                ressources: {
-                    liste: ressourcesList,
-                    details: document.getElementById('ressources-details').value
-                },
-                besoins: {
-                    liste: besoinsList,
-                    details: document.getElementById('besoins-details').value
-                },
-                notifications: {
-                    email: document.getElementById('notif-email-oui').checked,
-                    adresse: document.getElementById('notif-email-adresse').value,
-                    frequence: document.querySelector('input[name="notif-frequence"]:checked').value,
-                    types: {
-                        match: document.getElementById('notif-type-match').checked,
-                        message: document.getElementById('notif-type-message').checked,
-                        actualite: document.getElementById('notif-type-actualite').checked
-                    }
-                },
-                visibilite: document.querySelector('input[name="profil-visibilite"]:checked').value
+            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
+            const company = companies.find(c => c.email === email);
+            
+            if (company) {
+                // Formater les données pour l'export
+                const prefText = {
+                    'all': 'Toutes les correspondances',
+                    'weekly': 'Résumé hebdomadaire',
+                    'important': 'Correspondances importantes uniquement',
+                    'none': 'Aucune notification'
+                };
+                
+                const now = new Date();
+                const date = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+                
+                const exportText = `PROFIL ENTREPRISE SUR RÉ(GE)NÈRE
+Date d'exportation : ${date}
+
+INFORMATIONS DE L'ENTREPRISE
+--------------------------
+Nom : ${company.name || ''}
+Adresse : ${company.address || ''}
+Code postal : ${company.zipCode || ''}
+Ville : ${company.city || ''}
+Site web : ${company.website || ''}
+Email : ${company.email || ''}
+Téléphone : ${company.phone || ''}
+
+RESSOURCES DISPONIBLES
+--------------------------
+${company.resources || 'Aucune ressource spécifiée'}
+
+BESOINS RECHERCHÉS
+--------------------------
+${company.needs || 'Aucun besoin spécifié'}
+
+PRÉFÉRENCES DE NOTIFICATION
+--------------------------
+${prefText[company.notifications] || 'Toutes les correspondances'}
+
+---
+Pour mettre à jour ces informations, reconnectez-vous sur Ré(GE)nère avec votre email.
+Ces données sont stockées localement sur votre appareil. Conservez ce fichier pour les retrouver en cas de changement d'appareil.`;
+                
+                // Créer et télécharger le fichier
+                const blob = new Blob([exportText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `regenere-profil-${company.name.replace(/\s+/g, '-').toLowerCase()}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('Vos données ont été exportées avec succès. Veuillez conserver ce fichier dans un emplacement sécurisé.');
+            }
+        }
+        
+        // Fonction pour enregistrer une nouvelle entreprise
+        function registerCompany() {
+            const name = document.getElementById('companyName').value;
+            const address = document.getElementById('address').value;
+            const zipCode = document.getElementById('zipCode').value;
+            const city = document.getElementById('city').value;
+            const website = document.getElementById('website').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const resources = document.getElementById('resources').value;
+            const needs = document.getElementById('needs').value;
+            const notifications = document.getElementById('notifications').value;
+            
+            // Validation simple
+            if (!name || !address || !zipCode || !city || !email || !phone || !resources || !needs) {
+                alert('Veuillez remplir tous les champs obligatoires.');
+                return;
+            }
+            
+            // Vérifier si l'email existe déjà
+            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
+            if (companies.some(c => c.email === email)) {
+                alert('Une entreprise est déjà inscrite avec cet email. Veuillez utiliser la fonction "Accéder à mon profil" pour modifier vos informations.');
+                return;
+            }
+            
+            // Créer l'objet entreprise
+            const company = {
+                name,
+                address,
+                zipCode,
+                city,
+                website,
+                email,
+                phone,
+                resources,
+                needs,
+                notifications
             };
             
-            console.log('Données du formulaire:', formData);
+            // Ajouter à la liste et sauvegarder
+            companies.push(company);
+            localStorage.setItem('companies', JSON.stringify(companies));
             
-            // Simulation d'envoi réussi
-            alert('Votre profil a été enregistré avec succès ! Vous recevrez des notifications lorsque des correspondances seront trouvées.');
+            // Réinitialiser le formulaire
+            document.getElementById('registrationForm').reset();
+            
+            // Message de confirmation
+            alert('Votre entreprise a été inscrite avec succès ! Vous pouvez maintenant accéder à votre profil depuis le bouton "Accéder à mon profil".');
         }
     </script>
 </body>
