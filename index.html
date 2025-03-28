@@ -420,6 +420,55 @@
             margin-top: 5px;
             border-left: 3px solid #2A9D8F;
         }
+        
+        /* Style pour le bouton d'envoi d'email */
+        #email-button-unique {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        
+        #email-button-unique:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        #email-button-unique:active {
+            transform: translateY(0);
+        }
+        
+        #notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 2000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: none;
+        }
+        
+        .success {
+            background-color: #4CAF50;
+        }
+        
+        .error {
+            background-color: #f44336;
+        }
     </style>
 </head>
 <body>
@@ -894,6 +943,10 @@
         <p>Contact : <a href="mailto:info@eclore-asso.org">info@eclore-asso.org</a></p>
     </div>
 </footer>
+
+    <!-- Bouton d'envoi d'email -->
+    <button id="email-button-unique">ENVOYER EMAIL</button>
+    <div id="notification"></div>
 
     <script>
         // Tableau complet des catégories
@@ -1688,729 +1741,393 @@ Ces données sont stockées localement sur votre appareil. Conservez ce fichier 
                 editNeedsPlaceholder.placeholder = "Décrivez en détail les ressources dont vous avez besoin, incluant fréquence, modalités et conditions...";
             }
         });
-    <script>
-// Fonction pour trouver les correspondances pour une entreprise
-function findMatchesForCompany(companyEmail) {
-    const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-    const currentCompany = companies.find(c => c.email === companyEmail);
-    
-    if (!currentCompany) return [];
-    
-    let matches = [];
-    
-    // Parcourir toutes les autres entreprises
-    companies.forEach(company => {
-        if (company.email === companyEmail) return; // Ignorer l'entreprise actuelle
-        
-        let hasMatch = false;
-        let matchDetails = {
-            theyProvide: [],  // Ce qu'ils peuvent nous fournir
-            weProvide: []     // Ce que nous pouvons leur fournir
-        };
-        
-        // Vérifier si les besoins de l'entreprise actuelle correspondent aux ressources de l'autre entreprise
-        if (currentCompany.needCategories && company.resourceCategories) {
-            const commonCategories = currentCompany.needCategories.filter(cat => 
-                company.resourceCategories.includes(cat)
-            );
+
+        // Fonction pour trouver les correspondances pour une entreprise
+        function findMatchesForCompany(companyEmail) {
+            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
+            const currentCompany = companies.find(c => c.email === companyEmail);
             
-            if (commonCategories.length > 0) {
-                hasMatch = true;
-                matchDetails.theyProvide = commonCategories;
-            }
-        }
-        
-        // Vérifier si les ressources de l'entreprise actuelle correspondent aux besoins de l'autre entreprise
-        if (currentCompany.resourceCategories && company.needCategories) {
-            const commonCategories = currentCompany.resourceCategories.filter(cat => 
-                company.needCategories.includes(cat)
-            );
+            if (!currentCompany) return [];
             
-            if (commonCategories.length > 0) {
-                hasMatch = true;
-                matchDetails.weProvide = commonCategories;
-            }
-        }
-        
-        // Si on a trouvé des correspondances, ajouter à la liste
-        if (hasMatch) {
-            matches.push({
-                company: company,
-                details: matchDetails
-            });
-        }
-    });
-    
-    return matches;
-}
-
-// Fonction pour créer une carte de match
-function createMatchCard(match, isNew) {
-    const matchCard = document.createElement('div');
-    matchCard.className = 'profile-section';
-    matchCard.style.marginBottom = '15px';
-    matchCard.style.padding = '15px';
-    matchCard.style.backgroundColor = isNew ? '#FDF5E8' : '#f7f7f7';
-    matchCard.style.borderLeft = isNew ? '4px solid #E76F51' : '4px solid #2A9D8F';
-    
-    // En-tête avec nom de l'entreprise et badge "Nouveau" si applicable
-    const headerDiv = document.createElement('div');
-    headerDiv.style.display = 'flex';
-    headerDiv.style.justifyContent = 'space-between';
-    headerDiv.style.alignItems = 'center';
-    headerDiv.style.marginBottom = '10px';
-    
-    const companyName = document.createElement('h4');
-    companyName.textContent = match.company.name;
-    companyName.style.margin = '0';
-    companyName.style.color = '#264653';
-    
-    headerDiv.appendChild(companyName);
-    
-    // Ajouter un badge "Nouveau" si c'est un nouveau match
-    if (isNew) {
-        const newBadge = document.createElement('span');
-        newBadge.textContent = 'NOUVEAU';
-        newBadge.style.backgroundColor = '#E76F51';
-        newBadge.style.color = 'white';
-        newBadge.style.padding = '4px 8px';
-        newBadge.style.borderRadius = '4px';
-        newBadge.style.fontSize = '0.8rem';
-        headerDiv.appendChild(newBadge);
-    }
-    
-    matchCard.appendChild(headerDiv);
-    
-    // Afficher ce que l'autre entreprise peut nous fournir
-    if (match.details.theyProvide && match.details.theyProvide.length > 0) {
-        const theyProvideTitle = document.createElement('p');
-        theyProvideTitle.innerHTML = `<strong>${match.company.name} peut vous fournir :</strong>`;
-        theyProvideTitle.style.marginBottom = '5px';
-        
-        const categoriesDiv = document.createElement('div');
-        categoriesDiv.className = 'tag-container';
-        categoriesDiv.style.marginBottom = '10px';
-        
-        match.details.theyProvide.forEach(category => {
-            const tag = document.createElement('div');
-            tag.className = 'tag';
-            tag.textContent = category;
-            tag.style.backgroundColor = '#E9C46A';
-            categoriesDiv.appendChild(tag);
-        });
-        
-        matchCard.appendChild(theyProvideTitle);
-        matchCard.appendChild(categoriesDiv);
-    }
-    
-    // Afficher ce que nous pouvons fournir à l'autre entreprise
-    if (match.details.weProvide && match.details.weProvide.length > 0) {
-        const weProvideTitle = document.createElement('p');
-        weProvideTitle.innerHTML = `<strong>Vous pouvez fournir à ${match.company.name} :</strong>`;
-        weProvideTitle.style.marginBottom = '5px';
-        
-        const categoriesDiv = document.createElement('div');
-        categoriesDiv.className = 'tag-container';
-        categoriesDiv.style.marginBottom = '10px';
-        
-        match.details.weProvide.forEach(category => {
-            const tag = document.createElement('div');
-            tag.className = 'tag';
-            tag.textContent = category;
-            tag.style.backgroundColor = '#2A9D8F';
-            tag.style.color = 'white';
-            categoriesDiv.appendChild(tag);
-        });
-        
-        matchCard.appendChild(weProvideTitle);
-        matchCard.appendChild(categoriesDiv);
-    }
-    
-    // Bouton de contact (uniquement pour les nouveaux matchs)
-    if (isNew) {
-        const contactBtn = document.createElement('button');
-        contactBtn.className = 'add-category-btn';
-        contactBtn.textContent = `Contacter ${match.company.name}`;
-        contactBtn.style.marginTop = '10px';
-        contactBtn.onclick = function() {
-            window.location.href = `mailto:${match.company.email}?subject=Potentielle synergie via Ré(GE)nère&body=Bonjour,%0A%0AJe vous contacte suite à une correspondance identifiée sur la plateforme Ré(GE)nère.%0A%0ACordiales salutations`;
-        };
-        
-        matchCard.appendChild(contactBtn);
-    }
-    
-    return matchCard;
-}
-
-// Fonction pour afficher les correspondances dans le profil
-function displayMatches() {
-    const email = localStorage.getItem('currentLoggedIn');
-    if (!email) return;
-    
-    // Trouver les correspondances actuelles
-    const currentMatches = findMatchesForCompany(email);
-    
-    // Vérifier si la section de correspondances existe déjà
-    let matchesSection = document.getElementById('matches-section');
-    
-    // Si elle n'existe pas, la créer et l'insérer avant la notice de données
-    if (!matchesSection) {
-        // Créer une section pour les correspondances
-        matchesSection = document.createElement('div');
-        matchesSection.id = 'matches-section';
-        matchesSection.className = 'profile-section';
-        
-        const sectionTitle = document.createElement('h3');
-        sectionTitle.textContent = '🔄 Correspondances détectées';
-        
-        matchesSection.appendChild(sectionTitle);
-        
-        // Créer un conteneur pour les nouveaux matchs
-        const newMatchesTitle = document.createElement('h4');
-        newMatchesTitle.textContent = '🌟 Nouveaux matchs';
-        newMatchesTitle.style.color = '#E76F51';
-        newMatchesTitle.style.marginTop = '20px';
-        
-        const newMatchesContainer = document.createElement('div');
-        newMatchesContainer.id = 'new-matches-container';
-        
-        matchesSection.appendChild(newMatchesTitle);
-        matchesSection.appendChild(newMatchesContainer);
-        
-        // Ajouter à la page
-        const profileContent = document.getElementById('profileContent');
-        const exportBtn = profileContent.querySelector('.export-btn');
-        
-        if (exportBtn) {
-            profileContent.insertBefore(matchesSection, exportBtn);
-        } else {
-            profileContent.appendChild(matchesSection);
-        }
-    }
-    
-    // Afficher les nouveaux matchs
-    const newMatchesContainer = document.getElementById('new-matches-container');
-    newMatchesContainer.innerHTML = '';
-    
-    if (currentMatches.length === 0) {
-        const noMatchesMsg = document.createElement('p');
-        noMatchesMsg.textContent = 'Aucune nouvelle correspondance trouvée pour le moment.';
-        newMatchesContainer.appendChild(noMatchesMsg);
-    } else {
-        // Afficher les matchs actuels (limités à 3)
-        const matchesToShow = currentMatches.slice(0, 3);
-        matchesToShow.forEach(match => {
-            const matchCard = createMatchCard(match, true);
-            newMatchesContainer.appendChild(matchCard);
-        });
-        
-        // Si plus de 3 correspondances, indiquer "et plus..."
-        if (currentMatches.length > 3) {
-            const moreMatches = document.createElement('p');
-            moreMatches.style.textAlign = 'center';
-            moreMatches.style.fontStyle = 'italic';
-            moreMatches.textContent = `+ ${currentMatches.length - 3} autre(s) correspondance(s)`;
-            newMatchesContainer.appendChild(moreMatches);
-        }
-    }
-}
-
-// Créer une bannière de notifications sur la page d'accueil pour montrer les nouveaux matchs
-function createMatchesBanner() {
-    const email = localStorage.getItem('currentLoggedIn');
-    if (!email) return;
-    
-    // Vérifier si la bannière existe déjà
-    if (document.getElementById('matches-banner')) return;
-    
-    // Trouver l'élément où insérer la bannière
-    const introSection = document.getElementById('intro');
-    if (!introSection) return;
-    
-    // Récupérer les correspondances actuelles
-    const currentMatches = findMatchesForCompany(email);
-    
-    if (currentMatches.length === 0) return; // Ne rien afficher s'il n'y a pas de correspondances
-    
-    // Créer la bannière
-    const banner = document.createElement('div');
-    banner.id = 'matches-banner';
-    banner.style.backgroundColor = '#FDF5E8';
-    banner.style.border = '3px solid #E76F51';
-    banner.style.borderRadius = '8px';
-    banner.style.padding = '15px 20px';
-    banner.style.margin = '0 auto 30px auto';
-    banner.style.maxWidth = '1000px';
-    
-    const headerDiv = document.createElement('div');
-    headerDiv.style.display = 'flex';
-    headerDiv.style.justifyContent = 'space-between';
-    headerDiv.style.alignItems = 'center';
-    headerDiv.style.marginBottom = '15px';
-    
-    const title = document.createElement('h3');
-    title.textContent = '🔄 Nouvelles correspondances détectées !';
-    title.style.margin = '0';
-    title.style.color = '#E76F51';
-    
-    const viewAllBtn = document.createElement('button');
-    viewAllBtn.className = 'add-category-btn';
-    viewAllBtn.textContent = 'Voir toutes';
-    viewAllBtn.onclick = function() {
-        openModal('profileModal');
-        loadProfileData();
-    };
-    
-    headerDiv.appendChild(title);
-    headerDiv.appendChild(viewAllBtn);
-    banner.appendChild(headerDiv);
-    
-    // Afficher les 3 premières correspondances uniquement
-    const matchesToShow = currentMatches.slice(0, 3);
-    
-    matchesToShow.forEach((match, idx) => {
-        const matchDiv = document.createElement('div');
-        matchDiv.style.padding = '10px';
-        matchDiv.style.backgroundColor = idx % 2 === 0 ? '#fff' : '#f8f8f8';
-        matchDiv.style.borderRadius = '4px';
-        matchDiv.style.marginBottom = '10px';
-        
-        const matchText = document.createElement('p');
-        matchText.style.margin = '0';
-        
-        let matchDescription = `<strong>${match.company.name}</strong> : `;
-        
-        let categories = [];
-        if (match.details.theyProvide.length > 0) {
-            categories.push(`Ils peuvent vous fournir <span style="color:#E76F51">${match.details.theyProvide.join(', ')}</span>`);
-        }
-        
-        if (match.details.weProvide.length > 0) {
-            categories.push(`Vous pouvez leur fournir <span style="color:#2A9D8F">${match.details.weProvide.join(', ')}</span>`);
-        }
-        
-        matchText.innerHTML = matchDescription + categories.join(' et ');
-        matchDiv.appendChild(matchText);
-        banner.appendChild(matchDiv);
-    });
-    
-    // Si plus de 3 correspondances, indiquer "et plus..."
-    if (currentMatches.length > 3) {
-        const moreText = document.createElement('p');
-        moreText.textContent = `Et ${currentMatches.length - 3} autre(s) correspondance(s)...`;
-        moreText.style.textAlign = 'center';
-        moreText.style.fontStyle = 'italic';
-        moreText.style.margin = '5px 0 0 0';
-        banner.appendChild(moreText);
-    }
-    
-    // Insérer après la section d'intro
-    introSection.parentNode.insertBefore(banner, introSection.nextSibling);
-}
-
-// Modifier les fonctions existantes pour intégrer les correspondances
-const originalLoadProfileData = loadProfileData;
-loadProfileData = function() {
-    originalLoadProfileData();
-    displayMatches();
-};
-
-// Exécuter au chargement de la page
-const originalDOMContentLoadedHandler = document.addEventListener('DOMContentLoaded', function() {
-    // Nouveau code pour les correspondances
-    const email = localStorage.getItem('currentLoggedIn');
-    if (email) {
-        // Si un utilisateur est connecté, afficher la bannière de matchs sur la page d'accueil
-        createMatchesBanner();
-    }
-});
-</script>
-<script>
-// Fonction de débogage à exécuter après que la page soit chargée
-function debugMatches() {
-    const email = localStorage.getItem('currentLoggedIn');
-    
-    if (!email) {
-        console.log("Aucun utilisateur connecté");
-        alert("Aucun utilisateur connecté. Veuillez vous connecter pour voir les correspondances.");
-        return;
-    }
-    
-    console.log("Utilisateur connecté:", email);
-    
-    const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-    console.log("Entreprises enregistrées:", companies);
-    
-    const currentCompany = companies.find(c => c.email === email);
-    console.log("Entreprise actuelle:", currentCompany);
-    
-    if (!currentCompany) {
-        console.log("Entreprise actuelle non trouvée");
-        alert("Entreprise actuelle non trouvée dans les données.");
-        return;
-    }
-    
-    console.log("Ressources de l'entreprise:", currentCompany.resourceCategories);
-    console.log("Besoins de l'entreprise:", currentCompany.needCategories);
-    
-    const matches = findMatchesForCompany(email);
-    console.log("Correspondances trouvées:", matches);
-    
-    if (matches.length === 0) {
-        console.log("Aucune correspondance trouvée");
-        alert("Aucune correspondance trouvée pour votre entreprise. Vérifiez que d'autres entreprises ont des besoins/ressources qui correspondent aux vôtres.");
-    } else {
-        console.log("Nombre de correspondances:", matches.length);
-        alert(`${matches.length} correspondance(s) trouvée(s) pour votre entreprise. Vérifiez la console pour plus de détails.`);
-    }
-}
-
-// Ajouter un bouton pour exécuter la fonction de débogage
-document.addEventListener('DOMContentLoaded', function() {
-    const debugButton = document.createElement('button');
-    debugButton.textContent = "Déboguer les correspondances";
-    debugButton.style.position = "fixed";
-    debugButton.style.bottom = "10px";
-    debugButton.style.right = "10px";
-    debugButton.style.zIndex = "1000";
-    debugButton.style.padding = "10px";
-    debugButton.style.backgroundColor = "#264653";
-    debugButton.style.color = "white";
-    debugButton.style.border = "none";
-    debugButton.style.borderRadius = "5px";
-    debugButton.style.cursor = "pointer";
-    debugButton.onclick = debugMatches;
-    
-    document.body.appendChild(debugButton);
-});
-
-// Fonction pour trouver les correspondances pour une entreprise
-function findMatchesForCompany(companyEmail) {
-    const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-    const currentCompany = companies.find(c => c.email === companyEmail);
-    
-    if (!currentCompany) return [];
-    
-    let matches = [];
-    
-    // Parcourir toutes les autres entreprises
-    companies.forEach(company => {
-        if (company.email === companyEmail) return; // Ignorer l'entreprise actuelle
-        
-        let hasMatch = false;
-        let matchDetails = {
-            theyProvide: [],  // Ce qu'ils peuvent nous fournir
-            weProvide: []     // Ce que nous pouvons leur fournir
-        };
-        
-        // Vérifier si les besoins de l'entreprise actuelle correspondent aux ressources de l'autre entreprise
-        if (currentCompany.needCategories && company.resourceCategories) {
-            const commonCategories = currentCompany.needCategories.filter(cat => 
-                company.resourceCategories.includes(cat)
-            );
+            let matches = [];
             
-            if (commonCategories.length > 0) {
-                hasMatch = true;
-                matchDetails.theyProvide = commonCategories;
-            }
-        }
-        
-        // Vérifier si les ressources de l'entreprise actuelle correspondent aux besoins de l'autre entreprise
-        if (currentCompany.resourceCategories && company.needCategories) {
-            const commonCategories = currentCompany.resourceCategories.filter(cat => 
-                company.needCategories.includes(cat)
-            );
-            
-            if (commonCategories.length > 0) {
-                hasMatch = true;
-                matchDetails.weProvide = commonCategories;
-            }
-        }
-        
-        // Si on a trouvé des correspondances, ajouter à la liste
-        if (hasMatch) {
-            matches.push({
-                company: company,
-                details: matchDetails
-            });
-        }
-    });
-    
-    return matches;
-}
-</script>
-<script>
-// Code simple pour vérifier EmailJS
-document.addEventListener('DOMContentLoaded', function() {
-    // Créer un bouton de test EmailJS
-    const testButton = document.createElement('button');
-    testButton.textContent = "Tester EmailJS";
-    testButton.style.position = "fixed";
-    testButton.style.bottom = "10px";
-    testButton.style.right = "10px";
-    testButton.style.zIndex = "1000";
-    testButton.style.padding = "10px";
-    testButton.style.backgroundColor = "#E76F51";
-    testButton.style.color = "white";
-    testButton.style.border = "none";
-    testButton.style.borderRadius = "5px";
-    testButton.style.cursor = "pointer";
-    
-    testButton.onclick = function() {
-        // Vérifier si EmailJS est chargé
-        if (typeof emailjs === 'undefined') {
-            alert("EmailJS n'est pas chargé sur cette page!");
-            console.error("EmailJS n'est pas chargé");
-            return;
-        }
-        
-        // Demander les informations nécessaires
-        const email = prompt("Entrez votre adresse email pour le test :");
-        if (!email) return;
-        
-        const serviceID = prompt("Entrez l'ID de service EmailJS :");
-        if (!serviceID) return;
-        
-        // Utiliser le template ID existant ou en demander un nouveau
-        const templateID = prompt("Entrez l'ID du template (par défaut: template_zm00bwr) :", "template_zm00bwr");
-        if (!templateID) return;
-        
-        // Préparer les paramètres pour le template
-        const templateParams = {
-            to_email: email,
-            from_name: "Test Ré(GE)nère",
-            to_name: "Utilisateur test",
-            message: "Ceci est un email de test depuis la plateforme Ré(GE)nère."
-            // Ajoutez d'autres paramètres selon les besoins de votre template
-        };
-        
-        // Afficher les informations avant l'envoi
-        console.log("Tentative d'envoi d'email avec :");
-        console.log("- Service ID :", serviceID);
-        console.log("- Template ID :", templateID);
-        console.log("- Paramètres :", templateParams);
-        
-        // Envoyer l'email
-        alert("Tentative d'envoi d'email à " + email + "...");
-        
-        emailjs.send(serviceID, templateID, templateParams)
-            .then(function(response) {
-                console.log("✅ Email envoyé avec succès :", response);
-                alert("✅ Email envoyé avec succès ! Statut : " + response.status);
-            })
-            .catch(function(error) {
-                console.error("❌ Erreur lors de l'envoi de l'email :", error);
-                alert("❌ Erreur lors de l'envoi de l'email : " + error.text);
-            });
-    };
-    
-    // Ajouter le bouton à la page
-    document.body.appendChild(testButton);
-});
-</script>
-<script>
-// Version améliorée qui attend que EmailJS soit complètement chargé
-(function() {
-    // Fonction qui vérifie si EmailJS est chargé et configure l'interception
-    function configureEmailJS() {
-        if (typeof emailjs === 'undefined') {
-            console.log("EmailJS n'est pas encore chargé, nouvelle tentative dans 1 seconde...");
-            setTimeout(configureEmailJS, 1000);
-            return;
-        }
-
-        console.log("EmailJS est chargé, configuration de l'interception...");
-        
-        // Stocker la version originale de emailjs.send
-        const originalEmailJSSend = emailjs.send;
-        
-        // Remplacer emailjs.send par notre version améliorée
-        emailjs.send = function(serviceID, templateID, params) {
-            console.log("Appel à emailjs.send intercepté", {serviceID, templateID, params});
-            
-            // Si les paramètres sont manquants, créer un objet avec les paramètres nécessaires
-            if (!params) {
-                console.warn("EmailJS : Paramètres manquants, ajout de paramètres par défaut");
+            // Parcourir toutes les autres entreprises
+            companies.forEach(company => {
+                if (company.email === companyEmail) return; // Ignorer l'entreprise actuelle
                 
-                // Demander l'email du destinataire si nécessaire
-                let recipientEmail = prompt("Entrez l'adresse email du destinataire :");
-                if (!recipientEmail) {
-                    alert("Envoi annulé : adresse email nécessaire.");
-                    return Promise.reject(new Error("Adresse email manquante"));
-                }
-                
-                // Créer un objet avec tous les paramètres possibles
-                params = {
-                    to_email: recipientEmail,
-                    email: recipientEmail,
-                    recipient: recipientEmail,
-                    to: recipientEmail,
-                    user_email: recipientEmail,
-                    
-                    from_name: "Ré(GE)nère Plateforme",
-                    to_name: "Utilisateur",
-                    subject: "Notification de Ré(GE)nère",
-                    message: "Notification automatique de la plateforme Ré(GE)nère."
+                let hasMatch = false;
+                let matchDetails = {
+                    theyProvide: [],  // Ce qu'ils peuvent nous fournir
+                    weProvide: []     // Ce que nous pouvons leur fournir
                 };
                 
-                console.log("EmailJS : Utilisation des paramètres par défaut :", params);
-            }
+                // Vérifier si les besoins de l'entreprise actuelle correspondent aux ressources de l'autre entreprise
+                if (currentCompany.needCategories && company.resourceCategories) {
+                    const commonCategories = currentCompany.needCategories.filter(cat => 
+                        company.resourceCategories.includes(cat)
+                    );
+                    
+                    if (commonCategories.length > 0) {
+                        hasMatch = true;
+                        matchDetails.theyProvide = commonCategories;
+                    }
+                }
+                
+                // Vérifier si les ressources de l'entreprise actuelle correspondent aux besoins de l'autre entreprise
+                if (currentCompany.resourceCategories && company.needCategories) {
+                    const commonCategories = currentCompany.resourceCategories.filter(cat => 
+                        company.needCategories.includes(cat)
+                    );
+                    
+                    if (commonCategories.length > 0) {
+                        hasMatch = true;
+                        matchDetails.weProvide = commonCategories;
+                    }
+                }
+                
+                // Si on a trouvé des correspondances, ajouter à la liste
+                if (hasMatch) {
+                    matches.push({
+                        company: company,
+                        details: matchDetails
+                    });
+                }
+            });
             
-            // Appeler la méthode originale avec les paramètres
-            console.log("Envoi de l'email avec paramètres:", params);
-            return originalEmailJSSend.call(emailjs, serviceID, templateID, params)
-                .then(function(response) {
-                    console.log("✅ Email envoyé avec succès :", response);
-                    alert("✅ Email envoyé avec succès !");
-                    return response;
-                })
-                .catch(function(error) {
-                    console.error("❌ Erreur lors de l'envoi de l'email :", error);
-                    alert("❌ Erreur : " + (error.text || error.message || "Inconnue"));
-                    throw error;
-                });
-        };
-        
-        console.log("EmailJS : Configuration améliorée activée");
-    }
-
-    // Démarrer la vérification une fois que la page est chargée
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', configureEmailJS);
-    } else {
-        configureEmailJS();
-    }
-    
-    // Ajouter le bouton de test
-    function addTestButton() {
-        // Vérifier si le bouton existe déjà
-        if (document.getElementById('new-emailjs-test-button')) {
-            return;
+            return matches;
         }
-        
-        const newTestButton = document.createElement('button');
-        newTestButton.id = 'new-emailjs-test-button';
-        newTestButton.textContent = "Nouveau Test EmailJS";
-        newTestButton.style.position = "fixed";
-        newTestButton.style.bottom = "50px";
-        newTestButton.style.right = "150px";
-        newTestButton.style.zIndex = "1000";
-        newTestButton.style.padding = "10px";
-        newTestButton.style.backgroundColor = "#2A9D8F";
-        newTestButton.style.color = "white";
-        newTestButton.style.border = "none";
-        newTestButton.style.borderRadius = "5px";
-        newTestButton.style.cursor = "pointer";
-        
-        newTestButton.onclick = function() {
-            console.log("Bouton de test cliqué");
-            if (typeof emailjs === 'undefined') {
-                alert("EmailJS n'est pas encore chargé!");
-                return;
+
+        // Fonction pour créer une carte de match
+        function createMatchCard(match, isNew) {
+            const matchCard = document.createElement('div');
+            matchCard.className = 'profile-section';
+            matchCard.style.marginBottom = '15px';
+            matchCard.style.padding = '15px';
+            matchCard.style.backgroundColor = isNew ? '#FDF5E8' : '#f7f7f7';
+            matchCard.style.borderLeft = isNew ? '4px solid #E76F51' : '4px solid #2A9D8F';
+            
+            // En-tête avec nom de l'entreprise et badge "Nouveau" si applicable
+            const headerDiv = document.createElement('div');
+            headerDiv.style.display = 'flex';
+            headerDiv.style.justifyContent = 'space-between';
+            headerDiv.style.alignItems = 'center';
+            headerDiv.style.marginBottom = '10px';
+            
+            const companyName = document.createElement('h4');
+            companyName.textContent = match.company.name;
+            companyName.style.margin = '0';
+            companyName.style.color = '#264653';
+            
+            headerDiv.appendChild(companyName);
+            
+            // Ajouter un badge "Nouveau" si c'est un nouveau match
+            if (isNew) {
+                const newBadge = document.createElement('span');
+                newBadge.textContent = 'NOUVEAU';
+                newBadge.style.backgroundColor = '#E76F51';
+                newBadge.style.color = 'white';
+                newBadge.style.padding = '4px 8px';
+                newBadge.style.borderRadius = '4px';
+                newBadge.style.fontSize = '0.8rem';
+                headerDiv.appendChild(newBadge);
             }
             
-            try {
-                alert("Tentative d'envoi d'email...");
-                emailjs.send("service_w5kg7es", "template_zm00bwr");
-            } catch (error) {
-                console.error("Erreur lors de l'appel à emailjs.send:", error);
-                alert("Erreur: " + (error.message || "Inconnue"));
+            matchCard.appendChild(headerDiv);
+            
+            // Afficher ce que l'autre entreprise peut nous fournir
+            if (match.details.theyProvide && match.details.theyProvide.length > 0) {
+                const theyProvideTitle = document.createElement('p');
+                theyProvideTitle.innerHTML = `<strong>${match.company.name} peut vous fournir :</strong>`;
+                theyProvideTitle.style.marginBottom = '5px';
+                
+                const categoriesDiv = document.createElement('div');
+                categoriesDiv.className = 'tag-container';
+                categoriesDiv.style.marginBottom = '10px';
+                
+                match.details.theyProvide.forEach(category => {
+                    const tag = document.createElement('div');
+                    tag.className = 'tag';
+                    tag.textContent = category;
+                    tag.style.backgroundColor = '#E9C46A';
+                    categoriesDiv.appendChild(tag);
+                });
+                
+                matchCard.appendChild(theyProvideTitle);
+                matchCard.appendChild(categoriesDiv);
             }
+            
+            // Afficher ce que nous pouvons fournir à l'autre entreprise
+            if (match.details.weProvide && match.details.weProvide.length > 0) {
+                const weProvideTitle = document.createElement('p');
+                weProvideTitle.innerHTML = `<strong>Vous pouvez fournir à ${match.company.name} :</strong>`;
+                weProvideTitle.style.marginBottom = '5px';
+                
+                const categoriesDiv = document.createElement('div');
+                categoriesDiv.className = 'tag-container';
+                categoriesDiv.style.marginBottom = '10px';
+                
+                match.details.weProvide.forEach(category => {
+                    const tag = document.createElement('div');
+                    tag.className = 'tag';
+                    tag.textContent = category;
+                    tag.style.backgroundColor = '#2A9D8F';
+                    tag.style.color = 'white';
+                    categoriesDiv.appendChild(tag);
+                });
+                
+                matchCard.appendChild(weProvideTitle);
+                matchCard.appendChild(categoriesDiv);
+            }
+            
+            // Bouton de contact (uniquement pour les nouveaux matchs)
+            if (isNew) {
+                const contactBtn = document.createElement('button');
+                contactBtn.className = 'add-category-btn';
+                contactBtn.textContent = `Contacter ${match.company.name}`;
+                contactBtn.style.marginTop = '10px';
+                contactBtn.onclick = function() {
+                    window.location.href = `mailto:${match.company.email}?subject=Potentielle synergie via Ré(GE)nère&body=Bonjour,%0A%0AJe vous contacte suite à une correspondance identifiée sur la plateforme Ré(GE)nère.%0A%0ACordiales salutations`;
+                };
+                
+                matchCard.appendChild(contactBtn);
+            }
+            
+            return matchCard;
+        }
+
+        // Fonction pour afficher les correspondances dans le profil
+        function displayMatches() {
+            const email = localStorage.getItem('currentLoggedIn');
+            if (!email) return;
+            
+            // Trouver les correspondances actuelles
+            const currentMatches = findMatchesForCompany(email);
+            
+            // Vérifier si la section de correspondances existe déjà
+            let matchesSection = document.getElementById('matches-section');
+            
+            // Si elle n'existe pas, la créer et l'insérer avant la notice de données
+            if (!matchesSection) {
+                // Créer une section pour les correspondances
+                matchesSection = document.createElement('div');
+                matchesSection.id = 'matches-section';
+                matchesSection.className = 'profile-section';
+                
+                const sectionTitle = document.createElement('h3');
+                sectionTitle.textContent = '🔄 Correspondances détectées';
+                
+                matchesSection.appendChild(sectionTitle);
+                
+                // Créer un conteneur pour les nouveaux matchs
+                const newMatchesTitle = document.createElement('h4');
+                newMatchesTitle.textContent = '🌟 Nouveaux matchs';
+                newMatchesTitle.style.color = '#E76F51';
+                newMatchesTitle.style.marginTop = '20px';
+                
+                const newMatchesContainer = document.createElement('div');
+                newMatchesContainer.id = 'new-matches-container';
+                
+                matchesSection.appendChild(newMatchesTitle);
+                matchesSection.appendChild(newMatchesContainer);
+                
+                // Ajouter à la page
+                const profileContent = document.getElementById('profileContent');
+                const exportBtn = profileContent.querySelector('.export-btn');
+                
+                if (exportBtn) {
+                    profileContent.insertBefore(matchesSection, exportBtn);
+                } else {
+                    profileContent.appendChild(matchesSection);
+                }
+            }
+            
+            // Afficher les nouveaux matchs
+            const newMatchesContainer = document.getElementById('new-matches-container');
+            newMatchesContainer.innerHTML = '';
+            
+            if (currentMatches.length === 0) {
+                const noMatchesMsg = document.createElement('p');
+                noMatchesMsg.textContent = 'Aucune nouvelle correspondance trouvée pour le moment.';
+                newMatchesContainer.appendChild(noMatchesMsg);
+            } else {
+                // Afficher les matchs actuels (limités à 3)
+                const matchesToShow = currentMatches.slice(0, 3);
+                matchesToShow.forEach(match => {
+                    const matchCard = createMatchCard(match, true);
+                    newMatchesContainer.appendChild(matchCard);
+                });
+                
+                // Si plus de 3 correspondances, indiquer "et plus..."
+                if (currentMatches.length > 3) {
+                    const moreMatches = document.createElement('p');
+                    moreMatches.style.textAlign = 'center';
+                    moreMatches.style.fontStyle = 'italic';
+                    moreMatches.textContent = `+ ${currentMatches.length - 3} autre(s) correspondance(s)`;
+                    newMatchesContainer.appendChild(moreMatches);
+                }
+            }
+        }
+
+        // Créer une bannière de notifications sur la page d'accueil pour montrer les nouveaux matchs
+        function createMatchesBanner() {
+            const email = localStorage.getItem('currentLoggedIn');
+            if (!email) return;
+            
+            // Vérifier si la bannière existe déjà
+            if (document.getElementById('matches-banner')) return;
+            
+            // Trouver l'élément où insérer la bannière
+            const introSection = document.getElementById('intro');
+            if (!introSection) return;
+            
+            // Récupérer les correspondances actuelles
+            const currentMatches = findMatchesForCompany(email);
+            
+            if (currentMatches.length === 0) return; // Ne rien afficher s'il n'y a pas de correspondances
+            
+            // Créer la bannière
+            const banner = document.createElement('div');
+            banner.id = 'matches-banner';
+            banner.style.backgroundColor = '#FDF5E8';
+            banner.style.border = '3px solid #E76F51';
+            banner.style.borderRadius = '8px';
+            banner.style.padding = '15px 20px';
+            banner.style.margin = '0 auto 30px auto';
+            banner.style.maxWidth = '1000px';
+            
+            const headerDiv = document.createElement('div');
+            headerDiv.style.display = 'flex';
+            headerDiv.style.justifyContent = 'space-between';
+            headerDiv.style.alignItems = 'center';
+            headerDiv.style.marginBottom = '15px';
+            
+            const title = document.createElement('h3');
+            title.textContent = '🔄 Nouvelles correspondances détectées !';
+            title.style.margin = '0';
+            title.style.color = '#E76F51';
+            
+            const viewAllBtn = document.createElement('button');
+            viewAllBtn.className = 'add-category-btn';
+            viewAllBtn.textContent = 'Voir toutes';
+            viewAllBtn.onclick = function() {
+                openModal('profileModal');
+                loadProfileData();
+            };
+            
+            headerDiv.appendChild(title);
+            headerDiv.appendChild(viewAllBtn);
+            banner.appendChild(headerDiv);
+            
+            // Afficher les 3 premières correspondances uniquement
+            const matchesToShow = currentMatches.slice(0, 3);
+            
+            matchesToShow.forEach((match, idx) => {
+                const matchDiv = document.createElement('div');
+                matchDiv.style.padding = '10px';
+                matchDiv.style.backgroundColor = idx % 2 === 0 ? '#fff' : '#f8f8f8';
+                matchDiv.style.borderRadius = '4px';
+                matchDiv.style.marginBottom = '10px';
+                
+                const matchText = document.createElement('p');
+                matchText.style.margin = '0';
+                
+                let matchDescription = `<strong>${match.company.name}</strong> : `;
+                
+                let categories = [];
+                if (match.details.theyProvide.length > 0) {
+                    categories.push(`Ils peuvent vous fournir <span style="color:#E76F51">${match.details.theyProvide.join(', ')}</span>`);
+                }
+                
+                if (match.details.weProvide.length > 0) {
+                    categories.push(`Vous pouvez leur fournir <span style="color:#2A9D8F">${match.details.weProvide.join(', ')}</span>`);
+                }
+                
+                matchText.innerHTML = matchDescription + categories.join(' et ');
+                matchDiv.appendChild(matchText);
+                banner.appendChild(matchDiv);
+            });
+            
+            // Si plus de 3 correspondances, indiquer "et plus..."
+            if (currentMatches.length > 3) {
+                const moreText = document.createElement('p');
+                moreText.textContent = `Et ${currentMatches.length - 3} autre(s) correspondance(s)...`;
+                moreText.style.textAlign = 'center';
+                moreText.style.fontStyle = 'italic';
+                moreText.style.margin = '5px 0 0 0';
+                banner.appendChild(moreText);
+            }
+            
+            // Insérer après la section d'intro
+            introSection.parentNode.insertBefore(banner, introSection.nextSibling);
+        }
+
+        // Modifier les fonctions existantes pour intégrer les correspondances
+        const originalLoadProfileData = loadProfileData;
+        loadProfileData = function() {
+            originalLoadProfileData();
+            displayMatches();
         };
-        
-        document.body.appendChild(newTestButton);
-        console.log("Bouton de test ajouté");
-    }
 
-    // Ajouter le bouton de test une fois que la page est chargée
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', addTestButton);
-    } else {
-        addTestButton();
-    }
-})();
-</script>
-<button id="super-simple-test" style="position: fixed; bottom: 10px; left: 10px; z-index: 1000; padding: 10px; background-color: #E76F51; color: white; border: none; border-radius: 5px;">
-    Test Email Ultra Simple
-</button>
+        // Exécuter au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Nouveau code pour les correspondances
+            const email = localStorage.getItem('currentLoggedIn');
+            if (email) {
+                // Si un utilisateur est connecté, afficher la bannière de matchs sur la page d'accueil
+                createMatchesBanner();
+            }
+            
+            // Fonction pour afficher une notification
+            function showNotification(message, isSuccess) {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.className = isSuccess ? 'success' : 'error';
+                notification.style.display = 'block';
+                
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
 
-<script>
-// Code ultra simple pour tester EmailJS
-document.getElementById('super-simple-test').addEventListener('click', function() {
-    console.clear(); // Effacer la console
-    console.log("Bouton de test simple cliqué");
-    
-    // Vérifier si EmailJS est disponible
-    if (typeof emailjs === 'undefined') {
-        alert("EmailJS n'est pas chargé!");
-        console.error("EmailJS n'est pas chargé");
-        return;
-    }
-    
-    // Demander l'email
-    const email = prompt("Entrez votre adresse email:");
-    if (!email) return;
-    
-    // Paramètres pour l'email
-    const params = {
-        to_email: email,
-        from_name: "Test Simple",
-        to_name: "Utilisateur",
-        message: "Ceci est un test d'EmailJS ultra simple."
-    };
-    
-    // Log pour déboguer
-    console.log("EmailJS disponible:", emailjs);
-    console.log("Tentative d'envoi avec params:", params);
-    
-    // Envoyer l'email
-    alert("Envoi d'email à " + email + " en cours...");
-    
-    emailjs.send("service_w5kg7es", "template_zm00bwr", params)
-        .then(function(response) {
-            console.log("SUCCESS!", response.status, response.text);
-            alert("✅ Email envoyé avec succès!");
-        })
-        .catch(function(err) {
-            console.log("FAILED...", err);
-            alert("❌ Erreur: " + JSON.stringify(err));
+            // Gestionnaire d'événement pour le bouton d'email
+            document.getElementById('email-button-unique').addEventListener('click', function() {
+                // Demander l'email
+                const email = prompt("Adresse email du destinataire :");
+                if (!email) return;
+                
+                // Demander le nom
+                const name = prompt("Nom du destinataire :", "Utilisateur");
+                if (!name) return;
+                
+                // Paramètres pour le template
+                const params = {
+                    email: email,
+                    name: name
+                };
+                
+                console.log("Envoi d'email avec le service SMTP configuré :", params);
+                
+                // Montrer que l'email est en cours d'envoi
+                this.disabled = true;
+                this.textContent = "ENVOI EN COURS...";
+                
+                // Utiliser votre service SMTP configuré
+                emailjs.send("service_n485hr9", "template_zm00bwr", params)
+                    .then((response) => {
+                        console.log("✅ Email envoyé avec succès !", response.status, response.text);
+                        showNotification(`✅ Email envoyé avec succès à ${email} !`, true);
+                    })
+                    .catch((err) => {
+                        console.error("❌ Erreur lors de l'envoi :", err);
+                        showNotification(`❌ Erreur : ${err.text || "Problème d'envoi"}`, false);
+                    })
+                    .finally(() => {
+                        // Réactiver le bouton
+                        this.disabled = false;
+                        this.textContent = "ENVOYER EMAIL";
+                    });
+            });
         });
-});
-</script>
-<button id="final-test" style="position: fixed; top: 10px; right: 10px; z-index: 1000; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">
-    ENVOYER EMAIL
-</button>
-<button id="final-test" style="position: fixed; top: 10px; right: 10px; z-index: 1000; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">
-    ENVOYER EMAIL
-</button>
-<script>
-document.getElementById('final-test').addEventListener('click', function() {
-    // Demander l'email
-    const email = prompt("Adresse email du destinataire :");
-    if (!email) return;
-    
-    // Demander le nom
-    const name = prompt("Nom du destinataire :", "Utilisateur");
-    
-    // Paramètres pour le template
-    const params = {
-        email: email,     // Pour {{email}} dans le template
-        name: name        // Pour {{name}} dans le template
-    };
-    
-    console.log("Envoi d'email avec le service SMTP configuré :", params);
-    
-    // Utiliser votre nouveau service SMTP
-    emailjs.send("service_n485hr9", "template_zm00bwr", params)
-        .then(function(response) {
-            console.log("✅ Email envoyé avec succès !", response.status, response.text);
-            alert("✅ Email envoyé avec succès à " + email + " !");
-        })
-        .catch(function(err) {
-            console.error("❌ Erreur lors de l'envoi :", err);
-            alert("❌ Erreur : " + JSON.stringify(err));
-        });
-});
-</script>
+    </script>
 </body>
 </html>
