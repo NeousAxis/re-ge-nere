@@ -2018,5 +2018,119 @@ const originalDOMContentLoadedHandler = document.addEventListener('DOMContentLoa
     }
 });
 </script>
+<script>
+// Fonction de débogage à exécuter après que la page soit chargée
+function debugMatches() {
+    const email = localStorage.getItem('currentLoggedIn');
+    
+    if (!email) {
+        console.log("Aucun utilisateur connecté");
+        alert("Aucun utilisateur connecté. Veuillez vous connecter pour voir les correspondances.");
+        return;
+    }
+    
+    console.log("Utilisateur connecté:", email);
+    
+    const companies = JSON.parse(localStorage.getItem('companies') || '[]');
+    console.log("Entreprises enregistrées:", companies);
+    
+    const currentCompany = companies.find(c => c.email === email);
+    console.log("Entreprise actuelle:", currentCompany);
+    
+    if (!currentCompany) {
+        console.log("Entreprise actuelle non trouvée");
+        alert("Entreprise actuelle non trouvée dans les données.");
+        return;
+    }
+    
+    console.log("Ressources de l'entreprise:", currentCompany.resourceCategories);
+    console.log("Besoins de l'entreprise:", currentCompany.needCategories);
+    
+    const matches = findMatchesForCompany(email);
+    console.log("Correspondances trouvées:", matches);
+    
+    if (matches.length === 0) {
+        console.log("Aucune correspondance trouvée");
+        alert("Aucune correspondance trouvée pour votre entreprise. Vérifiez que d'autres entreprises ont des besoins/ressources qui correspondent aux vôtres.");
+    } else {
+        console.log("Nombre de correspondances:", matches.length);
+        alert(`${matches.length} correspondance(s) trouvée(s) pour votre entreprise. Vérifiez la console pour plus de détails.`);
+    }
+}
+
+// Ajouter un bouton pour exécuter la fonction de débogage
+document.addEventListener('DOMContentLoaded', function() {
+    const debugButton = document.createElement('button');
+    debugButton.textContent = "Déboguer les correspondances";
+    debugButton.style.position = "fixed";
+    debugButton.style.bottom = "10px";
+    debugButton.style.right = "10px";
+    debugButton.style.zIndex = "1000";
+    debugButton.style.padding = "10px";
+    debugButton.style.backgroundColor = "#264653";
+    debugButton.style.color = "white";
+    debugButton.style.border = "none";
+    debugButton.style.borderRadius = "5px";
+    debugButton.style.cursor = "pointer";
+    debugButton.onclick = debugMatches;
+    
+    document.body.appendChild(debugButton);
+});
+
+// Fonction pour trouver les correspondances pour une entreprise
+function findMatchesForCompany(companyEmail) {
+    const companies = JSON.parse(localStorage.getItem('companies') || '[]');
+    const currentCompany = companies.find(c => c.email === companyEmail);
+    
+    if (!currentCompany) return [];
+    
+    let matches = [];
+    
+    // Parcourir toutes les autres entreprises
+    companies.forEach(company => {
+        if (company.email === companyEmail) return; // Ignorer l'entreprise actuelle
+        
+        let hasMatch = false;
+        let matchDetails = {
+            theyProvide: [],  // Ce qu'ils peuvent nous fournir
+            weProvide: []     // Ce que nous pouvons leur fournir
+        };
+        
+        // Vérifier si les besoins de l'entreprise actuelle correspondent aux ressources de l'autre entreprise
+        if (currentCompany.needCategories && company.resourceCategories) {
+            const commonCategories = currentCompany.needCategories.filter(cat => 
+                company.resourceCategories.includes(cat)
+            );
+            
+            if (commonCategories.length > 0) {
+                hasMatch = true;
+                matchDetails.theyProvide = commonCategories;
+            }
+        }
+        
+        // Vérifier si les ressources de l'entreprise actuelle correspondent aux besoins de l'autre entreprise
+        if (currentCompany.resourceCategories && company.needCategories) {
+            const commonCategories = currentCompany.resourceCategories.filter(cat => 
+                company.needCategories.includes(cat)
+            );
+            
+            if (commonCategories.length > 0) {
+                hasMatch = true;
+                matchDetails.weProvide = commonCategories;
+            }
+        }
+        
+        // Si on a trouvé des correspondances, ajouter à la liste
+        if (hasMatch) {
+            matches.push({
+                company: company,
+                details: matchDetails
+            });
+        }
+    });
+    
+    return matches;
+}
+</script>
 </body>
 </html>
