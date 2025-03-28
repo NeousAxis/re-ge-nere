@@ -2380,7 +2380,9 @@ document.getElementById('super-simple-test').addEventListener('click', function(
 <button id="final-test" style="position: fixed; top: 10px; right: 10px; z-index: 1000; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">
     ENVOYER EMAIL
 </button>
-
+<button id="final-test" style="position: fixed; top: 10px; right: 10px; z-index: 1000; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">
+    ENVOYER EMAIL
+</button>
 <script>
 document.getElementById('final-test').addEventListener('click', function() {
     // Demander l'email
@@ -2390,16 +2392,16 @@ document.getElementById('final-test').addEventListener('click', function() {
     // Demander le nom
     const name = prompt("Nom du destinataire :", "Utilisateur");
     
-    // Paramètres qui correspondent exactement aux variables du template
+    // Paramètres pour le template
     const params = {
         email: email,     // Pour {{email}} dans le template
         name: name        // Pour {{name}} dans le template
     };
     
-    console.log("Envoi d'email avec les paramètres corrects :", params);
+    console.log("Envoi d'email avec le service SMTP configuré :", params);
     
-    // Envoyer l'email
-    emailjs.send("service_w5kg7es", "template_zm00bwr", params)
+    // Utiliser votre nouveau service SMTP
+    emailjs.send("service_n485hr9", "template_zm00bwr", params)
         .then(function(response) {
             console.log("✅ Email envoyé avec succès !", response.status, response.text);
             alert("✅ Email envoyé avec succès à " + email + " !");
