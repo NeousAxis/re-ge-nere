@@ -540,21 +540,23 @@
                     <input type="email" id="company-email" placeholder="Ex: contact@ecosolutions.ch">
                 </div>
                 <div class="form-group">
-                    <label for="company-sector">Secteur d'activité</label>
                     <select id="company-sector">
-                        <option value="">Sélectionnez un secteur</option>
-                        <option value="Agriculture">Agriculture</option>
-                        <option value="Alimentation">Alimentation & Restauration</option>
-                        <option value="Construction">Construction</option>
-                        <option value="Énergie">Énergie</option>
-                        <option value="Industrie">Industrie manufacturière</option>
-                        <option value="Commerce">Commerce</option>
-                        <option value="ServicesTech">Services technologiques</option>
-                        <option value="Transport">Transport & Logistique</option>
-                        <option value="Santé">Santé</option>
-                        <option value="Éducation">Éducation</option>
-                        <option value="Autre">Autre</option>
-                    </select>
+    <option value="">Sélectionnez un secteur</option>
+    <option value="Agriculture">Agriculture</option>
+    <option value="Alimentation">Alimentation & Restauration</option>
+    <option value="Construction">Construction</option>
+    <option value="Énergie">Énergie</option>
+    <option value="Industrie">Industrie manufacturière</option>
+    <option value="Commerce">Commerce</option>
+    <option value="ServicesTech">Services technologiques</option>
+    <option value="Transport">Transport & Logistique</option>
+    <option value="Santé">Santé</option>
+    <option value="Éducation">Éducation</option>
+    <option value="Conservation">Conservation</option> <!-- Nouvelle option -->
+    <option value="Recyclage">Recyclage</option> <!-- Nouvelle option -->
+    <option value="Autre">Autre</option>
+</select>
+<input type="text" id="other-sector" style="display:none;" placeholder="Veuillez préciser">
                 </div>
                 <button id="register-btn" class="submit-btn" onclick="registerCompany()">S'inscrire</button>
                 <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
