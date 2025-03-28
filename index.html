@@ -11,421 +11,361 @@
             emailjs.init("GX0U6Fx-DT8e7v6xo");
         })();
     </script>
-   <style>
-    /* Styles généraux */
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.6;
-        color: #333;
-        margin: 0;
-        padding: 0;
-        background-color: #f7f9fc;
-    }
-    
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-    
-    header {
-        background-color: #2A9D8F;
-        color: white;
-        padding: 20px 0;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    
-    header .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    header h1 {
-        margin: 0;
-        font-size: 2.2rem;
-    }
-    
-    header h2 {
-        margin: 0;
-        font-weight: normal;
-        font-size: 1.2rem;
-        opacity: 0.9;
-    }
-    
-    nav {
-        background-color: #264653;
-        color: white;
-    }
-    
-    nav ul {
-        display: flex;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-    
-    nav li {
-        padding: 15px 20px;
-    }
-    
-    nav a {
-        color: white;
-        text-decoration: none;
-    }
-    
-    nav a:hover {
-        text-decoration: underline;
-    }
-    
-    /* Sections */
-    section {
-        padding: 50px 0;
-    }
-    
-    section h2 {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #264653;
-    }
-    
-    .intro {
-        background-color: #E9C46A;
-        color: #264653;
-    }
-    
-   .intro p {
-    font-size: 1.2rem;
-    max-width: 800px;
-    margin: 0 auto 60px auto; /* Ajoute 60px de marge en bas */
-    text-align: center;
-}
-    
-    .benefits {
-        background-color: white;
-    }
-    
-    .benefits-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-    }
-    
-    .benefit-card {
-        background-color: #f7f9fc;
-        border-radius: 8px;
-        padding: 25px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        transition: transform 0.3s;
-    }
-    
-    .benefit-card:hover {
-        transform: translateY(-5px);
-    }
-    
-    .benefit-card h3 {
-        color: #2A9D8F;
-        margin-top: 0;
-    }
-    
-    .how-it-works {
-        background-color: #f7f9fc;
-    }
-    
-    .steps {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-    
-    .step {
-        display: flex;
-        margin-bottom: 40px;
-        align-items: center;
-    }
-    
-    .step-number {
-        background-color: #E76F51;
-        color: white;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-right: 20px;
-        flex-shrink: 0;
-    }
-    
-    .registration {
-        background-color: white;
-    }
-    
-    .form-container {
-        max-width: 600px;
-        margin: 0 auto;
-        background-color: #f7f9fc;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    
-    .form-group {
-        margin-bottom: 20px;
-    }
-    
-    label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #264653;
-    }
-    
-    input, select, textarea {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 1rem;
-        font-family: inherit;
-    }
-    
-    .submit-btn {
-        background-color: #2A9D8F;
-        color: white;
-        border: none;
-        padding: 14px 24px;
-        font-size: 1rem;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    
-    .submit-btn:hover {
-        background-color: #1f7268;
-    }
-    
-    .tag-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 10px;
-    }
-    
-    .tag {
-        background-color: #E9C46A;
-        color: #264653;
-        padding: 5px 10px;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        display: inline-block;
-    }
-    
-    footer {
-        background-color: #264653;
-        color: white;
-        padding: 40px 0;
-        text-align: center;
-    }
-    
-    /* Modal styles */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.4);
-    }
-    
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 30px;
-        border-radius: 8px;
-        width: 80%;
-        max-width: 800px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        position: relative;
-    }
-    
-    .close {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        font-size: 28px;
-        font-weight: bold;
-        color: #999;
-        cursor: pointer;
-    }
-    
-    .close:hover {
-        color: #333;
-    }
-    
-    .modal-header {
-        margin-bottom: 20px;
-    }
-    
-    .modal-header h2 {
-        color: #264653;
-        margin-top: 0;
-        margin-bottom: 10px;
-    }
-    
-    .tab {
-        display: none;
-    }
-    
-    .tab.active {
-        display: block;
-    }
-    
-    .tabs-nav {
-        display: flex;
-        border-bottom: 1px solid #ddd;
-        margin-bottom: 20px;
-    }
-    
-    .tab-btn {
-        padding: 10px 20px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 1rem;
-        color: #666;
-    }
-    
-    .tab-btn.active {
-        color: #2A9D8F;
-        border-bottom: 3px solid #2A9D8F;
-    }
-    
-    /* Profile styles */
-    .profile-section {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    
-    .profile-section h3 {
-        color: #264653;
-        margin-top: 0;
-    }
-    
-    .edit-btn {
-        background-color: #E9C46A;
-        color: #264653;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        float: right;
-    }
-    
-    .save-btn {
-        background-color: #2A9D8F;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-    
-    .cancel-btn {
-        background-color: #aaa;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
-        margin-left: 10px;
-    }
-    
-    .add-category-btn {
-        background-color: #E76F51;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-    
-    .export-btn {
-        background-color: #264653;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
-        display: block;
-        width: fit-content;
-    }
-    
-    /* Notification styles */
-    #notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 25px;
-        border-radius: 4px;
-        color: white;
-        font-weight: bold;
-        z-index: 1001;
-        display: none;
-    }
-    
-    #notification.success {
-        background-color: #2A9D8F;
-    }
-    
-    #notification.error {
-        background-color: #E76F51;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
+    <style>
+        /* Styles généraux */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fc;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: #2A9D8F;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
         header .container {
-            flex-direction: column;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        header h2 {
+            margin: 0;
+            font-weight: normal;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        nav {
+            background-color: #264653;
+            color: white;
+        }
         nav ul {
-            flex-direction: column;
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
-        
-        .step {
-            flex-direction: column;
+        nav li {
+            padding: 15px 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        /* Sections */
+        section {
+            padding: 50px 0;
+        }
+        section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #264653;
+        }
+        .intro {
+            background-color: #E9C46A;
+            color: #264653;
+        }
+        .intro p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 60px auto; /* Ajoute 60px de marge en bas */
             text-align: center;
         }
-        
+        .benefits {
+            background-color: white;
+        }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .benefit-card {
+            background-color: #f7f9fc;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+        .benefit-card h3 {
+            color: #2A9D8F;
+            margin-top: 0;
+        }
+        .how-it-works {
+            background-color: #f7f9fc;
+        }
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .step {
+            display: flex;
+            margin-bottom: 40px;
+            align-items: center;
+        }
         .step-number {
-            margin-right: 0;
-            margin-bottom: 15px;
+            background-color: #E76F51;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
         }
-        
+        .registration {
+            background-color: white;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f7f9fc;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #264653;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        .submit-btn {
+            background-color: #2A9D8F;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #1f7268;
+        }
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .tag {
+            background-color: #E9C46A;
+            color: #264653;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+        footer {
+            background-color: #264653;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
         .modal-content {
-            width: 95%;
-            margin: 10% auto;
-            padding: 15px;
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: relative;
         }
-    }
-    
-    /* Ajout pour espacer le texte d'introduction */
-    .intro-text {
-        margin-bottom: 60px;
-    }
-</style>
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #333;
+        }
+        .modal-header {
+            margin-bottom: 20px;
+        }
+        .modal-header h2 {
+            color: #264653;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .tab {
+            display: none;
+        }
+        .tab.active {
+            display: block;
+        }
+        .tabs-nav {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #666;
+        }
+        .tab-btn.active {
+            color: #2A9D8F;
+            border-bottom: 3px solid #2A9D8F;
+        }
+        /* Profile styles */
+        .profile-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .profile-section h3 {
+            color: #264653;
+            margin-top: 0;
+        }
+        .edit-btn {
+            background-color: #E9C46A;
+            color: #264653;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+        .save-btn {
+            background-color: #2A9D8F;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .cancel-btn {
+            background-color: #aaa;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        .add-category-btn {
+            background-color: #E76F51;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .export-btn {
+            background-color: #264653;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+            width: fit-content;
+        }
+        /* Notification styles */
+        #notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            z-index: 1001;
+            display: none;
+        }
+        #notification.success {
+            background-color: #2A9D8F;
+        }
+        #notification.error {
+            background-color: #E76F51;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            nav ul {
+                flex-direction: column;
+            }
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 15px;
+            }
+        }
+        /* Ajout pour espacer le texte d'introduction */
+        .intro-text {
+            margin-bottom: 60px;
+        }
+    </style>
     <!-- Notification Component -->
     <div id="notification"></div>
     
@@ -453,79 +393,82 @@
     </nav>
     
     <!-- Section introduction principale -->
-<section id="intro" class="intro">
-    <div class="container">
-        <h2>Créons un écosystème durable. Mutualisons nos ressources !</h2>
-        <p class="intro-text">Ré(GE)nère connecte les entreprises genevoises pour créer des synergies locales, valoriser les déchets et optimiser l'utilisation des ressources dans une démarche d'économie locale.</p>
+    <section id="intro" class="intro">
+        <div class="container">
+            <h2>Créons un écosystème durable. Mutualisons nos ressources !</h2>
+            <p class="intro-text">Ré(GE)nère connecte les entreprises genevoises pour créer des synergies locales, valoriser les déchets et optimiser l'utilisation des ressources dans une démarche d'économie locale.</p>
+        </div>
+    </section>
     
     <!-- Section Pourquoi rejoindre -->
-<section id="benefits" class="benefits">
-    <div class="container">
-        <h2>Pourquoi rejoindre notre écosystème ?</h2>
-        <div class="benefits-grid">
-            <div class="benefit-card">
-                <h3>Réseautage local</h3>
-                <p>Développez votre réseau professionnel en collaborant avec d'autres entreprises genevoises partageant vos valeurs.</p>
-            </div>
-            <div class="benefit-card">
-                <h3>Économies significatives</h3>
-                <p>Réduisez vos coûts d'élimination des déchets et trouvez des ressources à moindre coût auprès d'autres entreprises locales.</p>
-            </div>
-            <div class="benefit-card">
-                <h3>Impact environnemental positif</h3>
-                <p>Contribuez à réduire l'empreinte carbone de votre entreprise en donnant une seconde vie à vos ressources inutilisées.</p>
-            </div>
-            <div class="benefit-card">
-                <h3>Image responsable</h3>
-                <p>Renforcez votre image d'entreprise engagée dans le développement durable et l'économie locale.</p>
-            </div>
-            <div class="benefit-card">
-                <h3>Innovation collaborative</h3>
-                <p>Découvrez de nouvelles façons d'utiliser vos ressources et inspirez-vous des pratiques d'autres entreprises.</p>
-            </div>
-            <div class="benefit-card">
-                <h3>Simplicité d'utilisation</h3>
-                <p>Une plateforme intuitive pour publier vos offres et demandes, et être mis en relation automatiquement avec des correspondances pertinentes.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Section Comment ça marche -->
-<section id="how-it-works" class="how-it-works">
-    <div class="container">
-        <h2>Comment ça marche</h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Inscrivez votre entreprise</h3>
-                    <p>Remplissez le formulaire d'inscription avec les informations de votre entreprise. C'est gratuit et prend moins de 5 minutes.</p>
+    <section id="benefits" class="benefits">
+        <div class="container">
+            <h2>Pourquoi rejoindre notre écosystème ?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h3>Réseautage local</h3>
+                    <p>Développez votre réseau professionnel en collaborant avec d'autres entreprises genevoises partageant vos valeurs.</p>
                 </div>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Publiez vos ressources et besoins</h3>
-                    <p>Indiquez les ressources que vous pouvez offrir (déchets, matériaux, équipements, espaces, compétences) et celles dont vous avez besoin.</p>
+                <div class="benefit-card">
+                    <h3>Économies significatives</h3>
+                    <p>Réduisez vos coûts d'élimination des déchets et trouvez des ressources à moindre coût auprès d'autres entreprises locales.</p>
                 </div>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Recevez des correspondances</h3>
-                    <p>Notre algorithme identifie automatiquement les entreprises dont les besoins correspondent à vos ressources, et vice-versa.</p>
+                <div class="benefit-card">
+                    <h3>Impact environnemental positif</h3>
+                    <p>Contribuez à réduire l'empreinte carbone de votre entreprise en donnant une seconde vie à vos ressources inutilisées.</p>
                 </div>
-            </div>
-            <div class="step">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h3>Collaborez localement</h3>
-                    <p>Entrez en contact avec les entreprises suggérées et établissez des partenariats bénéfiques pour tous, dans une logique d'économie locale.</p>
+                <div class="benefit-card">
+                    <h3>Image responsable</h3>
+                    <p>Renforcez votre image d'entreprise engagée dans le développement durable et l'économie locale.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Innovation collaborative</h3>
+                    <p>Découvrez de nouvelles façons d'utiliser vos ressources et inspirez-vous des pratiques d'autres entreprises.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Simplicité d'utilisation</h3>
+                    <p>Une plateforme intuitive pour publier vos offres et demandes, et être mis en relation automatiquement avec des correspondances pertinentes.</p>
                 </div>
             </div>
         </div>
-</section>
+    </section>
+    
+    <!-- Section Comment ça marche -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2>Comment ça marche</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Inscrivez votre entreprise</h3>
+                        <p>Remplissez le formulaire d'inscription avec les informations de votre entreprise. C'est gratuit et prend moins de 5 minutes.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Publiez vos ressources et besoins</h3>
+                        <p>Indiquez les ressources que vous pouvez offrir (déchets, matériaux, équipements, espaces, compétences) et celles dont vous avez besoin.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Recevez des correspondances</h3>
+                        <p>Notre algorithme identifie automatiquement les entreprises dont les besoins correspondent à vos ressources, et vice-versa.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Collaborez localement</h3>
+                        <p>Entrez en contact avec les entreprises suggérées et établissez des partenariats bénéfiques pour tous, dans une logique d'économie locale.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <section id="registration" class="registration">
         <div class="container">
@@ -540,23 +483,24 @@
                     <input type="email" id="company-email" placeholder="Ex: contact@ecosolutions.ch">
                 </div>
                 <div class="form-group">
+                    <label for="company-sector">Secteur d'activité</label>
                     <select id="company-sector">
-    <option value="">Sélectionnez un secteur</option>
-    <option value="Agriculture">Agriculture</option>
-    <option value="Alimentation">Alimentation & Restauration</option>
-    <option value="Construction">Construction</option>
-    <option value="Énergie">Énergie</option>
-    <option value="Industrie">Industrie manufacturière</option>
-    <option value="Commerce">Commerce</option>
-    <option value="ServicesTech">Services technologiques</option>
-    <option value="Transport">Transport & Logistique</option>
-    <option value="Santé">Santé</option>
-    <option value="Éducation">Éducation</option>
-    <option value="Conservation">Conservation</option> <!-- Nouvelle option -->
-    <option value="Recyclage">Recyclage</option> <!-- Nouvelle option -->
-    <option value="Autre">Autre</option>
-</select>
-<input type="text" id="other-sector" style="display:none;" placeholder="Veuillez préciser">
+                        <option value="">Sélectionnez un secteur</option>
+                        <option value="Agriculture">Agriculture</option>
+                        <option value="Alimentation">Alimentation & Restauration</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Énergie">Énergie</option>
+                        <option value="Industrie">Industrie manufacturière</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="ServicesTech">Services technologiques</option>
+                        <option value="Transport">Transport & Logistique</option>
+                        <option value="Santé">Santé</option>
+                        <option value="Éducation">Éducation</option>
+                        <option value="Conservation">Conservation</option>
+                        <option value="Recyclage">Recyclage</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                    <input type="text" id="other-sector" style="display:none;" placeholder="Veuillez préciser">
                 </div>
                 <button id="register-btn" class="submit-btn" onclick="registerCompany()">S'inscrire</button>
                 <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
@@ -568,1399 +512,4 @@
     
     <footer>
         <div class="container">
-            <p>&copy; 2023 Ré(GE)nère | Plateforme d'Écosystème Mutualisé pour les entreprises genevoises</p>
-            <p><small>Version prototype - Données stockées localement</small></p>
-        </div>
-    </footer>
-    
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('loginModal')">&times;</span>
-            <div class="modal-header">
-                <h2>Connexion</h2>
-                <p>Accédez à votre espace entreprise</p>
-            </div>
-            <div class="form-container" style="box-shadow: none; padding: 0;">
-                <div class="form-group">
-                    <label for="login-email">Email professionnel</label>
-                    <input type="email" id="login-email" placeholder="Votre email professionnel">
-                </div>
-                </div>
-                <button id="login-btn" class="submit-btn" onclick="loginCompany()">Se connecter</button>
-                <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
-                    Pas encore de compte ? <a href="#" onclick="closeModal('loginModal'); document.getElementById('company-email').focus(); return false;">Inscrivez-vous ici</a>
-                </p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Profile Modal -->
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('profileModal')">&times;</span>
-            <div class="modal-header">
-                <h2>Profil Entreprise</h2>
-                <p>Gérez vos informations et vos correspondances</p>
-            </div>
-            
-            <div class="tabs-nav">
-                <button class="tab-btn active" onclick="switchTab('profileTab')">Profil</button>
-                <button class="tab-btn" onclick="switchTab('resourcesTab')">Ressources & Besoins</button>
-            </div>
-            
-            <div id="profileTab" class="tab active">
-                <div id="profileContent">
-                    <!-- Le contenu sera chargé dynamiquement -->
-                    <p>Chargement du profil...</p>
-                </div>
-            </div>
-            
-            <div id="resourcesTab" class="tab">
-                <div class="profile-section">
-                    <h3>Ressources disponibles</h3>
-                    <p>Sélectionnez les ressources que votre entreprise peut offrir à d'autres acteurs de l'écosystème.</p>
-                    
-                    <div class="form-group">
-                        <label for="resource-category">Catégorie de ressource</label>
-                        <select id="resource-category">
-                            <option value="">Sélectionnez une catégorie</option>
-                            <!-- Options seront ajoutées dynamiquement -->
-                        </select>
-                    </div>
-                    
-                    <div id="selected-resources" class="tag-container">
-                        <!-- Les ressources sélectionnées seront affichées ici -->
-                    </div>
-                    
-                    <button class="add-category-btn" onclick="addResourceCategory()">Ajouter la catégorie</button>
-                    
-                    <div class="form-group" style="margin-top: 30px;">
-                        <label for="resource-details">Détails supplémentaires (optionnel)</label>
-                        <textarea id="resource-details" rows="3" placeholder="Précisez le type, la quantité, la fréquence, etc."></textarea>
-                    </div>
-                    
-                    <button class="save-btn" onclick="saveResources()">Enregistrer les modifications</button>
-                </div>
-                
-                <div class="profile-section">
-                    <h3>Besoins recherchés</h3>
-                    <p>Indiquez les ressources dont votre entreprise a besoin.</p>
-                    
-                    <div class="form-group">
-                        <label for="need-category">Catégorie de besoin</label>
-                        <select id="need-category">
-                            <option value="">Sélectionnez une catégorie</option>
-                            <!-- Options seront ajoutées dynamiquement -->
-                        </select>
-                    </div>
-                    
-                    <div id="selected-needs" class="tag-container">
-                        <!-- Les besoins sélectionnés seront affichés ici -->
-                    </div>
-                    
-                    <button class="add-category-btn" onclick="addNeedCategory()">Ajouter la catégorie</button>
-                    
-                    <div class="form-group" style="margin-top: 30px;">
-                        <label for="need-details">Détails supplémentaires (optionnel)</label>
-                        <textarea id="need-details" rows="3" placeholder="Précisez vos besoins spécifiques, quantités, etc."></textarea>
-                    </div>
-                    
-                    <button class="save-btn" onclick="saveNeeds()">Enregistrer les modifications</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Données des catégories
-        const resourceCategories = [
-            "Matières premières agricoles", 
-            "Déchets organiques", 
-            "Emballages (carton, plastique, etc.)", 
-            "Matériaux de construction", 
-            "Palettes et supports", 
-            "Mobilier et équipements", 
-            "Matériel informatique", 
-            "Fournitures de bureau", 
-            "Chaleur/Énergie excédentaire", 
-            "Espace de stockage", 
-            "Transport/Logistique", 
-            "Expertise/Conseil", 
-            "Temps de travail/Personnel"
-        ];
-        
-        // Fonction pour peupler les dropdown de catégories
-        function populateCategoryDropdowns() {
-            const resourceCategoryDropdown = document.getElementById('resource-category');
-            const needCategoryDropdown = document.getElementById('need-category');
-            
-            // Vider les dropdowns
-            resourceCategoryDropdown.innerHTML = '<option value="">Sélectionnez une catégorie</option>';
-            needCategoryDropdown.innerHTML = '<option value="">Sélectionnez une catégorie</option>';
-            
-            // Ajouter les options
-            resourceCategories.forEach(category => {
-                const resourceOption = document.createElement('option');
-                resourceOption.value = category;
-                resourceOption.textContent = category;
-                resourceCategoryDropdown.appendChild(resourceOption);
-                
-                const needOption = document.createElement('option');
-                needOption.value = category;
-                needOption.textContent = category;
-                needCategoryDropdown.appendChild(needOption);
-            });
-        }
-        
-        // Fonction pour enregistrer une entreprise
-        function registerCompany() {
-            const name = document.getElementById('company-name').value.trim();
-            const email = document.getElementById('company-email').value.trim();
-            const sector = document.getElementById('company-sector').value;
-            
-            if (!name || !email || !sector) {
-                showNotification("Veuillez remplir tous les champs obligatoires", false);
-                return;
-            }
-            
-            if (!isValidEmail(email)) {
-                showNotification("Veuillez entrer un email valide", false);
-                return;
-            }
-            
-            // Récupérer les entreprises existantes
-            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-            
-            // Vérifier si l'email existe déjà
-            if (companies.some(company => company.email === email)) {
-                showNotification("Cet email est déjà utilisé", false);
-                return;
-            }
-            
-            // Créer le nouvel objet entreprise
-            const newCompany = {
-                name,
-                email,
-                sector,
-                createdAt: new Date().toISOString(),
-                resourceCategories: [],
-                resourceDetails: '',
-                needCategories: [],
-                needDetails: ''
-            };
-            
-            // Ajouter l'entreprise à la liste
-            companies.push(newCompany);
-            
-            // Sauvegarder la liste mise à jour
-            localStorage.setItem('companies', JSON.stringify(companies));
-            
-            // Connecter l'utilisateur
-            localStorage.setItem('currentLoggedIn', email);
-            
-            // Mettre à jour l'interface
-            updateAuthStatus();
-            
-            // Afficher une notification
-            showNotification("Inscription réussie ! Bienvenue sur Ré(GE)nère.", true);
-            
-            // Vider le formulaire
-            document.getElementById('company-name').value = '';
-            document.getElementById('company-email').value = '';
-            document.getElementById('company-sector').value = '';
-            
-            // Montrer le profil
-            openModal('profileModal');
-            loadProfileData();
-        }
-        
-        // Fonction pour connecter une entreprise
-        function loginCompany() {
-            const email = document.getElementById('login-email').value.trim();
-            if (!email) {
-                showNotification("Veuillez remplir votre email", false);
-                return;
-            }
-            
-            // Récupérer les entreprises
-            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-            
-            // Trouver l'entreprise correspondante
-            const company = companies.find(c => c.email === email);
-            
-           if (!company) {
-    showNotification("Email non reconnu", false);
-    return;
-}
-            
-            // Connecter l'utilisateur
-            localStorage.setItem('currentLoggedIn', email);
-            
-            // Mettre à jour l'interface
-            updateAuthStatus();
-            
-            // Fermer le modal de connexion
-            closeModal('loginModal');
-            
-            // Afficher une notification
-            showNotification("Connexion réussie ! Bienvenue.", true);
-            
-            // Vider le formulaire
-            document.getElementById('login-email').value = '';
-            
-            // Ouvrir le profil
-            openModal('profileModal');
-            loadProfileData();
-            
-            // Attendre que le profil soit chargé puis gérer les matches
-            setTimeout(handleMatches, 500);
-        }
-        
-        // Fonction pour déconnecter l'utilisateur
-        function logoutCompany() {
-            localStorage.removeItem('currentLoggedIn');
-            updateAuthStatus();
-            showNotification("Vous avez été déconnecté", true);
-        }
-        
-        // Fonction pour mettre à jour l'affichage selon l'état de connexion
-        function updateAuthStatus() {
-            const authStatusElement = document.getElementById('auth-status');
-            const currentLoggedIn = localStorage.getItem('currentLoggedIn');
-            
-            if (currentLoggedIn) {
-                // L'utilisateur est connecté
-                const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-                const company = companies.find(c => c.email === currentLoggedIn);
-                
-                if (company) {
-                    authStatusElement.innerHTML = `
-                        <div style="display: flex; align-items: center;">
-                            <div style="margin-right: 15px; text-align: right;">
-                                <div style="font-weight: bold;">${company.name}</div>
-                                <div style="font-size: 0.9rem; opacity: 0.8;">${currentLoggedIn}</div>
-                            </div>
-                            <div>
-                                <button class="submit-btn" style="background-color: #264653;" onclick="openModal('profileModal'); loadProfileData();">Mon Profil</button>
-                                <button class="submit-btn" style="background-color: #E76F51; margin-left: 10px;" onclick="logoutCompany()">Déconnexion</button>
-                            </div>
-                        </div>
-                    `;
-                }
-            } else {
-                // L'utilisateur n'est pas connecté
-                authStatusElement.innerHTML = `
-                    <button class="submit-btn" onclick="openModal('loginModal')">Connexion / Inscription</button>
-                `;
-            }
-        }
-        
-        // Fonction pour charger les données du profil
-        function loadProfileData() {
-            const profileContent = document.getElementById('profileContent');
-            const currentLoggedIn = localStorage.getItem('currentLoggedIn');
-            
-            if (!currentLoggedIn) {
-                profileContent.innerHTML = '<p>Veuillez vous connecter pour voir votre profil.</p>';
-                return;
-            }
-            
-            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-            const company = companies.find(c => c.email === currentLoggedIn);
-            
-            if (!company) {
-                profileContent.innerHTML = '<p>Données de profil introuvables.</p>';
-                return;
-            }
-            
-            // Section Info Entreprise
-            let profileHTML = `
-                <div class="profile-section">
-                    <button class="edit-btn" onclick="editCompanyInfo()">Modifier</button>
-                    <h3>Informations de l'entreprise</h3>
-                    <div id="company-info-view">
-                        <p><strong>Nom:</strong> ${company.name}</p>
-                        <p><strong>Email:</strong> ${company.email}</p>
-                        <p><strong>Secteur:</strong> ${company.sector}</p>
-                        <p><strong>Membre depuis:</strong> ${new Date(company.createdAt).toLocaleDateString()}</p>
-                    </div>
-                    <div id="company-info-edit" style="display: none;">
-                        <div class="form-group">
-                            <label for="edit-company-name">Nom de l'entreprise</label>
-                            <input type="text" id="edit-company-name" value="${company.name}">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-company-sector">Secteur d'activité</label>
-                            <select id="edit-company-sector">
-                                ${getSectorOptions(company.sector)}
-                            </select>
-                        </div>
-                        <button class="save-btn" onclick="saveCompanyInfo()">Enregistrer</button>
-                        <button class="cancel-btn" onclick="cancelEditCompanyInfo()">Annuler</button>
-                    </div>
-                </div>
-            `;
-            
-            // Section Ressources
-            profileHTML += `
-                <div class="profile-section">
-                    <h3>Ressources disponibles</h3>
-                    <div id="resources-view">
-                        ${getResourcesHTML(company.resourceCategories, company.resourceDetails)}
-                    </div>
-                </div>
-            `;
-            
-            // Section Besoins
-            profileHTML += `
-                <div class="profile-section">
-                    <h3>Besoins recherchés</h3>
-                    <div id="needs-view">
-                        ${getNeedsHTML(company.needCategories, company.needDetails)}
-                    </div>
-                </div>
-            `;
-            
-            // Bouton d'export
-            profileHTML += `
-                <button onclick="exportCompanyData()" class="export-btn">📥 Exporter mes données</button>
-            `;
-            
-            profileContent.innerHTML = profileHTML;
-            
-            displayMatches();
-        }
-        
-        // Fonction pour obtenir les options du secteur
-        function getSectorOptions(selectedSector) {
-            const sectors = [
-                "Agriculture",
-                "Alimentation",
-                "Construction",
-                "Énergie",
-                "Industrie",
-                "Commerce",
-                "ServicesTech",
-                "Transport",
-                "Santé",
-                "Éducation",
-                "Autre"
-            ];
-            
-            let optionsHTML = '';
-            sectors.forEach(sector => {
-                const selected = sector === selectedSector ? 'selected' : '';
-                optionsHTML += `<option value="${sector}" ${selected}>${sector}</option>`;
-            });
-            
-            return optionsHTML;
-        }
-        
-        // Fonction pour obtenir le HTML des ressources
-        function getResourcesHTML(resourceCategories, resourceDetails) {
-            if (!resourceCategories || resourceCategories.length === 0) {
-                return '<p>Aucune ressource renseignée. Allez dans l\'onglet "Ressources & Besoins" pour en ajouter.</p>';
-            }
-            
-            let html = '<div class="tag-container">';
-            resourceCategories.forEach(category => {
-                html += `<div class="tag">${category}</div>`;
-            });
-            html += '</div>';
-            
-            if (resourceDetails) {
-                html += `<p><strong>Détails:</strong> ${resourceDetails}</p>`;
-            }
-            
-            return html;
-        }
-        
-        // Fonction pour obtenir le HTML des besoins
-        function getNeedsHTML(needCategories, needDetails) {
-            if (!needCategories || needCategories.length === 0) {
-                return '<p>Aucun besoin renseigné. Allez dans l\'onglet "Ressources & Besoins" pour en ajouter.</p>';
-            }
-            
-            let html = '<div class="tag-container">';
-            needCategories.forEach(category => {
-                html += `<div class="tag" style="background-color: #E76F51; color: white;">${category}</div>`;
-            });
-            html += '</div>';
-            
-            if (needDetails) {
-                html += `<p><strong>Détails:</strong> ${needDetails}</p>`;
-            }
-            
-            return html;
-        }
-        
-        // Fonction pour éditer les infos de l'entreprise
-        function editCompanyInfo() {
-            document.getElementById('company-info-view').style.display = 'none';
-            document.getElementById('company-info-edit').style.display = 'block';
-        }
-        
-        // Fonction pour annuler l'édition
-        function cancelEditCompanyInfo() {
-            document.getElementById('company-info-view').style.display = 'block';
-            document.getElementById('company-info-edit').style.display = 'none';
-        }
-        
-        // Fonction pour sauvegarder les infos modifiées
-        function saveCompanyInfo() {
-            const currentLoggedIn = localStorage.getItem('currentLoggedIn');
-            if (!currentLoggedIn) return;
-            
-            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-            const companyIndex = companies.findIndex(c => c.email === currentLoggedIn);
-            
-            if (companyIndex === -1) return;
-            
-            const updatedName = document.getElementById('edit-company-name').value.trim();
-            const updatedSector = document.getElementById('edit-company-sector').value;
-            
-            if (!updatedName || !updatedSector) {
-                showNotification("Veuillez remplir tous les champs", false);
-                return;
-            }
-            
-            // Mettre à jour les données
-            companies[companyIndex].name = updatedName;
-            companies[companyIndex].sector = updatedSector;
-            
-            // Sauvegarder
-            localStorage.setItem('companies', JSON.stringify(companies));
-            
-            // Rafraîchir l'affichage
-            cancelEditCompanyInfo();
-            loadProfileData();
-            updateAuthStatus();
-            
-            showNotification("Informations mises à jour avec succès", true);
-        }
-        
-        // Fonction pour ajouter une catégorie de ressource
-        function addResourceCategory() {
-            const selectedCategory = document.getElementById('resource-category').value;
-            
-            if (!selectedCategory) {
-                showNotification("Veuillez sélectionner une catégorie", false);
-                return;
-            }
-            
-            // Récupérer les catégories actuelles
-            const selectedResourcesContainer = document.getElementById('selected-resources');
-            const currentCategories = [];
-            
-            // Parcourir les tags existants pour récupérer les catégories actuelles
-            const existingTags = selectedResourcesContainer.querySelectorAll('.tag');
-            existingTags.forEach(tag => {
-                currentCategories.push(tag.textContent);
-            });
-            
-            // Vérifier si la catégorie existe déjà
-            if (currentCategories.includes(selectedCategory)) {
-                showNotification("Cette catégorie est déjà ajoutée", false);
-                return;
-            }
-            
-            // Créer un nouveau tag
-            const newTag = document.createElement('div');
-            newTag.className = 'tag';
-            newTag.textContent = selectedCategory;
-            
-            // Ajouter un bouton de suppression
-            const deleteBtn = document.createElement('span');
-            deleteBtn.innerHTML = ' &times;';
-            deleteBtn.style.cursor = 'pointer';
-            deleteBtn.style.marginLeft = '5px';
-            deleteBtn.onclick = function() {
-                selectedResourcesContainer.removeChild(newTag);
-            };
-            
-            newTag.appendChild(deleteBtn);
-            selectedResourcesContainer.appendChild(newTag);
-            
-            // Réinitialiser le dropdown
-            document.getElementById('resource-category').value = '';
-        }
-        
-        // Fonction pour ajouter une catégorie de besoin
-        function addNeedCategory() {
-            const selectedCategory = document.getElementById('need-category').value;
-            
-            if (!selectedCategory) {
-                showNotification("Veuillez sélectionner une catégorie", false);
-                return;
-            }
-            
-            // Récupérer les catégories actuelles
-            const selectedNeedsContainer = document.getElementById('selected-needs');
-            const currentCategories = [];
-            
-            // Parcourir les tags existants pour récupérer les catégories actuelles
-            const existingTags = selectedNeedsContainer.querySelectorAll('.tag');
-            existingTags.forEach(tag => {
-                currentCategories.push(tag.textContent);
-            });
-            
-            // Vérifier si la catégorie existe déjà
-            if (currentCategories.includes(selectedCategory)) {
-                showNotification("Cette catégorie est déjà ajoutée", false);
-                return;
-            }
-            
-            // Créer un nouveau tag
-            const newTag = document.createElement('div');
-            newTag.className = 'tag';
-            newTag.textContent = selectedCategory;
-            newTag.style.backgroundColor = '#E76F51';
-            newTag.style.color = 'white';
-            
-            // Ajouter un bouton de suppression
-            const deleteBtn = document.createElement('span');
-            deleteBtn.innerHTML = ' &times;';
-            deleteBtn.style.cursor = 'pointer';
-            deleteBtn.style.marginLeft = '5px';
-            deleteBtn.onclick = function() {
-                selectedNeedsContainer.removeChild(newTag);
-            };
-            
-            newTag.appendChild(deleteBtn);
-            selectedNeedsContainer.appendChild(newTag);
-            
-            // Réinitialiser le dropdown
-            document.getElementById('need-category').value = '';
-        }
-        
-        // Fonction pour sauvegarder les ressources
-        function saveResources() {
-            const currentLoggedIn = localStorage.getItem('currentLoggedIn');
-            if (!currentLoggedIn) return;
-            
-            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-            const companyIndex = companies.findIndex(c => c.email === currentLoggedIn);
-            
-            if (companyIndex === -1) return;
-            
-            // Récupérer les catégories sélectionnées
-            const selectedResourcesContainer = document.getElementById('selected-resources');
-            const resourceTags = selectedResourcesContainer.querySelectorAll('.tag');
-            
-            const resourceCategories = [];
-            resourceTags.forEach(tag => {
-                // Récupérer uniquement le texte de la catégorie, sans le bouton de suppression
-                const categoryText = tag.textContent.replace(' ×', '');
-                resourceCategories.push(categoryText);
-            });
-            
-            // Récupérer les détails
-            const resourceDetails = document.getElementById('resource-details').value.trim();
-            
-            // Mettre à jour les données
-            companies[companyIndex].resourceCategories = resourceCategories;
-            companies[companyIndex].resourceDetails = resourceDetails;
-            
-            // Sauvegarder
-            localStorage.setItem('companies', JSON.stringify(companies));
-            
-            // Notifier et rafraîchir
-            showNotification("Ressources mises à jour avec succès", true);
-            switchTab('profileTab');
-            loadProfileData();
-            
-            // Gérer les matches après mise à jour
-            setTimeout(handleMatches, 500);
-        }
-        
-        // Fonction pour sauvegarder les besoins
-        function saveNeeds() {
-            const currentLoggedIn = localStorage.getItem('currentLoggedIn');
-            if (!currentLoggedIn) return;
-            
-            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-            const companyIndex = companies.findIndex(c => c.email === currentLoggedIn);
-            
-            if (companyIndex === -1) return;
-            
-            // Récupérer les catégories sélectionnées
-            const selectedNeedsContainer = document.getElementById('selected-needs');
-            const needTags = selectedNeedsContainer.querySelectorAll('.tag');
-            
-            const needCategories = [];
-            needTags.forEach(tag => {
-                // Récupérer uniquement le texte de la catégorie, sans le bouton de suppression
-                const categoryText = tag.textContent.replace(' ×', '');
-                needCategories.push(categoryText);
-            });
-            
-            // Récupérer les détails
-            const needDetails = document.getElementById('need-details').value.trim();
-            
-            // Mettre à jour les données
-            companies[companyIndex].needCategories = needCategories;
-            companies[companyIndex].needDetails = needDetails;
-            
-            // Sauvegarder
-            localStorage.setItem('companies', JSON.stringify(companies));
-            
-            // Notifier et rafraîchir
-            showNotification("Besoins mis à jour avec succès", true);
-            switchTab('profileTab');
-            loadProfileData();
-            
-            // Gérer les matches après mise à jour
-            setTimeout(handleMatches, 500);
-        }
-        
-        // Fonction pour charger les ressources et besoins existants
-        function loadExistingResourcesAndNeeds() {
-            const currentLoggedIn = localStorage.getItem('currentLoggedIn');
-            if (!currentLoggedIn) return;
-            
-            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-            const company = companies.find(c => c.email === currentLoggedIn);
-            
-            if (!company) return;
-            
-            // Charger les ressources
-            const selectedResourcesContainer = document.getElementById('selected-resources');
-            selectedResourcesContainer.innerHTML = '';
-            
-            if (company.resourceCategories && company.resourceCategories.length > 0) {
-                company.resourceCategories.forEach(category => {
-                    const newTag = document.createElement('div');
-                    newTag.className = 'tag';
-                    newTag.textContent = category;
-                    
-                    // Ajouter un bouton de suppression
-                    const deleteBtn = document.createElement('span');
-                    deleteBtn.innerHTML = ' &times;';
-                    deleteBtn.style.cursor = 'pointer';
-                    deleteBtn.style.marginLeft = '5px';
-                    deleteBtn.onclick = function() {
-                        selectedResourcesContainer.removeChild(newTag);
-                    };
-                    
-                    newTag.appendChild(deleteBtn);
-                    selectedResourcesContainer.appendChild(newTag);
-                });
-            }
-            
-            // Charger les détails des ressources
-            document.getElementById('resource-details').value = company.resourceDetails || '';
-            
-            // Charger les besoins
-            const selectedNeedsContainer = document.getElementById('selected-needs');
-            selectedNeedsContainer.innerHTML = '';
-            
-            if (company.needCategories && company.needCategories.length > 0) {
-                company.needCategories.forEach(category => {
-                    const newTag = document.createElement('div');
-                    newTag.className = 'tag';
-                    newTag.textContent = category;
-                    newTag.style.backgroundColor = '#E76F51';
-                    newTag.style.color = 'white';
-                    
-                    // Ajouter un bouton de suppression
-                    const deleteBtn = document.createElement('span');
-                    deleteBtn.innerHTML = ' &times;';
-                    deleteBtn.style.cursor = 'pointer';
-                    deleteBtn.style.marginLeft = '5px';
-                    deleteBtn.onclick = function() {
-                        selectedNeedsContainer.removeChild(newTag);
-                    };
-                    
-                    newTag.appendChild(deleteBtn);
-                    selectedNeedsContainer.appendChild(newTag);
-                });
-            }
-            
-            // Charger les détails des besoins
-            document.getElementById('need-details').value = company.needDetails || '';
-        }
-        
-        // Fonction pour exporter les données de l'entreprise
-        function exportCompanyData() {
-            const currentLoggedIn = localStorage.getItem('currentLoggedIn');
-            if (!currentLoggedIn) return;
-            
-            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-            const company = companies.find(c => c.email === currentLoggedIn);
-            
-            if (!company) return;
-            
-            // Créer une copie sans le mot de passe
-            const exportData = {
-                name: company.name,
-                email: company.email,
-                sector: company.sector,
-                createdAt: company.createdAt,
-                resourceCategories: company.resourceCategories || [],
-                resourceDetails: company.resourceDetails || '',
-                needCategories: company.needCategories || [],
-                needDetails: company.needDetails || ''
-            };
-            
-            // Convertir en JSON avec formatage
-            const dataStr = JSON.stringify(exportData, null, 2);
-            
-            // Créer un Blob
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            
-            // Créer un lien de téléchargement
-            const url = URL.createObjectURL(blob);
-            const downloadLink = document.createElement('a');
-            downloadLink.href = url;
-            downloadLink.download = `regenere_${company.name.replace(/\s+/g, '_')}_export.json`;
-            
-            // Cliquer sur le lien pour déclencher le téléchargement
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            
-            // Nettoyer
-            document.body.removeChild(downloadLink);
-            URL.revokeObjectURL(url);
-            
-            showNotification("Données exportées avec succès", true);
-        }
-        
-        // Fonction pour trouver les correspondances pour une entreprise
-        function findMatchesForCompany(companyEmail) {
-            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-            const currentCompany = companies.find(c => c.email === companyEmail);
-            
-            if (!currentCompany) return [];
-            
-            let matches = [];
-            
-            // Parcourir toutes les autres entreprises
-            companies.forEach(company => {
-                if (company.email === companyEmail) return; // Ignorer l'entreprise actuelle
-                
-                let hasMatch = false;
-                let matchDetails = {
-                    theyProvide: [],  // Ce qu'ils peuvent nous fournir
-                    weProvide: []     // Ce que nous pouvons leur fournir
-                };
-                
-                // Vérifier si les besoins de l'entreprise actuelle correspondent aux ressources de l'autre entreprise
-                if (currentCompany.needCategories && company.resourceCategories) {
-                    const commonCategories = currentCompany.needCategories.filter(cat => 
-                        company.resourceCategories.includes(cat)
-                    );
-                    
-                    if (commonCategories.length > 0) {
-                        hasMatch = true;
-                        matchDetails.theyProvide = commonCategories;
-                    }
-                }
-                
-                // Vérifier si les ressources de l'entreprise actuelle correspondent aux besoins de l'autre entreprise
-                if (currentCompany.resourceCategories && company.needCategories) {
-                    const commonCategories = currentCompany.resourceCategories.filter(cat => 
-                        company.needCategories.includes(cat)
-                    );
-                    
-                    if (commonCategories.length > 0) {
-                        hasMatch = true;
-                        matchDetails.weProvide = commonCategories;
-                    }
-                }
-                
-                // Si on a trouvé des correspondances, ajouter à la liste
-                if (hasMatch) {
-                    matches.push({
-                        company: company,
-                        details: matchDetails
-                    });
-                }
-            });
-            
-            return matches;
-        }
-
-        // Fonction pour créer une carte de match
-        function createMatchCard(match, isNew) {
-            const matchCard = document.createElement('div');
-            matchCard.className = 'profile-section';
-            matchCard.style.marginBottom = '15px';
-            matchCard.style.padding = '15px';
-            matchCard.style.backgroundColor = isNew ? '#FDF5E8' : '#f7f7f7';
-            matchCard.style.borderLeft = isNew ? '4px solid #E76F51' : '4px solid #2A9D8F';
-            
-            // En-tête avec nom de l'entreprise et badge "Nouveau" si applicable
-            const headerDiv = document.createElement('div');
-            headerDiv.style.display = 'flex';
-            headerDiv.style.justifyContent = 'space-between';
-            headerDiv.style.alignItems = 'center';
-            headerDiv.style.marginBottom = '10px';
-            
-            const companyName = document.createElement('h4');
-            companyName.textContent = match.company.name;
-            companyName.style.margin = '0';
-            companyName.style.color = '#264653';
-            
-            headerDiv.appendChild(companyName);
-            
-            // Ajouter un badge "Nouveau" si c'est un nouveau match
-            if (isNew) {
-                const newBadge = document.createElement('span');
-                newBadge.textContent = 'NOUVEAU';
-                newBadge.style.backgroundColor = '#E76F51';
-                newBadge.style.color = 'white';
-                newBadge.style.padding = '4px 8px';
-                newBadge.style.borderRadius = '4px';
-                newBadge.style.fontSize = '0.8rem';
-                headerDiv.appendChild(newBadge);
-            }
-            
-            matchCard.appendChild(headerDiv);
-            
-            // Afficher ce que l'autre entreprise peut nous fournir
-            if (match.details.theyProvide && match.details.theyProvide.length > 0) {
-                const theyProvideTitle = document.createElement('p');
-                theyProvideTitle.innerHTML = `<strong>${match.company.name} peut vous fournir :</strong>`;
-                theyProvideTitle.style.marginBottom = '5px';
-                
-                const categoriesDiv = document.createElement('div');
-                categoriesDiv.className = 'tag-container';
-                categoriesDiv.style.marginBottom = '10px';
-                
-                match.details.theyProvide.forEach(category => {
-                    const tag = document.createElement('div');
-                    tag.className = 'tag';
-                    tag.textContent = category;
-                    tag.style.backgroundColor = '#E9C46A';
-                    categoriesDiv.appendChild(tag);
-                });
-                
-                matchCard.appendChild(theyProvideTitle);
-                matchCard.appendChild(categoriesDiv);
-            }
-            
-            // Afficher ce que nous pouvons fournir à l'autre entreprise
-            if (match.details.weProvide && match.details.weProvide.length > 0) {
-                const weProvideTitle = document.createElement('p');
-                weProvideTitle.innerHTML = `<strong>Vous pouvez fournir à ${match.company.name} :</strong>`;
-                weProvideTitle.style.marginBottom = '5px';
-                
-                const categoriesDiv = document.createElement('div');
-                categoriesDiv.className = 'tag-container';
-                categoriesDiv.style.marginBottom = '10px';
-                
-                match.details.weProvide.forEach(category => {
-                    const tag = document.createElement('div');
-                    tag.className = 'tag';
-                    tag.textContent = category;
-                    tag.style.backgroundColor = '#2A9D8F';
-                    tag.style.color = 'white';
-                    categoriesDiv.appendChild(tag);
-                });
-                
-                matchCard.appendChild(weProvideTitle);
-                matchCard.appendChild(categoriesDiv);
-            }
-            
-            // Bouton de contact (uniquement pour les nouveaux matchs)
-            if (isNew) {
-                const contactBtn = document.createElement('button');
-                contactBtn.className = 'add-category-btn';
-                contactBtn.textContent = `Contacter ${match.company.name}`;
-                contactBtn.style.marginTop = '10px';
-                contactBtn.onclick = function() {
-                    window.location.href = `mailto:${match.company.email}?subject=Potentielle synergie via Ré(GE)nère&body=Bonjour,%0A%0AJe vous contacte suite à une correspondance identifiée sur la plateforme Ré(GE)nère.%0A%0ACordiales salutations`;
-                };
-                
-                matchCard.appendChild(contactBtn);
-            }
-            
-            return matchCard;
-        }
-
-        // Fonction pour afficher les correspondances dans le profil
-        function displayMatches() {
-            const email = localStorage.getItem('currentLoggedIn');
-            if (!email) return;
-            
-            // Trouver les correspondances actuelles
-            const currentMatches = findMatchesForCompany(email);
-            
-            // Récupérer les matches déjà notifiés
-            const notifiedMatchesStr = localStorage.getItem('notifiedMatches_' + email) || '[]';
-            const notifiedMatches = JSON.parse(notifiedMatchesStr);
-            
-            // Identifier les nouveaux matches
-            const newMatches = currentMatches.filter(match => 
-                !notifiedMatches.some(nm => nm.companyEmail === match.company.email)
-            );
-            
-            // Vérifier si la section de correspondances existe déjà
-            let matchesSection = document.getElementById('matches-section');
-            
-            // Si elle n'existe pas, la créer et l'insérer avant la notice de données
-            if (!matchesSection) {
-                // Créer une section pour les correspondances
-                matchesSection = document.createElement('div');
-                matchesSection.id = 'matches-section';
-                matchesSection.className = 'profile-section';
-                
-                const sectionTitle = document.createElement('h3');
-                sectionTitle.textContent = '🔄 Correspondances détectées';
-                
-                matchesSection.appendChild(sectionTitle);
-                
-                // Créer un conteneur pour les nouveaux matchs
-                const newMatchesTitle = document.createElement('h4');
-                newMatchesTitle.textContent = '🌟 Nouveaux matchs';
-                newMatchesTitle.style.color = '#E76F51';
-                newMatchesTitle.style.marginTop = '20px';
-                
-                const newMatchesContainer = document.createElement('div');
-                newMatchesContainer.id = 'new-matches-container';
-                
-                matchesSection.appendChild(newMatchesTitle);
-                matchesSection.appendChild(newMatchesContainer);
-                
-                // Ajouter à la page
-                const profileContent = document.getElementById('profileContent');
-                
-                // Trouver le bouton d'export ou la notice de LocalStorage
-                const exportBtn = profileContent.querySelector('.export-btn');
-                const localStorageNotice = document.getElementById('localStorage-notice');
-                
-                if (localStorageNotice) {
-                    profileContent.insertBefore(matchesSection, localStorageNotice);
-                } else if (exportBtn) {
-                    profileContent.insertBefore(matchesSection, exportBtn);
-                } else {
-                    profileContent.appendChild(matchesSection);
-                }
-            }
-            
-            // Afficher les nouveaux matchs
-            const newMatchesContainer = document.getElementById('new-matches-container');
-            newMatchesContainer.innerHTML = '';
-            
-            if (newMatches.length === 0) {
-                const noMatchesMsg = document.createElement('p');
-                noMatchesMsg.textContent = 'Aucune nouvelle correspondance trouvée pour le moment.';
-                newMatchesContainer.appendChild(noMatchesMsg);
-            } else {
-                // Afficher les matchs actuels (limités à 3)
-                const matchesToShow = newMatches.slice(0, 3);
-                matchesToShow.forEach(match => {
-                    const matchCard = createMatchCard(match, true);
-                    newMatchesContainer.appendChild(matchCard);
-                });
-                
-                // Si plus de 3 correspondances, indiquer "et plus..."
-                if (newMatches.length > 3) {
-                    const moreMatches = document.createElement('p');
-                    moreMatches.style.textAlign = 'center';
-                    moreMatches.style.fontStyle = 'italic';
-                    moreMatches.textContent = `+ ${newMatches.length - 3} autre(s) correspondance(s)`;
-                    newMatchesContainer.appendChild(moreMatches);
-                }
-            }
-            
-            // Ajouter également une section pour les matchs existants
-            const existingMatches = currentMatches.filter(match => 
-                notifiedMatches.some(nm => nm.companyEmail === match.company.email)
-            );
-            
-            if (existingMatches.length > 0) {
-                const existingMatchesTitle = document.createElement('h4');
-                existingMatchesTitle.textContent = '🤝 Correspondances existantes';
-                existingMatchesTitle.style.color = '#2A9D8F';
-                existingMatchesTitle.style.marginTop = '30px';
-                
-                const existingMatchesContainer = document.createElement('div');
-                existingMatchesContainer.id = 'existing-matches-container';
-                
-                matchesSection.appendChild(existingMatchesTitle);
-                matchesSection.appendChild(existingMatchesContainer);
-                
-                // Limiter à 3 matchs existants
-                const existingToShow = existingMatches.slice(0, 3);
-                existingToShow.forEach(match => {
-                    const matchCard = createMatchCard(match, false);
-                    existingMatchesContainer.appendChild(matchCard);
-                });
-                
-                // Si plus de 3, indiquer "et plus..."
-                if (existingMatches.length > 3) {
-                    const moreMatches = document.createElement('p');
-                    moreMatches.style.textAlign = 'center';
-                    moreMatches.style.fontStyle = 'italic';
-                    moreMatches.textContent = `+ ${existingMatches.length - 3} autre(s) correspondance(s)`;
-                    existingMatchesContainer.appendChild(moreMatches);
-                }
-            }
-            
-            // Ajouter l'avertissement sur le stockage local des données
-            addLocalStorageWarning();
-        }
-
-        // Fonction pour gérer les matches et envoyer des notifications automatiquement
-        function handleMatches() {
-            const email = localStorage.getItem('currentLoggedIn');
-            if (!email) return;
-            
-            // Récupérer les matches actuels
-            const currentMatches = findMatchesForCompany(email);
-            
-            // Récupérer les matches déjà notifiés
-            const notifiedMatchesStr = localStorage.getItem('notifiedMatches_' + email) || '[]';
-            const notifiedMatches = JSON.parse(notifiedMatchesStr);
-            
-            // Identifier les nouveaux matches
-            const newMatches = currentMatches.filter(match => 
-                !notifiedMatches.some(nm => nm.companyEmail === match.company.email)
-            );
-            
-            // Afficher une notification visuelle si des nouveaux matches sont détectés
-            if (newMatches.length > 0) {
-                showNotification(`✅ ${newMatches.length} nouveau(x) match(es) détecté(s) !`, true);
-                
-                // Envoyer un email automatiquement pour les nouveaux matches
-                sendMatchNotificationEmail(email, newMatches);
-                
-                // Marquer ces matches comme notifiés
-                newMatches.forEach(match => {
-                    notifiedMatches.push({
-                        companyEmail: match.company.email,
-                        timestamp: new Date().getTime()
-                    });
-                });
-                
-                localStorage.setItem('notifiedMatches_' + email, JSON.stringify(notifiedMatches));
-            }
-            
-            // Afficher la bannière avec les derniers matches
-            createMatchesBanner(currentMatches, newMatches);
-            
-            // Ajouter le message d'avertissement sur le stockage local
-            addLocalStorageWarning();
-        }
-
-        // Fonction pour envoyer automatiquement un email pour les nouveaux matches
-        function sendMatchNotificationEmail(userEmail, newMatches) {
-            // Récupérer les infos de l'entreprise
-            const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-            const company = companies.find(c => c.email === userEmail);
-            
-            if (!company || !newMatches.length) return;
-            
-            // Créer le contenu du mail
-            let matchesText = '';
-            newMatches.slice(0, 3).forEach(match => {
-                matchesText += `- ${match.company.name}: `;
-                
-                if (match.details.theyProvide.length > 0) {
-                    matchesText += `Ils peuvent vous fournir: ${match.details.theyProvide.join(', ')}. `;
-                }
-                
-                if (match.details.weProvide.length > 0) {
-                    matchesText += `Vous pouvez leur fournir: ${match.details.weProvide.join(', ')}. `;
-                }
-                
-                matchesText += '\n';
-            });
-            
-            if (newMatches.length > 3) {
-                matchesText += `+ ${newMatches.length - 3} autre(s) correspondance(s)...\n`;
-            }
-            
-            // Paramètres pour le template
-            const params = {
-                email: userEmail,
-                name: company.name,
-                matches: matchesText
-            };
-            
-            // Envoi de l'email
-            emailjs.send("service_n485hr9", "template_zm00bwr", params)
-                .then((response) => {
-                    console.log("✅ Notification de matches envoyée avec succès!", response);
-                })
-                .catch((err) => {
-                    console.error("❌ Erreur lors de l'envoi de la notification:", err);
-                });
-        }
-
-        // Fonction améliorée pour créer la bannière de matches
-        function createMatchesBanner(allMatches, newMatches = []) {
-            const email = localStorage.getItem('currentLoggedIn');
-            if (!email) return;
-            
-            // Vérifier si la bannière existe déjà et la supprimer
-            const existingBanner = document.getElementById('matches-banner');
-            if (existingBanner) {
-                existingBanner.remove();
-            }
-            
-            // Ne rien afficher s'il n'y a pas de correspondances
-            if (!allMatches || allMatches.length === 0) return;
-            
-            // Trouver l'élément où insérer la bannière
-            const introSection = document.getElementById('intro');
-            if (!introSection) return;
-            
-            // Créer la bannière
-            const banner = document.createElement('div');
-            banner.id = 'matches-banner';
-            banner.style.backgroundColor = '#FDF5E8';
-            banner.style.border = '3px solid #E76F51';
-            banner.style.borderRadius = '8px';
-            banner.style.padding = '15px 20px';
-            banner.style.margin = '0 auto 30px auto';
-            banner.style.maxWidth = '1000px';
-            
-            const headerDiv = document.createElement('div');
-            headerDiv.style.display = 'flex';
-            headerDiv.style.justifyContent = 'space-between';
-            headerDiv.style.alignItems = 'center';
-            headerDiv.style.marginBottom = '15px';
-            
-            const title = document.createElement('h3');
-            title.textContent = newMatches.length > 0 
-                ? `🔄 ${newMatches.length} nouvelle(s) correspondance(s) détectée(s) !` 
-                : '🔄 Vos correspondances actuelles';
-            title.style.margin = '0';
-            title.style.color = '#E76F51';
-            
-            const viewAllBtn = document.createElement('button');
-            viewAllBtn.className = 'add-category-btn';
-            viewAllBtn.textContent = 'Voir toutes';
-            viewAllBtn.onclick = function() {
-                openModal('profileModal');
-                loadProfileData();
-            };
-            
-            headerDiv.appendChild(title);
-            headerDiv.appendChild(viewAllBtn);
-            banner.appendChild(headerDiv);
-            
-            // Afficher les 3 premières correspondances uniquement
-            const matchesToShow = allMatches.slice(0, 3);
-            
-            matchesToShow.forEach((match, idx) => {
-                const matchDiv = document.createElement('div');
-                matchDiv.style.padding = '10px';
-                matchDiv.style.backgroundColor = idx % 2 === 0 ? '#fff' : '#f8f8f8';
-                matchDiv.style.borderRadius = '4px';
-                matchDiv.style.marginBottom = '10px';
-                
-                // Vérifier si c'est un nouveau match
-                const isNew = newMatches.some(nm => nm.company.email === match.company.email);
-                
-                const matchText = document.createElement('p');
-                matchText.style.margin = '0';
-                
-                // Ajouter un badge "NOUVEAU" si applicable
-                let matchHTML = isNew 
-                    ? `<strong>${match.company.name}</strong> <span style="background-color: #E76F51; color: white; padding: 2px 5px; border-radius: 3px; font-size: 0.8rem; margin-left: 5px;">NOUVEAU</span>: ` 
-                    : `<strong>${match.company.name}</strong>: `;
-                
-                let categories = [];
-                if (match.details.theyProvide.length > 0) {
-                    categories.push(`Ils peuvent vous fournir <span style="color:#E76F51">${match.details.theyProvide.join(', ')}</span>`);
-                }
-                
-                if (match.details.weProvide.length > 0) {
-                    categories.push(`Vous pouvez leur fournir <span style="color:#2A9D8F">${match.details.weProvide.join(', ')}</span>`);
-                }
-                
-                matchHTML += categories.join(' et ');
-                matchText.innerHTML = matchHTML;
-                matchDiv.appendChild(matchText);
-                banner.appendChild(matchDiv);
-            });
-            
-            // Si plus de 3 correspondances, indiquer "et plus..."
-            if (allMatches.length > 3) {
-                const moreText = document.createElement('p');
-                moreText.textContent = `Et ${allMatches.length - 3} autre(s) correspondance(s)...`;
-                moreText.style.textAlign = 'center';
-                moreText.style.fontStyle = 'italic';
-                moreText.style.margin = '5px 0 0 0';
-                banner.appendChild(moreText);
-            }
-            
-            // Insérer après la section d'intro
-            introSection.parentNode.insertBefore(banner, introSection.nextSibling);
-        }
-
-        // Fonction pour ajouter l'avertissement sur le stockage local
-        function addLocalStorageWarning() {
-            // Vérifier si la notice existe déjà dans le profil
-            if (!document.getElementById('localStorage-notice') && document.getElementById('profileContent')) {
-                const noticeDiv = document.createElement('div');
-                noticeDiv.id = 'localStorage-notice';
-                noticeDiv.className = 'profile-section';
-                noticeDiv.style.backgroundColor = '#f8f9fa';
-                noticeDiv.style.padding = '15px';
-                noticeDiv.style.marginTop = '20px';
-                noticeDiv.style.borderLeft = '4px solid #6c757d';
-                noticeDiv.style.fontSize = '0.9rem';
-                
-                noticeDiv.innerHTML = `
-                    <p style="margin: 0;"><strong>⚠️ Important :</strong> Toutes vos données sont stockées localement sur cet appareil. 
-                    Pour éviter de perdre vos informations, pensez à :</p>
-                    <ul style="margin-top: 10px; margin-bottom: 0;">
-                        <li>Ne pas vider le cache de votre navigateur</li>
-                        <li>Exporter vos données régulièrement avec le bouton ci-dessous</li>
-                        <li>Utiliser le même appareil pour vous connecter</li>
-                    </ul>
-                    <p style="margin-top: 10px; margin-bottom: 0;">
-                        <button onclick="exportCompanyData()" class="export-btn" style="background-color: #6c757d; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
-                            📥 Exporter mes données
-                        </button>
-                    </p>
-                `;
-                
-                // Insérer à la fin du contenu du profil
-                const profileContent = document.getElementById('profileContent');
-                profileContent.appendChild(noticeDiv);
-            }
-            
-            // Vérifier si la notice existe déjà sur la page d'accueil
-            if (!document.getElementById('home-localStorage-notice') && document.getElementById('intro')) {
-                const bannerArea = document.getElementById('matches-banner');
-                if (bannerArea) {
-                    const noticeDiv = document.createElement('div');
-                    noticeDiv.id = 'home-localStorage-notice';
-                    noticeDiv.style.backgroundColor = '#f8f9fa';
-                    noticeDiv.style.padding = '15px';
-                    noticeDiv.style.marginTop = '15px';
-                    noticeDiv.style.borderRadius = '8px';
-                    noticeDiv.style.fontSize = '0.9rem';
-                    noticeDiv.style.maxWidth = '1000px';
-                    noticeDiv.style.margin = '0 auto 30px auto';
-                    noticeDiv.style.border = '1px solid #ddd';
-                    
-                    noticeDiv.innerHTML = `
-                        <p style="margin: 0;"><strong>⚠️ Rappel :</strong> Vos données sont stockées uniquement sur cet appareil. 
-                        Pensez à exporter régulièrement vos informations depuis votre profil.</p>
-                    `;
-                    
-                    // Insérer après la bannière des matches
-                    bannerArea.parentNode.insertBefore(noticeDiv, bannerArea.nextSibling);
-                }
-            }
-        }
-        
-        // Fonction pour afficher une notification
-        function showNotification(message, isSuccess) {
-            const notification = document.getElementById('notification');
-            if (!notification) return;
-            
-            notification.textContent = message;
-            notification.className = isSuccess ? 'success' : 'error';
-            notification.style.display = 'block';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 5000);
-        }
-        
-        // Fonction pour ouvrir un modal
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.display = 'block';
-                
-                // Si c'est le modal de profil, charger les ressources et besoins
-                if (modalId === 'profileModal') {
-                    loadExistingResourcesAndNeeds();
-                }
-            }
-        }
-        
-        // Fonction pour fermer un modal
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.display = 'none';
-            }
-        }
-        
-        // Fonction pour basculer entre les onglets
-        function switchTab(tabId) {
-            // Masquer tous les onglets
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Désactiver tous les boutons d'onglet
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            tabBtns.forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Afficher l'onglet sélectionné
-            const selectedTab = document.getElementById(tabId);
-            if (selectedTab) {
-                selectedTab.classList.add('active');
-            }
-            
-            // Activer le bouton correspondant
-            const tabBtnsArray = Array.from(tabBtns);
-            const correspondingBtn = tabBtnsArray.find(btn => btn.getAttribute('onclick').includes(tabId));
-            if (correspondingBtn) {
-                correspondingBtn.classList.add('active');
-            }
-            
-            // Si on passe à l'onglet de ressources, charger les données existantes
-            if (tabId === 'resourcesTab') {
-                loadExistingResourcesAndNeeds();
-            }
-        }
-        
-        // Fonction pour valider l'email
-        function isValidEmail(email) {
-            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return regex.test(email);
-        }
-        
-        // Exécuter au chargement de la page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialisation
-            populateCategoryDropdowns();
-            updateAuthStatus();
-            
-            // Fermer les modals quand on clique à l'extérieur
-            window.onclick = function(event) {
-                if (event.target.classList.contains('modal')) {
-                    event.target.style.display = 'none';
-                }
-            };
-            
-            // Mettre à jour les placeholders en fonction de la taille de l'écran
-            const updatePlaceholders = function() {
-                const width = window.innerWidth;
-                const detailsPlaceholders = {
-                    resource: width < 768 ? "Précisez type, quantité..." : "Précisez le type, la quantité, la fréquence, etc.",
-                    need: width < 768 ? "Précisez besoins, quantités..." : "Précisez vos besoins spécifiques, quantités, etc."
-                };
-                
-                document.getElementById('resource-details').placeholder = detailsPlaceholders.resource;
-                document.getElementById('need-details').placeholder = detailsPlaceholders.need;
-            };
-            
-            updatePlaceholders();
-            window.addEventListener('resize', updatePlaceholders);
-            
-            // Gérer les correspondances si un utilisateur est connecté
-            const email = localStorage.getItem('currentLoggedIn');
-            if (email) {
-                // Si un utilisateur est connecté, gérer les matches et l'envoi d'emails automatiques
-                handleMatches();
-            }
-        });
-    </script>
-</body>
-</html>
+            <p>&copy; 2023 Ré(GE)n
