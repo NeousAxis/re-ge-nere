@@ -2330,5 +2330,52 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 })();
 </script>
+<button id="super-simple-test" style="position: fixed; bottom: 10px; left: 10px; z-index: 1000; padding: 10px; background-color: #E76F51; color: white; border: none; border-radius: 5px;">
+    Test Email Ultra Simple
+</button>
+
+<script>
+// Code ultra simple pour tester EmailJS
+document.getElementById('super-simple-test').addEventListener('click', function() {
+    console.clear(); // Effacer la console
+    console.log("Bouton de test simple cliqué");
+    
+    // Vérifier si EmailJS est disponible
+    if (typeof emailjs === 'undefined') {
+        alert("EmailJS n'est pas chargé!");
+        console.error("EmailJS n'est pas chargé");
+        return;
+    }
+    
+    // Demander l'email
+    const email = prompt("Entrez votre adresse email:");
+    if (!email) return;
+    
+    // Paramètres pour l'email
+    const params = {
+        to_email: email,
+        from_name: "Test Simple",
+        to_name: "Utilisateur",
+        message: "Ceci est un test d'EmailJS ultra simple."
+    };
+    
+    // Log pour déboguer
+    console.log("EmailJS disponible:", emailjs);
+    console.log("Tentative d'envoi avec params:", params);
+    
+    // Envoyer l'email
+    alert("Envoi d'email à " + email + " en cours...");
+    
+    emailjs.send("service_w5kg7es", "template_zm00bwr", params)
+        .then(function(response) {
+            console.log("SUCCESS!", response.status, response.text);
+            alert("✅ Email envoyé avec succès!");
+        })
+        .catch(function(err) {
+            console.log("FAILED...", err);
+            alert("❌ Erreur: " + JSON.stringify(err));
+        });
+});
+</script>
 </body>
 </html>
