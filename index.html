@@ -2208,5 +2208,78 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(testButton);
 });
 </script>
+<script>
+// Ce code va intercepter et remplacer les appels EmailJS existants
+document.addEventListener('DOMContentLoaded', function() {
+    // Stocker la version originale de emailjs.send
+    const originalEmailJSSend = emailjs.send;
+    
+    // Remplacer emailjs.send par notre version améliorée
+    emailjs.send = function(serviceID, templateID, params) {
+        // Si les paramètres sont manquants, créer un objet avec les paramètres nécessaires
+        if (!params) {
+            console.warn("EmailJS : Paramètres manquants, ajout de paramètres par défaut");
+            
+            // Demander l'email du destinataire si nécessaire
+            let recipientEmail = prompt("Entrez l'adresse email du destinataire :");
+            if (!recipientEmail) {
+                alert("Envoi annulé : adresse email nécessaire.");
+                return Promise.reject(new Error("Adresse email manquante"));
+            }
+            
+            // Créer un objet avec tous les paramètres possibles
+            params = {
+                to_email: recipientEmail,
+                email: recipientEmail,
+                recipient: recipientEmail,
+                to: recipientEmail,
+                user_email: recipientEmail,
+                
+                from_name: "Ré(GE)nère Plateforme",
+                to_name: "Utilisateur",
+                subject: "Notification de Ré(GE)nère",
+                message: "Notification automatique de la plateforme Ré(GE)nère."
+            };
+            
+            console.log("EmailJS : Utilisation des paramètres par défaut :", params);
+        }
+        
+        // Appeler la méthode originale avec les paramètres
+        return originalEmailJSSend.call(emailjs, serviceID, templateID, params)
+            .then(function(response) {
+                console.log("✅ Email envoyé avec succès :", response);
+                alert("✅ Email envoyé avec succès !");
+                return response;
+            })
+            .catch(function(error) {
+                console.error("❌ Erreur lors de l'envoi de l'email :", error);
+                alert("❌ Erreur : " + error.text);
+                throw error;
+            });
+    };
+    
+    console.log("EmailJS : Configuration améliorée activée");
+    
+    // Ajouter un bouton pour tester la nouvelle configuration
+    const newTestButton = document.createElement('button');
+    newTestButton.textContent = "Nouveau Test EmailJS";
+    newTestButton.style.position = "fixed";
+    newTestButton.style.bottom = "50px";
+    newTestButton.style.right = "150px";
+    newTestButton.style.zIndex = "1000";
+    newTestButton.style.padding = "10px";
+    newTestButton.style.backgroundColor = "#2A9D8F";
+    newTestButton.style.color = "white";
+    newTestButton.style.border = "none";
+    newTestButton.style.borderRadius = "5px";
+    newTestButton.style.cursor = "pointer";
+    
+    newTestButton.onclick = function() {
+        emailjs.send("service_w5kg7es", "template_zm00bwr");
+    };
+    
+    document.body.appendChild(newTestButton);
+});
+</script>
 </body>
 </html>
