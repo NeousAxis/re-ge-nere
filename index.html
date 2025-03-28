@@ -2132,5 +2132,74 @@ function findMatchesForCompany(companyEmail) {
     return matches;
 }
 </script>
+<script>
+// Code simple pour vérifier EmailJS
+document.addEventListener('DOMContentLoaded', function() {
+    // Créer un bouton de test EmailJS
+    const testButton = document.createElement('button');
+    testButton.textContent = "Tester EmailJS";
+    testButton.style.position = "fixed";
+    testButton.style.bottom = "10px";
+    testButton.style.right = "10px";
+    testButton.style.zIndex = "1000";
+    testButton.style.padding = "10px";
+    testButton.style.backgroundColor = "#E76F51";
+    testButton.style.color = "white";
+    testButton.style.border = "none";
+    testButton.style.borderRadius = "5px";
+    testButton.style.cursor = "pointer";
+    
+    testButton.onclick = function() {
+        // Vérifier si EmailJS est chargé
+        if (typeof emailjs === 'undefined') {
+            alert("EmailJS n'est pas chargé sur cette page!");
+            console.error("EmailJS n'est pas chargé");
+            return;
+        }
+        
+        // Demander les informations nécessaires
+        const email = prompt("Entrez votre adresse email pour le test :");
+        if (!email) return;
+        
+        const serviceID = prompt("Entrez l'ID de service EmailJS :");
+        if (!serviceID) return;
+        
+        // Utiliser le template ID existant ou en demander un nouveau
+        const templateID = prompt("Entrez l'ID du template (par défaut: template_zm00bwr) :", "template_zm00bwr");
+        if (!templateID) return;
+        
+        // Préparer les paramètres pour le template
+        const templateParams = {
+            to_email: email,
+            from_name: "Test Ré(GE)nère",
+            to_name: "Utilisateur test",
+            message: "Ceci est un email de test depuis la plateforme Ré(GE)nère."
+            // Ajoutez d'autres paramètres selon les besoins de votre template
+        };
+        
+        // Afficher les informations avant l'envoi
+        console.log("Tentative d'envoi d'email avec :");
+        console.log("- Service ID :", serviceID);
+        console.log("- Template ID :", templateID);
+        console.log("- Paramètres :", templateParams);
+        
+        // Envoyer l'email
+        alert("Tentative d'envoi d'email à " + email + "...");
+        
+        emailjs.send(serviceID, templateID, templateParams)
+            .then(function(response) {
+                console.log("✅ Email envoyé avec succès :", response);
+                alert("✅ Email envoyé avec succès ! Statut : " + response.status);
+            })
+            .catch(function(error) {
+                console.error("❌ Erreur lors de l'envoi de l'email :", error);
+                alert("❌ Erreur lors de l'envoi de l'email : " + error.text);
+            });
+    };
+    
+    // Ajouter le bouton à la page
+    document.body.appendChild(testButton);
+});
+</script>
 </body>
 </html>
