@@ -301,7 +301,7 @@
             margin-left: 10px;
         }
         .add-category-btn {
-            background-color: #E76F51;
+            background-color: #2A9D8F;
             color: white;
             border: none;
             padding: 8px 16px;
@@ -365,32 +365,117 @@
         .intro-text {
             margin-bottom: 60px;
         }
-        
-        /* Nouveaux styles pour les modalités */
-        .modality-group {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #f0f5f5;
-            border-radius: 4px;
+
+        /* Nouveaux styles pour correspondre à l'image */
+        .form-field {
+            margin-bottom: 30px;
         }
+        
+        .form-field label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .form-field label .required {
+            color: #E76F51;
+        }
+        
+        .form-field select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 40px;
+        }
+        
+        .form-field input, 
+        .form-field select, 
+        .form-field textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            font-size: 1rem;
+        }
+        
+        .btn-add {
+            background-color: #2A9D8F;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-add:hover {
+            background-color: #217c70;
+        }
+        
+        .modality-section {
+            border-left: 3px solid #2A9D8F;
+            padding: 15px 0 15px 20px;
+            margin: 25px 0;
+            background-color: #f0f8f8;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .modality-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .modality-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        
         .modality-title {
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #2A9D8F;
+            color: #264653;
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
-        .modality-options {
+        
+        .resource-tags, .needs-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            margin-top: 15px;
         }
-        .modality-option {
+        
+        .tag {
+            background-color: #E9C46A;
+            color: #264653;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
             display: inline-flex;
             align-items: center;
-            margin-right: 15px;
         }
-        .modality-option input {
-            width: auto;
-            margin-right: 5px;
+        
+        .tag .remove {
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .textarea-counter {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -503,16 +588,15 @@
         <div class="container">
             <h2>Rejoindre l'écosystème</h2>
             <div class="form-container">
-                <div class="form-group">
-                    <label for="company-name">Nom de l'entreprise</label>
-                    <input type="text" id="company-name" placeholder="Ex: Éco Solutions SA">
-                </div>
-                <div class="form-group">
-                    <label for="company-email">Email professionnel</label>
+                <!-- Email professionnel -->
+                <div class="form-field">
+                    <label for="company-email">Email professionnel<span class="required">*</span></label>
                     <input type="email" id="company-email" placeholder="Ex: contact@ecosolutions.ch">
                 </div>
-                <div class="form-group">
-                    <label for="company-sector">Secteur d'activité</label>
+                
+                <!-- Secteur d'activité -->
+                <div class="form-field">
+                    <label for="company-sector">Secteur d'activité<span class="required">*</span></label>
                     <select id="company-sector" onchange="toggleOtherSectorField()">
                         <option value="">Sélectionnez un secteur</option>
                         <option value="Agriculture">Agriculture</option>
@@ -539,21 +623,24 @@
                         <option value="Autre">Autre</option>
                     </select>
                 </div>
-                <div class="form-group" id="other-sector-container" style="display:none;">
-                    <label for="other-sector-text">Précisez votre secteur d'activité</label>
+                
+                <!-- Champ Autre secteur -->
+                <div class="form-field" id="other-sector-container" style="display:none;">
+                    <label for="other-sector-text">Précisez votre secteur d'activité<span class="required">*</span></label>
                     <input type="text" id="other-sector-text" placeholder="Précisez votre secteur d'activité">
                 </div>
                 
-                <!-- Ajout des champs pour ressources -->
-                <div class="form-group">
-                    <label for="resources">Ressources que vous pouvez offrir</label>
-                    <select id="resources" multiple>
-                        <!-- Matérielles -->
+                <!-- Catégories de ressources disponibles -->
+                <div class="form-field">
+                    <label for="resource-category">Catégories de ressources disponibles<span class="required">*</span></label>
+                    <select id="resource-category">
+                        <option value="">Sélectionnez une catégorie</option>
+                        <!-- Options matérielles -->
                         <option value="Matières premières">Matières premières</option>
                         <option value="Déchets recyclables">Déchets recyclables</option>
                         <option value="Équipements">Équipements & Outils</option>
                         <option value="Espace">Espace & Locaux</option>
-                        <!-- Non matérielles / Humaines -->
+                        <!-- Options non matérielles -->
                         <option value="Expertise">Expertise/Conseil</option>
                         <option value="Formation">Formation/Mentorat</option>
                         <option value="Compétences numériques">Compétences numériques</option>
@@ -562,50 +649,68 @@
                         <option value="Temps">Temps de travail/Personnel</option>
                         <option value="Bénévolat">Bénévolat/Engagement</option>
                     </select>
+                    <button class="btn-add" onclick="addResourceCategory()">Ajouter</button>
                     
-                    <!-- Modalités pour ressources -->
-                    <div class="modality-group">
-                        <div class="modality-title">Modalités pour les ressources offertes</div>
-                        
-                        <div class="modality-section">
+                    <div class="resource-tags" id="resource-tags">
+                        <!-- Les tags des ressources seront ajoutés ici dynamiquement -->
+                    </div>
+                </div>
+                
+                <!-- Modalités d'échange pour ressources -->
+                <div class="modality-section">
+                    <h3>Modalités d'échange (pour ressources immatérielles)</h3>
+                    
+                    <div class="modality-row">
+                        <div class="modality-col">
                             <div class="modality-title">Fréquence</div>
-                            <div class="modality-options">
-                                <label class="modality-option"><input type="radio" name="resource-frequency" value="ponctuelle"> Ponctuelle</label>
-                                <label class="modality-option"><input type="radio" name="resource-frequency" value="régulière"> Régulière</label>
-                                <label class="modality-option"><input type="radio" name="resource-frequency" value="permanente"> Permanente</label>
-                            </div>
+                            <select id="resource-frequency">
+                                <option value="">Sélectionnez</option>
+                                <option value="ponctuelle">Ponctuelle</option>
+                                <option value="régulière">Régulière</option>
+                                <option value="permanente">Permanente</option>
+                            </select>
                         </div>
                         
-                        <div class="modality-section">
-                            <div class="modality-title">Type d'interaction</div>
-                            <div class="modality-options">
-                                <label class="modality-option"><input type="radio" name="resource-interaction" value="présentielle"> Présentielle</label>
-                                <label class="modality-option"><input type="radio" name="resource-interaction" value="distancielle"> Distancielle</label>
-                                <label class="modality-option"><input type="radio" name="resource-interaction" value="mixte"> Mixte</label>
-                            </div>
+                        <div class="modality-col">
+                            <div class="modality-title">Mode d'échange</div>
+                            <select id="resource-mode">
+                                <option value="">Sélectionnez</option>
+                                <option value="présentiel">Présentiel</option>
+                                <option value="distanciel">Distanciel</option>
+                                <option value="mixte">Mixte</option>
+                            </select>
                         </div>
                         
-                        <div class="modality-section">
+                        <div class="modality-col">
                             <div class="modality-title">Niveau d'expertise</div>
-                            <div class="modality-options">
-                                <label class="modality-option"><input type="radio" name="resource-expertise" value="débutant"> Débutant</label>
-                                <label class="modality-option"><input type="radio" name="resource-expertise" value="intermédiaire"> Intermédiaire</label>
-                                <label class="modality-option"><input type="radio" name="resource-expertise" value="expert"> Expert</label>
-                            </div>
+                            <select id="resource-expertise">
+                                <option value="">Sélectionnez</option>
+                                <option value="débutant">Débutant</option>
+                                <option value="intermédiaire">Intermédiaire</option>
+                                <option value="expert">Expert</option>
+                            </select>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Ajout des champs pour besoins -->
-                <div class="form-group">
-                    <label for="needs">Ressources dont vous avez besoin</label>
-                    <select id="needs" multiple>
-                        <!-- Matérielles -->
+                <!-- Description des ressources -->
+                <div class="form-field">
+                    <label for="resource-description">Description des ressources disponibles<span class="required">*</span></label>
+                    <textarea id="resource-description" rows="5" placeholder="Exemples : 2h de conseil en stratégie durable par mois, atelier de méditation hebdomadaire, 15kg de carton recyclé chaque semaine, salle de réunion disponible les vendredis..."></textarea>
+                    <div class="textarea-counter"><span id="resource-char-count">0</span>/500 caractères</div>
+                </div>
+                
+                <!-- Catégories de besoins recherchés -->
+                <div class="form-field">
+                    <label for="needs-category">Catégories de besoins recherchés<span class="required">*</span></label>
+                    <select id="needs-category">
+                        <option value="">Sélectionnez une catégorie</option>
+                        <!-- Options matérielles -->
                         <option value="Matières premières">Matières premières</option>
                         <option value="Déchets recyclables">Déchets recyclables</option>
                         <option value="Équipements">Équipements & Outils</option>
                         <option value="Espace">Espace & Locaux</option>
-                        <!-- Non matérielles / Humaines -->
+                        <!-- Options non matérielles -->
                         <option value="Expertise">Expertise/Conseil</option>
                         <option value="Formation">Formation/Mentorat</option>
                         <option value="Compétences numériques">Compétences numériques</option>
@@ -614,38 +719,55 @@
                         <option value="Temps">Temps de travail/Personnel</option>
                         <option value="Bénévolat">Bénévolat/Engagement</option>
                     </select>
+                    <button class="btn-add" onclick="addNeedsCategory()">Ajouter</button>
                     
-                    <!-- Modalités pour besoins -->
-                    <div class="modality-group">
-                        <div class="modality-title">Modalités pour les besoins</div>
-                        
-                        <div class="modality-section">
+                    <div class="needs-tags" id="needs-tags">
+                        <!-- Les tags des besoins seront ajoutés ici dynamiquement -->
+                    </div>
+                </div>
+                
+                <!-- Modalités d'échange pour besoins -->
+                <div class="modality-section">
+                    <h3>Modalités d'échange (pour besoins immatériels)</h3>
+                    
+                    <div class="modality-row">
+                        <div class="modality-col">
                             <div class="modality-title">Fréquence</div>
-                            <div class="modality-options">
-                                <label class="modality-option"><input type="radio" name="needs-frequency" value="ponctuelle"> Ponctuelle</label>
-                                <label class="modality-option"><input type="radio" name="needs-frequency" value="régulière"> Régulière</label>
-                                <label class="modality-option"><input type="radio" name="needs-frequency" value="permanente"> Permanente</label>
-                            </div>
+                            <select id="needs-frequency">
+                                <option value="">Sélectionnez</option>
+                                <option value="ponctuelle">Ponctuelle</option>
+                                <option value="régulière">Régulière</option>
+                                <option value="permanente">Permanente</option>
+                            </select>
                         </div>
                         
-                        <div class="modality-section">
-                            <div class="modality-title">Type d'interaction</div>
-                            <div class="modality-options">
-                                <label class="modality-option"><input type="radio" name="needs-interaction" value="présentielle"> Présentielle</label>
-                                <label class="modality-option"><input type="radio" name="needs-interaction" value="distancielle"> Distancielle</label>
-                                <label class="modality-option"><input type="radio" name="needs-interaction" value="mixte"> Mixte</label>
-                            </div>
+                        <div class="modality-col">
+                            <div class="modality-title">Mode d'échange</div>
+                            <select id="needs-mode">
+                                <option value="">Sélectionnez</option>
+                                <option value="présentiel">Présentiel</option>
+                                <option value="distanciel">Distanciel</option>
+                                <option value="mixte">Mixte</option>
+                            </select>
                         </div>
                         
-                        <div class="modality-section">
+                        <div class="modality-col">
                             <div class="modality-title">Niveau d'expertise</div>
-                            <div class="modality-options">
-                                <label class="modality-option"><input type="radio" name="needs-expertise" value="débutant"> Débutant</label>
-                                <label class="modality-option"><input type="radio" name="needs-expertise" value="intermédiaire"> Intermédiaire</label>
-                                <label class="modality-option"><input type="radio" name="needs-expertise" value="expert"> Expert</label>
-                            </div>
+                            <select id="needs-expertise">
+                                <option value="">Sélectionnez</option>
+                                <option value="débutant">Débutant</option>
+                                <option value="intermédiaire">Intermédiaire</option>
+                                <option value="expert">Expert</option>
+                            </select>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Description des besoins -->
+                <div class="form-field">
+                    <label for="needs-description">Description des besoins recherchés<span class="required">*</span></label>
+                    <textarea id="needs-description" rows="5" placeholder="Décrivez précisément les ressources dont vous avez besoin..."></textarea>
+                    <div class="textarea-counter"><span id="needs-char-count">0</span>/500 caractères</div>
                 </div>
                 
                 <button class="submit-btn" onclick="registerCompany()">Rejoindre l'écosystème</button>
@@ -653,8 +775,13 @@
         </div>
     </section>
     
-    <!-- Ajout du JavaScript pour gérer le champ "Autre" secteur -->
+    <!-- Ajout du JavaScript pour gérer le formulaire -->
     <script>
+        // Tableau pour stocker les catégories ajoutées
+        let resourceCategories = [];
+        let needsCategories = [];
+        
+        // Fonction pour afficher ou masquer le champ "Autre secteur"
         function toggleOtherSectorField() {
             const sectorSelect = document.getElementById('company-sector');
             const otherSectorContainer = document.getElementById('other-sector-container');
@@ -666,9 +793,113 @@
             }
         }
         
+        // Fonction pour ajouter une catégorie de ressource
+        function addResourceCategory() {
+            const selectElement = document.getElementById('resource-category');
+            const selectedValue = selectElement.value;
+            const selectedText = selectElement.options[selectElement.selectedIndex].text;
+            
+            if (selectedValue && !resourceCategories.includes(selectedValue)) {
+                resourceCategories.push(selectedValue);
+                
+                const tagsContainer = document.getElementById('resource-tags');
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.innerHTML = `${selectedText} <span class="remove" onclick="removeResourceCategory('${selectedValue}')">&times;</span>`;
+                tagsContainer.appendChild(tag);
+                
+                // Réinitialiser la sélection
+                selectElement.value = '';
+            }
+        }
+        
+        // Fonction pour supprimer une catégorie de ressource
+        function removeResourceCategory(value) {
+            const index = resourceCategories.indexOf(value);
+            if (index > -1) {
+                resourceCategories.splice(index, 1);
+            }
+            
+            renderResourceTags();
+        }
+        
+        // Fonction pour afficher les tags de ressources
+        function renderResourceTags() {
+            const tagsContainer = document.getElementById('resource-tags');
+            tagsContainer.innerHTML = '';
+            
+            for (const category of resourceCategories) {
+                const select = document.getElementById('resource-category');
+                const option = Array.from(select.options).find(opt => opt.value === category);
+                if (option) {
+                    const tag = document.createElement('div');
+                    tag.className = 'tag';
+                    tag.innerHTML = `${option.text} <span class="remove" onclick="removeResourceCategory('${category}')">&times;</span>`;
+                    tagsContainer.appendChild(tag);
+                }
+            }
+        }
+        
+        // Fonction pour ajouter une catégorie de besoins
+        function addNeedsCategory() {
+            const selectElement = document.getElementById('needs-category');
+            const selectedValue = selectElement.value;
+            const selectedText = selectElement.options[selectElement.selectedIndex].text;
+            
+            if (selectedValue && !needsCategories.includes(selectedValue)) {
+                needsCategories.push(selectedValue);
+                
+                const tagsContainer = document.getElementById('needs-tags');
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.innerHTML = `${selectedText} <span class="remove" onclick="removeNeedsCategory('${selectedValue}')">&times;</span>`;
+                tagsContainer.appendChild(tag);
+                
+                // Réinitialiser la sélection
+                selectElement.value = '';
+            }
+        }
+        
+        // Fonction pour supprimer une catégorie de besoins
+        function removeNeedsCategory(value) {
+            const index = needsCategories.indexOf(value);
+            if (index > -1) {
+                needsCategories.splice(index, 1);
+            }
+            
+            renderNeedsTags();
+        }
+        
+        // Fonction pour afficher les tags de besoins
+        function renderNeedsTags() {
+            const tagsContainer = document.getElementById('needs-tags');
+            tagsContainer.innerHTML = '';
+            
+            for (const category of needsCategories) {
+                const select = document.getElementById('needs-category');
+                const option = Array.from(select.options).find(opt => opt.value === category);
+                if (option) {
+                    const tag = document.createElement('div');
+                    tag.className = 'tag';
+                    tag.innerHTML = `${option.text} <span class="remove" onclick="removeNeedsCategory('${category}')">&times;</span>`;
+                    tagsContainer.appendChild(tag);
+                }
+            }
+        }
+        
+        // Compteur de caractères pour les zones de texte
+        document.getElementById('resource-description').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('resource-char-count').textContent = count;
+        });
+        
+        document.getElementById('needs-description').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('needs-char-count').textContent = count;
+        });
+        
         // Fonction pour enregistrer l'entreprise
         function registerCompany() {
-            const companyName = document.getElementById('company-name').value;
             const companyEmail = document.getElementById('company-email').value;
             const companySector = document.getElementById('company-sector').value;
             
@@ -681,38 +912,42 @@
                 }
             }
             
-            // Récupération des ressources et besoins
-            const resourcesSelect = document.getElementById('resources');
-            const needsSelect = document.getElementById('needs');
-            
-            const resources = Array.from(resourcesSelect.selectedOptions).map(option => option.value);
-            const needs = Array.from(needsSelect.selectedOptions).map(option => option.value);
+            // Récupération des descriptions
+            const resourceDescription = document.getElementById('resource-description').value;
+            const needsDescription = document.getElementById('needs-description').value;
             
             // Récupération des modalités pour les ressources
-            const resourceFrequency = document.querySelector('input[name="resource-frequency"]:checked')?.value;
-            const resourceInteraction = document.querySelector('input[name="resource-interaction"]:checked')?.value;
-            const resourceExpertise = document.querySelector('input[name="resource-expertise"]:checked')?.value;
+            const resourceFrequency = document.getElementById('resource-frequency').value;
+            const resourceMode = document.getElementById('resource-mode').value;
+            const resourceExpertise = document.getElementById('resource-expertise').value;
             
             // Récupération des modalités pour les besoins
-            const needsFrequency = document.querySelector('input[name="needs-frequency"]:checked')?.value;
-            const needsInteraction = document.querySelector('input[name="needs-interaction"]:checked')?.value;
-            const needsExpertise = document.querySelector('input[name="needs-expertise"]:checked')?.value;
+            const needsFrequency = document.getElementById('needs-frequency').value;
+            const needsMode = document.getElementById('needs-mode').value;
+            const needsExpertise = document.getElementById('needs-expertise').value;
+            
+            // Validation basique
+            if (!companyEmail || !companySector || resourceCategories.length === 0 || needsCategories.length === 0 || !resourceDescription || !needsDescription) {
+                showNotification('Veuillez remplir tous les champs obligatoires.', 'error');
+                return;
+            }
             
             // Créer un objet avec toutes les données
             const companyData = {
-                name: companyName,
                 email: companyEmail,
                 sector: finalSector,
                 resources: {
-                    items: resources,
+                    categories: resourceCategories,
+                    description: resourceDescription,
                     frequency: resourceFrequency,
-                    interaction: resourceInteraction,
+                    mode: resourceMode,
                     expertise: resourceExpertise
                 },
                 needs: {
-                    items: needs,
+                    categories: needsCategories,
+                    description: needsDescription,
                     frequency: needsFrequency,
-                    interaction: needsInteraction,
+                    mode: needsMode,
                     expertise: needsExpertise
                 }
             };
@@ -731,8 +966,7 @@
         function sendRegistrationEmail(companyData) {
             const templateParams = {
                 to_email: companyData.email,
-                to_name: companyData.name,
-                message: `Merci de vous être inscrit à Ré(GE)nère! Nous avons bien reçu vos informations et allons vous contacter prochainement.`
+                message: `Merci de vous être inscrit à Ré(GE)nère! Nous avons bien reçu vos informations sur vos ressources et besoins.`
             };
             
             emailjs.send('service_n485hr9', 'template_zm00bwr', templateParams)
@@ -747,7 +981,6 @@
         function sendMatchNotificationEmail(matchData) {
             const templateParams = {
                 to_email: matchData.email,
-                to_name: matchData.companyName,
                 match_details: matchData.details
             };
             
