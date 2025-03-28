@@ -540,10 +540,6 @@
                     <input type="email" id="company-email" placeholder="Ex: contact@ecosolutions.ch">
                 </div>
                 <div class="form-group">
-                    <label for="company-password">Mot de passe</label>
-                    <input type="password" id="company-password" placeholder="Créez un mot de passe sécurisé">
-                </div>
-                <div class="form-group">
                     <label for="company-sector">Secteur d'activité</label>
                     <select id="company-sector">
                         <option value="">Sélectionnez un secteur</option>
@@ -588,9 +584,6 @@
                     <label for="login-email">Email professionnel</label>
                     <input type="email" id="login-email" placeholder="Votre email professionnel">
                 </div>
-                <div class="form-group">
-                    <label for="login-password">Mot de passe</label>
-                    <input type="password" id="login-password" placeholder="Votre mot de passe">
                 </div>
                 <button id="login-btn" class="submit-btn" onclick="loginCompany()">Se connecter</button>
                 <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
@@ -722,10 +715,9 @@
         function registerCompany() {
             const name = document.getElementById('company-name').value.trim();
             const email = document.getElementById('company-email').value.trim();
-            const password = document.getElementById('company-password').value;
             const sector = document.getElementById('company-sector').value;
             
-            if (!name || !email || !password || !sector) {
+            if (!name || !email || !sector) {
                 showNotification("Veuillez remplir tous les champs obligatoires", false);
                 return;
             }
@@ -748,7 +740,6 @@
             const newCompany = {
                 name,
                 email,
-                password, // Dans une vraie application, on hasherait le mot de passe
                 sector,
                 createdAt: new Date().toISOString(),
                 resourceCategories: [],
@@ -775,7 +766,6 @@
             // Vider le formulaire
             document.getElementById('company-name').value = '';
             document.getElementById('company-email').value = '';
-            document.getElementById('company-password').value = '';
             document.getElementById('company-sector').value = '';
             
             // Montrer le profil
@@ -786,10 +776,8 @@
         // Fonction pour connecter une entreprise
         function loginCompany() {
             const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-            
-            if (!email || !password) {
-                showNotification("Veuillez remplir tous les champs", false);
+            if (!email) {
+                showNotification("Veuillez remplir votre email", false);
                 return;
             }
             
@@ -797,12 +785,12 @@
             const companies = JSON.parse(localStorage.getItem('companies') || '[]');
             
             // Trouver l'entreprise correspondante
-            const company = companies.find(c => c.email === email && c.password === password);
+            const company = companies.find(c => c.email === email);
             
-            if (!company) {
-                showNotification("Email ou mot de passe incorrect", false);
-                return;
-            }
+           if (!company) {
+    showNotification("Email non reconnu", false);
+    return;
+}
             
             // Connecter l'utilisateur
             localStorage.setItem('currentLoggedIn', email);
@@ -818,7 +806,6 @@
             
             // Vider le formulaire
             document.getElementById('login-email').value = '';
-            document.getElementById('login-password').value = '';
             
             // Ouvrir le profil
             openModal('profileModal');
