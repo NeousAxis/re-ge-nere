@@ -1681,53 +1681,9 @@ Ces données sont stockées localement sur votre appareil. Conservez ce fichier 
                 editNeedsPlaceholder.placeholder = "Décrivez en détail les ressources dont vous avez besoin, incluant fréquence, modalités et conditions...";
             }
         });
-    </script>
-</body>
-    // Structure pour stocker l'historique des correspondances
-function saveMatchHistory(company1Email, company2Email, matchDetails) {
-    // Récupérer l'historique existant
-    const matchHistory = JSON.parse(localStorage.getItem('matchHistory') || '[]');
-    
-    // Créer l'objet de match
-    const matchEntry = {
-        company1Email: company1Email,
-        company2Email: company2Email,
-        details: matchDetails,
-        date: new Date().toISOString(),
-        isNew: true // Marquer comme nouveau match
-    };
-    
-    // Vérifier si ce match existe déjà dans l'historique
-    const existingMatchIndex = matchHistory.findIndex(match => 
-        (match.company1Email === company1Email && match.company2Email === company2Email) ||
-        (match.company1Email === company2Email && match.company2Email === company1Email)
-    );
-    
-    // Si le match existe déjà, le supprimer (nous le remplacerons)
-    if (existingMatchIndex !== -1) {
-        matchHistory.splice(existingMatchIndex, 1);
-    }
-    
-    // Ajouter le nouveau match au début de l'historique
-    matchHistory.unshift(matchEntry);
-    
-    // Marquer les anciens matches comme "non nouveaux" après 7 jours
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    
-    matchHistory.forEach(match => {
-        const matchDate = new Date(match.date);
-        if (matchDate < sevenDaysAgo) {
-            match.isNew = false;
-        }
-    });
-    
-    // Sauvegarder l'historique mis à jour
-    localStorage.setItem('matchHistory', JSON.stringify(matchHistory));
-}
-
+    <script>
 // Fonction pour trouver les correspondances pour une entreprise
-function findMatchesForCompany(companyEmail, updateHistory = true) {
+function findMatchesForCompany(companyEmail) {
     const companies = JSON.parse(localStorage.getItem('companies') || '[]');
     const currentCompany = companies.find(c => c.email === companyEmail);
     
@@ -1769,146 +1725,20 @@ function findMatchesForCompany(companyEmail, updateHistory = true) {
             }
         }
         
-        // Si on a trouvé des correspondances, ajouter à la liste et mettre à jour l'historique
+        // Si on a trouvé des correspondances, ajouter à la liste
         if (hasMatch) {
             matches.push({
                 company: company,
                 details: matchDetails
             });
-            
-            // Si demandé, mettre à jour l'historique
-            if (updateHistory) {
-                saveMatchHistory(companyEmail, company.email, matchDetails);
-            }
         }
     });
     
     return matches;
 }
 
-// Fonction pour récupérer les derniers matchs historiques (jusqu'à 3)
-function getRecentMatchHistory() {
-    const matchHistory = JSON.parse(localStorage.getItem('matchHistory') || '[]');
-    
-    // Retourner les 3 derniers matchs qui ne sont plus marqués comme nouveaux
-    return matchHistory
-        .filter(match => !match.isNew)
-        .slice(0, 3);
-}
-
-// Fonction pour afficher les correspondances dans le profil
-function displayMatches() {
-    const email = localStorage.getItem('currentLoggedIn');
-    if (!email) return;
-    
-    // Trouver les correspondances actuelles
-    const currentMatches = findMatchesForCompany(email);
-    
-    // Récupérer l'historique des matchs récents
-    const recentMatchHistory = getRecentMatchHistory();
-    
-    // Vérifier si la section de correspondances existe déjà
-    let matchesSection = document.getElementById('matches-section');
-    
-    // Si elle n'existe pas, la créer et l'insérer avant la notice de données
-    if (!matchesSection) {
-        // Créer une section pour les correspondances
-        matchesSection = document.createElement('div');
-        matchesSection.id = 'matches-section';
-        matchesSection.className = 'profile-section';
-        
-        const sectionTitle = document.createElement('h3');
-        sectionTitle.textContent = '🔄 Correspondances détectées';
-        
-        matchesSection.appendChild(sectionTitle);
-        
-        // Créer un conteneur pour les nouveaux matchs
-        const newMatchesTitle = document.createElement('h4');
-        newMatchesTitle.textContent = '🌟 Nouveaux matchs';
-        newMatchesTitle.style.color = '#E76F51';
-        newMatchesTitle.style.marginTop = '20px';
-        
-        const newMatchesContainer = document.createElement('div');
-        newMatchesContainer.id = 'new-matches-container';
-        
-        matchesSection.appendChild(newMatchesTitle);
-        matchesSection.appendChild(newMatchesContainer);
-        
-        // Créer un conteneur pour les matchs récents
-        const recentMatchesTitle = document.createElement('h4');
-        recentMatchesTitle.textContent = '📋 Matchs récents';
-        recentMatchesTitle.style.color = '#2A9D8F';
-        recentMatchesTitle.style.marginTop = '30px';
-        
-        const recentMatchesContainer = document.createElement('div');
-        recentMatchesContainer.id = 'recent-matches-container';
-        
-        matchesSection.appendChild(recentMatchesTitle);
-        matchesSection.appendChild(recentMatchesContainer);
-        
-        // Ajouter à la page
-        const profileContent = document.getElementById('profileContent');
-        const exportBtn = profileContent.querySelector('.export-btn');
-        
-        if (exportBtn) {
-            profileContent.insertBefore(matchesSection, exportBtn);
-        } else {
-            profileContent.appendChild(matchesSection);
-        }
-    }
-    
-    // Afficher les nouveaux matchs
-    const newMatchesContainer = document.getElementById('new-matches-container');
-    newMatchesContainer.innerHTML = '';
-    
-    if (currentMatches.length === 0) {
-        const noMatchesMsg = document.createElement('p');
-        noMatchesMsg.textContent = 'Aucune nouvelle correspondance trouvée pour le moment.';
-        newMatchesContainer.appendChild(noMatchesMsg);
-    } else {
-        // Afficher les matchs actuels
-        currentMatches.forEach(match => {
-            const matchCard = createMatchCard(match, true);
-            newMatchesContainer.appendChild(matchCard);
-        });
-    }
-    
-    // Afficher les matchs récents
-    const recentMatchesContainer = document.getElementById('recent-matches-container');
-    recentMatchesContainer.innerHTML = '';
-    
-    if (recentMatchHistory.length === 0) {
-        const noHistoryMsg = document.createElement('p');
-        noHistoryMsg.textContent = 'Pas d\'historique de correspondances disponible.';
-        recentMatchesContainer.appendChild(noHistoryMsg);
-    } else {
-        // Récupérer les données des entreprises pour les matchs historiques
-        const companies = JSON.parse(localStorage.getItem('companies') || '[]');
-        
-        recentMatchHistory.forEach(historyItem => {
-            // Déterminer quelle est l'autre entreprise
-            const otherCompanyEmail = historyItem.company1Email === email ? 
-                historyItem.company2Email : historyItem.company1Email;
-            
-            const otherCompany = companies.find(c => c.email === otherCompanyEmail);
-            
-            if (otherCompany) {
-                // Créer l'objet de match dans le format attendu par createMatchCard
-                const match = {
-                    company: otherCompany,
-                    details: historyItem.details
-                };
-                
-                // Créer la carte de match et l'ajouter au conteneur
-                const matchCard = createMatchCard(match, false, new Date(historyItem.date));
-                recentMatchesContainer.appendChild(matchCard);
-            }
-        });
-    }
-}
-
-// Fonction pour créer une carte de match (utilisée par displayMatches)
-function createMatchCard(match, isNew, matchDate) {
+// Fonction pour créer une carte de match
+function createMatchCard(match, isNew) {
     const matchCard = document.createElement('div');
     matchCard.className = 'profile-section';
     matchCard.style.marginBottom = '15px';
@@ -1940,13 +1770,6 @@ function createMatchCard(match, isNew, matchDate) {
         newBadge.style.borderRadius = '4px';
         newBadge.style.fontSize = '0.8rem';
         headerDiv.appendChild(newBadge);
-    } else if (matchDate) {
-        // Afficher la date pour les matchs historiques
-        const dateSpan = document.createElement('span');
-        dateSpan.textContent = new Date(matchDate).toLocaleDateString();
-        dateSpan.style.color = '#777';
-        dateSpan.style.fontSize = '0.9rem';
-        headerDiv.appendChild(dateSpan);
     }
     
     matchCard.appendChild(headerDiv);
@@ -2012,45 +1835,78 @@ function createMatchCard(match, isNew, matchDate) {
     return matchCard;
 }
 
-// Ajouter la recherche de correspondances aux fonctions existantes
-const originalLoadProfileData = loadProfileData;
-loadProfileData = function() {
-    originalLoadProfileData();
-    displayMatches();
-};
-
-// Modifier la fonction registerCompany pour afficher les correspondances après inscription
-const originalRegisterCompany = registerCompany;
-registerCompany = function() {
-    originalRegisterCompany();
+// Fonction pour afficher les correspondances dans le profil
+function displayMatches() {
+    const email = localStorage.getItem('currentLoggedIn');
+    if (!email) return;
     
-    // Trouver toutes les correspondances possibles pour la nouvelle entreprise
-    const email = document.getElementById('email').value;
-    const matches = findMatchesForCompany(email);
+    // Trouver les correspondances actuelles
+    const currentMatches = findMatchesForCompany(email);
     
-    // Si des correspondances sont trouvées, afficher un message
-    if (matches.length > 0) {
-        let matchMessage = `Félicitations ! Nous avons trouvé ${matches.length} correspondance${matches.length > 1 ? 's' : ''} potentielle${matches.length > 1 ? 's' : ''} pour votre entreprise :\n\n`;
+    // Vérifier si la section de correspondances existe déjà
+    let matchesSection = document.getElementById('matches-section');
+    
+    // Si elle n'existe pas, la créer et l'insérer avant la notice de données
+    if (!matchesSection) {
+        // Créer une section pour les correspondances
+        matchesSection = document.createElement('div');
+        matchesSection.id = 'matches-section';
+        matchesSection.className = 'profile-section';
         
-        matches.forEach(match => {
-            matchMessage += `- ${match.company.name}\n`;
-            
-            if (match.details.theyProvide.length > 0) {
-                matchMessage += `  Ils peuvent vous fournir : ${match.details.theyProvide.join(', ')}\n`;
-            }
-            
-            if (match.details.weProvide.length > 0) {
-                matchMessage += `  Vous pouvez leur fournir : ${match.details.weProvide.join(', ')}\n`;
-            }
-            
-            matchMessage += '\n';
+        const sectionTitle = document.createElement('h3');
+        sectionTitle.textContent = '🔄 Correspondances détectées';
+        
+        matchesSection.appendChild(sectionTitle);
+        
+        // Créer un conteneur pour les nouveaux matchs
+        const newMatchesTitle = document.createElement('h4');
+        newMatchesTitle.textContent = '🌟 Nouveaux matchs';
+        newMatchesTitle.style.color = '#E76F51';
+        newMatchesTitle.style.marginTop = '20px';
+        
+        const newMatchesContainer = document.createElement('div');
+        newMatchesContainer.id = 'new-matches-container';
+        
+        matchesSection.appendChild(newMatchesTitle);
+        matchesSection.appendChild(newMatchesContainer);
+        
+        // Ajouter à la page
+        const profileContent = document.getElementById('profileContent');
+        const exportBtn = profileContent.querySelector('.export-btn');
+        
+        if (exportBtn) {
+            profileContent.insertBefore(matchesSection, exportBtn);
+        } else {
+            profileContent.appendChild(matchesSection);
+        }
+    }
+    
+    // Afficher les nouveaux matchs
+    const newMatchesContainer = document.getElementById('new-matches-container');
+    newMatchesContainer.innerHTML = '';
+    
+    if (currentMatches.length === 0) {
+        const noMatchesMsg = document.createElement('p');
+        noMatchesMsg.textContent = 'Aucune nouvelle correspondance trouvée pour le moment.';
+        newMatchesContainer.appendChild(noMatchesMsg);
+    } else {
+        // Afficher les matchs actuels (limités à 3)
+        const matchesToShow = currentMatches.slice(0, 3);
+        matchesToShow.forEach(match => {
+            const matchCard = createMatchCard(match, true);
+            newMatchesContainer.appendChild(matchCard);
         });
         
-        matchMessage += 'Connectez-vous à votre profil pour voir les détails et contacter ces entreprises.';
-        
-        alert(matchMessage);
+        // Si plus de 3 correspondances, indiquer "et plus..."
+        if (currentMatches.length > 3) {
+            const moreMatches = document.createElement('p');
+            moreMatches.style.textAlign = 'center';
+            moreMatches.style.fontStyle = 'italic';
+            moreMatches.textContent = `+ ${currentMatches.length - 3} autre(s) correspondance(s)`;
+            newMatchesContainer.appendChild(moreMatches);
+        }
     }
-};
+}
 
 // Créer une bannière de notifications sur la page d'accueil pour montrer les nouveaux matchs
 function createMatchesBanner() {
@@ -2065,7 +1921,7 @@ function createMatchesBanner() {
     if (!introSection) return;
     
     // Récupérer les correspondances actuelles
-    const currentMatches = findMatchesForCompany(email, false); // Ne pas mettre à jour l'historique
+    const currentMatches = findMatchesForCompany(email);
     
     if (currentMatches.length === 0) return; // Ne rien afficher s'il n'y a pas de correspondances
     
@@ -2141,31 +1997,26 @@ function createMatchesBanner() {
         banner.appendChild(moreText);
     }
     
-    // Insérer avant la première section
-    introSection.parentNode.insertBefore(banner, introSection);
+    // Insérer après la section d'intro
+    introSection.parentNode.insertBefore(banner, introSection.nextSibling);
 }
 
-// Initialiser au chargement de la page
-document.addEventListener('DOMContentLoaded', function() {
-    // Code précédent déjà présent
-    populateCategoryDropdowns();
-    
-    // Mettre à jour les placeholders
-    const resourcesPlaceholder = document.getElementById('resources');
-    if (resourcesPlaceholder) {
-        resourcesPlaceholder.placeholder = "Exemples : 2h de conseil en stratégie durable par mois, atelier de méditation hebdomadaire, 15kg de carton recyclé chaque semaine, salle de réunion disponible les vendredis...";
-    }
-    
-    const needsPlaceholder = document.getElementById('needs');
-    if (needsPlaceholder) {
-        needsPlaceholder.placeholder = "Exemples : Recherche expertise en marketing digital (2h/mois), besoin de palettes en bois, espace de stockage temporaire, formation en comptabilité...";
-    }
-    
-    // Vérifier si un utilisateur est connecté
+// Modifier les fonctions existantes pour intégrer les correspondances
+const originalLoadProfileData = loadProfileData;
+loadProfileData = function() {
+    originalLoadProfileData();
+    displayMatches();
+};
+
+// Exécuter au chargement de la page
+const originalDOMContentLoadedHandler = document.addEventListener('DOMContentLoaded', function() {
+    // Nouveau code pour les correspondances
     const email = localStorage.getItem('currentLoggedIn');
     if (email) {
-        // Créer la bannière de matchs sur la page d'accueil
+        // Si un utilisateur est connecté, afficher la bannière de matchs sur la page d'accueil
         createMatchesBanner();
     }
 });
+</script>
+</body>
 </html>
