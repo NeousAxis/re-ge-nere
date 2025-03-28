@@ -2377,5 +2377,38 @@ document.getElementById('super-simple-test').addEventListener('click', function(
         });
 });
 </script>
+<button id="final-test" style="position: fixed; top: 10px; right: 10px; z-index: 1000; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">
+    ENVOYER EMAIL
+</button>
+
+<script>
+document.getElementById('final-test').addEventListener('click', function() {
+    // Demander l'email
+    const email = prompt("Adresse email du destinataire :");
+    if (!email) return;
+    
+    // Demander le nom
+    const name = prompt("Nom du destinataire :", "Utilisateur");
+    
+    // Paramètres qui correspondent exactement aux variables du template
+    const params = {
+        email: email,     // Pour {{email}} dans le template
+        name: name        // Pour {{name}} dans le template
+    };
+    
+    console.log("Envoi d'email avec les paramètres corrects :", params);
+    
+    // Envoyer l'email
+    emailjs.send("service_w5kg7es", "template_zm00bwr", params)
+        .then(function(response) {
+            console.log("✅ Email envoyé avec succès !", response.status, response.text);
+            alert("✅ Email envoyé avec succès à " + email + " !");
+        })
+        .catch(function(err) {
+            console.error("❌ Erreur lors de l'envoi :", err);
+            alert("❌ Erreur : " + JSON.stringify(err));
+        });
+});
+</script>
 </body>
 </html>
