@@ -365,6 +365,33 @@
         .intro-text {
             margin-bottom: 60px;
         }
+        
+        /* Nouveaux styles pour les modalités */
+        .modality-group {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0f5f5;
+            border-radius: 4px;
+        }
+        .modality-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2A9D8F;
+        }
+        .modality-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .modality-option {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+        .modality-option input {
+            width: auto;
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -486,7 +513,7 @@
                 </div>
                 <div class="form-group">
                     <label for="company-sector">Secteur d'activité</label>
-                    <select id="company-sector">
+                    <select id="company-sector" onchange="toggleOtherSectorField()">
                         <option value="">Sélectionnez un secteur</option>
                         <option value="Agriculture">Agriculture</option>
                         <option value="Alimentation">Alimentation & Restauration</option>
@@ -503,6 +530,246 @@
                         <option value="Finance">Finance</option>
                         <option value="Immobilier">Immobilier</option>
                         <option value="Tourisme">Tourisme</option>
+                        <!-- Nouvelles catégories pour associations/organisations environnementales -->
+                        <option value="AssocEnvironnement">Association environnementale</option>
+                        <option value="OrgProtection">Organisation de protection de la nature</option>
+                        <option value="AssocEducation">Association d'éducation environnementale</option>
+                        <option value="Fondation">Fondation écologique</option>
+                        <option value="Collectif">Collectif citoyen environnemental</option>
                         <option value="Autre">Autre</option>
                     </select>
-                    <input type="text" id="other-sector" style="display:none;" placeholder
+                </div>
+                <div class="form-group" id="other-sector-container" style="display:none;">
+                    <label for="other-sector-text">Précisez votre secteur d'activité</label>
+                    <input type="text" id="other-sector-text" placeholder="Précisez votre secteur d'activité">
+                </div>
+                
+                <!-- Ajout des champs pour ressources -->
+                <div class="form-group">
+                    <label for="resources">Ressources que vous pouvez offrir</label>
+                    <select id="resources" multiple>
+                        <!-- Matérielles -->
+                        <option value="Matières premières">Matières premières</option>
+                        <option value="Déchets recyclables">Déchets recyclables</option>
+                        <option value="Équipements">Équipements & Outils</option>
+                        <option value="Espace">Espace & Locaux</option>
+                        <!-- Non matérielles / Humaines -->
+                        <option value="Expertise">Expertise/Conseil</option>
+                        <option value="Formation">Formation/Mentorat</option>
+                        <option value="Compétences numériques">Compétences numériques</option>
+                        <option value="Connaissances sectorielles">Connaissances sectorielles</option>
+                        <option value="Animation">Animation/Facilitation</option>
+                        <option value="Temps">Temps de travail/Personnel</option>
+                        <option value="Bénévolat">Bénévolat/Engagement</option>
+                    </select>
+                    
+                    <!-- Modalités pour ressources -->
+                    <div class="modality-group">
+                        <div class="modality-title">Modalités pour les ressources offertes</div>
+                        
+                        <div class="modality-section">
+                            <div class="modality-title">Fréquence</div>
+                            <div class="modality-options">
+                                <label class="modality-option"><input type="radio" name="resource-frequency" value="ponctuelle"> Ponctuelle</label>
+                                <label class="modality-option"><input type="radio" name="resource-frequency" value="régulière"> Régulière</label>
+                                <label class="modality-option"><input type="radio" name="resource-frequency" value="permanente"> Permanente</label>
+                            </div>
+                        </div>
+                        
+                        <div class="modality-section">
+                            <div class="modality-title">Type d'interaction</div>
+                            <div class="modality-options">
+                                <label class="modality-option"><input type="radio" name="resource-interaction" value="présentielle"> Présentielle</label>
+                                <label class="modality-option"><input type="radio" name="resource-interaction" value="distancielle"> Distancielle</label>
+                                <label class="modality-option"><input type="radio" name="resource-interaction" value="mixte"> Mixte</label>
+                            </div>
+                        </div>
+                        
+                        <div class="modality-section">
+                            <div class="modality-title">Niveau d'expertise</div>
+                            <div class="modality-options">
+                                <label class="modality-option"><input type="radio" name="resource-expertise" value="débutant"> Débutant</label>
+                                <label class="modality-option"><input type="radio" name="resource-expertise" value="intermédiaire"> Intermédiaire</label>
+                                <label class="modality-option"><input type="radio" name="resource-expertise" value="expert"> Expert</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ajout des champs pour besoins -->
+                <div class="form-group">
+                    <label for="needs">Ressources dont vous avez besoin</label>
+                    <select id="needs" multiple>
+                        <!-- Matérielles -->
+                        <option value="Matières premières">Matières premières</option>
+                        <option value="Déchets recyclables">Déchets recyclables</option>
+                        <option value="Équipements">Équipements & Outils</option>
+                        <option value="Espace">Espace & Locaux</option>
+                        <!-- Non matérielles / Humaines -->
+                        <option value="Expertise">Expertise/Conseil</option>
+                        <option value="Formation">Formation/Mentorat</option>
+                        <option value="Compétences numériques">Compétences numériques</option>
+                        <option value="Connaissances sectorielles">Connaissances sectorielles</option>
+                        <option value="Animation">Animation/Facilitation</option>
+                        <option value="Temps">Temps de travail/Personnel</option>
+                        <option value="Bénévolat">Bénévolat/Engagement</option>
+                    </select>
+                    
+                    <!-- Modalités pour besoins -->
+                    <div class="modality-group">
+                        <div class="modality-title">Modalités pour les besoins</div>
+                        
+                        <div class="modality-section">
+                            <div class="modality-title">Fréquence</div>
+                            <div class="modality-options">
+                                <label class="modality-option"><input type="radio" name="needs-frequency" value="ponctuelle"> Ponctuelle</label>
+                                <label class="modality-option"><input type="radio" name="needs-frequency" value="régulière"> Régulière</label>
+                                <label class="modality-option"><input type="radio" name="needs-frequency" value="permanente"> Permanente</label>
+                            </div>
+                        </div>
+                        
+                        <div class="modality-section">
+                            <div class="modality-title">Type d'interaction</div>
+                            <div class="modality-options">
+                                <label class="modality-option"><input type="radio" name="needs-interaction" value="présentielle"> Présentielle</label>
+                                <label class="modality-option"><input type="radio" name="needs-interaction" value="distancielle"> Distancielle</label>
+                                <label class="modality-option"><input type="radio" name="needs-interaction" value="mixte"> Mixte</label>
+                            </div>
+                        </div>
+                        
+                        <div class="modality-section">
+                            <div class="modality-title">Niveau d'expertise</div>
+                            <div class="modality-options">
+                                <label class="modality-option"><input type="radio" name="needs-expertise" value="débutant"> Débutant</label>
+                                <label class="modality-option"><input type="radio" name="needs-expertise" value="intermédiaire"> Intermédiaire</label>
+                                <label class="modality-option"><input type="radio" name="needs-expertise" value="expert"> Expert</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" onclick="registerCompany()">Rejoindre l'écosystème</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Ajout du JavaScript pour gérer le champ "Autre" secteur -->
+    <script>
+        function toggleOtherSectorField() {
+            const sectorSelect = document.getElementById('company-sector');
+            const otherSectorContainer = document.getElementById('other-sector-container');
+            
+            if (sectorSelect.value === 'Autre') {
+                otherSectorContainer.style.display = 'block';
+            } else {
+                otherSectorContainer.style.display = 'none';
+            }
+        }
+        
+        // Fonction pour enregistrer l'entreprise
+        function registerCompany() {
+            const companyName = document.getElementById('company-name').value;
+            const companyEmail = document.getElementById('company-email').value;
+            const companySector = document.getElementById('company-sector').value;
+            
+            // Récupérer la valeur du champ "Autre" si nécessaire
+            let finalSector = companySector;
+            if (companySector === 'Autre') {
+                const otherSectorText = document.getElementById('other-sector-text').value;
+                if (otherSectorText) {
+                    finalSector = otherSectorText;
+                }
+            }
+            
+            // Récupération des ressources et besoins
+            const resourcesSelect = document.getElementById('resources');
+            const needsSelect = document.getElementById('needs');
+            
+            const resources = Array.from(resourcesSelect.selectedOptions).map(option => option.value);
+            const needs = Array.from(needsSelect.selectedOptions).map(option => option.value);
+            
+            // Récupération des modalités pour les ressources
+            const resourceFrequency = document.querySelector('input[name="resource-frequency"]:checked')?.value;
+            const resourceInteraction = document.querySelector('input[name="resource-interaction"]:checked')?.value;
+            const resourceExpertise = document.querySelector('input[name="resource-expertise"]:checked')?.value;
+            
+            // Récupération des modalités pour les besoins
+            const needsFrequency = document.querySelector('input[name="needs-frequency"]:checked')?.value;
+            const needsInteraction = document.querySelector('input[name="needs-interaction"]:checked')?.value;
+            const needsExpertise = document.querySelector('input[name="needs-expertise"]:checked')?.value;
+            
+            // Créer un objet avec toutes les données
+            const companyData = {
+                name: companyName,
+                email: companyEmail,
+                sector: finalSector,
+                resources: {
+                    items: resources,
+                    frequency: resourceFrequency,
+                    interaction: resourceInteraction,
+                    expertise: resourceExpertise
+                },
+                needs: {
+                    items: needs,
+                    frequency: needsFrequency,
+                    interaction: needsInteraction,
+                    expertise: needsExpertise
+                }
+            };
+            
+            // Ici, vous pouvez envoyer les données à votre serveur ou les traiter localement
+            console.log("Données d'entreprise:", companyData);
+            
+            // Simuler une réponse réussie
+            showNotification('Inscription réussie! Bienvenue dans l\'écosystème Ré(GE)nère.', 'success');
+            
+            // EmailJS pour envoyer une notification
+            sendRegistrationEmail(companyData);
+        }
+        
+        // Fonction pour envoyer un email de confirmation d'inscription
+        function sendRegistrationEmail(companyData) {
+            const templateParams = {
+                to_email: companyData.email,
+                to_name: companyData.name,
+                message: `Merci de vous être inscrit à Ré(GE)nère! Nous avons bien reçu vos informations et allons vous contacter prochainement.`
+            };
+            
+            emailjs.send('service_n485hr9', 'template_zm00bwr', templateParams)
+                .then(function(response) {
+                    console.log('Email envoyé!', response.status, response.text);
+                }, function(error) {
+                    console.log('Erreur lors de l\'envoi de l\'email...', error);
+                });
+        }
+        
+        // Fonction pour envoyer des notifications de correspondance
+        function sendMatchNotificationEmail(matchData) {
+            const templateParams = {
+                to_email: matchData.email,
+                to_name: matchData.companyName,
+                match_details: matchData.details
+            };
+            
+            emailjs.send('service_n485hr9', 'template_zm00bwr', templateParams)
+                .then(function(response) {
+                    console.log('Notification de correspondance envoyée!', response.status, response.text);
+                }, function(error) {
+                    console.log('Erreur lors de l\'envoi de la notification...', error);
+                });
+        }
+        
+        // Fonction pour afficher une notification
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = type;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
