@@ -325,22 +325,6 @@ function displayMatches() {
   
   // Obtenir la référence au conteneur sans ajouter de bouton de test
   const container = matchesSection.querySelector('.container');
-  
-  // Ajouter un bouton pour inspecter les données
-  const inspectButton = document.createElement('button');
-  inspectButton.textContent = 'Diagnostiquer les données';
-  inspectButton.className = 'submit-btn';
-  inspectButton.style.marginTop = '15px';
-  inspectButton.style.marginLeft = '10px';
-  inspectButton.style.backgroundColor = '#264653';
-  inspectButton.style.width = '300px';
-  inspectButton.onclick = function() {
-    inspectCompanyData();
-    console.log("Diagnostic terminé. Vérifiez la console pour les détails (F12).");
-    showNotification('Diagnostic terminé. Consultez la console (F12) pour voir les détails.', 'info');
-  };
-  container.appendChild(inspectButton);
-}
 
 // Fonction pour afficher une notification de nouveaux matchs
 function showMatchNotification(newMatches) {
