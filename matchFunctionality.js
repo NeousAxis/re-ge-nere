@@ -323,25 +323,8 @@ function displayMatches() {
     </div>
   `;
   
-  // Créer un bouton pour générer de nouveaux matchs (pour le test)
-  const testButton = document.createElement('button');
-  testButton.textContent = 'Tester: Trouver de nouveaux matchs';
-  testButton.className = 'submit-btn';
-  testButton.style.marginTop = '30px';
-  testButton.style.width = '300px';
-  testButton.onclick = function() {
-    const newMatches = findMatches();
-    if (newMatches.length > 0) {
-      showMatchNotification(newMatches);
-      displayMatches(); // Rafraîchir l'affichage
-    } else {
-      showNotification('Aucun nouveau match trouvé.', 'info');
-    }
-  };
-  
-  // Ajouter le bouton à la section
+  // Obtenir la référence au conteneur sans ajouter de bouton de test
   const container = matchesSection.querySelector('.container');
-  container.appendChild(testButton);
   
   // Ajouter un bouton pour inspecter les données
   const inspectButton = document.createElement('button');
@@ -462,6 +445,42 @@ function showNotification(message, type) {
   }, 5000);
 }
 
+// Fonction pour mettre à jour une entreprise existante et rechercher des matchs
+function updateCompanyAndFindMatches(companyId, updatedData) {
+  console.log(`Mise à jour de l'entreprise ID:${companyId} avec de nouvelles données`);
+  
+  // Trouver l'entreprise dans le tableau
+  const companyIndex = companies.findIndex(company => company.id === companyId);
+  if (companyIndex === -1) {
+    console.error(`Entreprise avec ID:${companyId} non trouvée`);
+    return;
+  }
+  
+  // Mettre à jour l'entreprise avec les nouvelles données
+  const oldCompany = {...companies[companyIndex]};
+  companies[companyIndex] = {...companies[companyIndex], ...updatedData};
+  
+  // Sauvegarder les modifications dans localStorage
+  localStorage.setItem('regenere_companies', JSON.stringify(companies));
+  console.log("Entreprise mise à jour dans localStorage");
+  
+  // Rechercher automatiquement de nouveaux matchs
+  const newMatches = findMatches();
+  if (newMatches.length > 0) {
+    console.log(`${newMatches.length} nouveaux matchs trouvés après mise à jour`);
+    showMatchNotification(newMatches);
+    displayMatches(); // Rafraîchir l'affichage
+  } else {
+    console.log("Aucun nouveau match trouvé après la mise à jour");
+  }
+  
+  return {
+    success: true,
+    message: "Entreprise mise à jour avec succès",
+    newMatches: newMatches.length
+  };
+}
+
 // Fonction pour initialiser la fonctionnalité de match
 function initMatchFunctionality() {
   console.log("Initialisation de la fonctionnalité de match...");
@@ -469,8 +488,18 @@ function initMatchFunctionality() {
   // Initialiser les données de test
   initTestData();
   
+  // Rechercher automatiquement des matchs au chargement
+  const newMatches = findMatches();
+  if (newMatches.length > 0) {
+    console.log(`${newMatches.length} nouveaux matchs trouvés automatiquement au chargement`);
+    // Une notification discrète peut être affichée ici si désiré
+  }
+  
   // Afficher les matchs existants
   displayMatches();
+  
+  // Exposer la fonction de mise à jour dans la portée globale
+  window.updateCompanyAndFindMatches = updateCompanyAndFindMatches;
   
   // Mettre à jour la fonction d'enregistrement pour inclure la recherche de matchs
   const originalRegisterFunction = window.registerCompany;
@@ -480,61 +509,103 @@ function initMatchFunctionality() {
     window.registerCompany = function() {
       console.log("Fonction registerCompany appelée");
       
-      // Appeler la fonction d'origine
-      originalRegisterFunction();
-      
-      // Récupérer les données du formulaire pour créer une nouvelle entreprise
+      // Récupérer les données du formulaire
       const companyName = document.getElementById('company-name')?.value;
       if (!companyName) {
         console.log("Nom d'entreprise non valide, arrêt de l'enregistrement");
         return; // Formulaire non valide
       }
       
-      console.log("Création d'une nouvelle entreprise:", companyName);
+      // Vérifier si c'est une mise à jour ou une nouvelle entreprise
+      const existingCompanyIndex = companies.findIndex(c => 
+        c.name === companyName &&
+        c.email === document.getElementById('company-email')?.value
+      );
       
-      // Créer un nouvel objet entreprise
-      const newCompany = {
-        id: Date.now(),
-        name: companyName,
-        address: document.getElementById('company-address')?.value || "",
-        postalCode: document.getElementById('company-postal')?.value || "",
-        city: document.getElementById('company-city')?.value || "",
-        website: document.getElementById('company-website')?.value || "",
-        email: document.getElementById('company-email')?.value || "",
-        resources: {
-          categories: Array.isArray(resourceCategories) ? [...resourceCategories] : [], // Copier le tableau
-          description: document.getElementById('resource-description')?.value || "",
-          frequency: document.getElementById('resource-frequency')?.value || "",
-          mode: document.getElementById('resource-mode')?.value || "",
-          expertise: document.getElementById('resource-expertise')?.value || ""
-        },
-        needs: {
-          categories: Array.isArray(needsCategories) ? [...needsCategories] : [], // Copier le tableau
-          description: document.getElementById('needs-description')?.value || "",
-          frequency: document.getElementById('needs-frequency')?.value || "",
-          mode: document.getElementById('needs-mode')?.value || "",
-          expertise: document.getElementById('needs-expertise')?.value || ""
-        },
-        notificationPreferences: document.getElementById('notification-pref')?.value || "all"
-      };
-      
-      console.log("Nouvelle entreprise créée:", newCompany);
-      
-      // Ajouter la nouvelle entreprise à la liste
-      companies.push(newCompany);
-      localStorage.setItem('regenere_companies', JSON.stringify(companies));
-      console.log("Entreprise ajoutée à localStorage");
-      
-      // Rechercher des matchs pour la nouvelle entreprise
-      const newMatches = findMatches();
-      console.log(`${newMatches.length} nouveaux matchs trouvés`);
-      
-      if (newMatches.length > 0) {
-        // Afficher une notification avec les nouveaux matchs
-        setTimeout(() => {
-          showMatchNotification(newMatches);
-          displayMatches(); // Mettre à jour l'affichage
-        }, 1000);
+      if (existingCompanyIndex >= 0) {
+        // C'est une mise à jour d'une entreprise existante
+        console.log("Mise à jour d'une entreprise existante:", companyName);
+        
+        // Créer les données mises à jour
+        const updatedData = {
+          address: document.getElementById('company-address')?.value || "",
+          postalCode: document.getElementById('company-postal')?.value || "",
+          city: document.getElementById('company-city')?.value || "",
+          website: document.getElementById('company-website')?.value || "",
+          resources: {
+            categories: Array.isArray(resourceCategories) ? [...resourceCategories] : [],
+            description: document.getElementById('resource-description')?.value || "",
+            frequency: document.getElementById('resource-frequency')?.value || "",
+            mode: document.getElementById('resource-mode')?.value || "",
+            expertise: document.getElementById('resource-expertise')?.value || ""
+          },
+          needs: {
+            categories: Array.isArray(needsCategories) ? [...needsCategories] : [],
+            description: document.getElementById('needs-description')?.value || "",
+            frequency: document.getElementById('needs-frequency')?.value || "",
+            mode: document.getElementById('needs-mode')?.value || "",
+            expertise: document.getElementById('needs-expertise')?.value || ""
+          },
+          notificationPreferences: document.getElementById('notification-pref')?.value || "all"
+        };
+        
+        // Mettre à jour l'entreprise et rechercher des matchs
+        const existingCompanyId = companies[existingCompanyIndex].id;
+        updateCompanyAndFindMatches(existingCompanyId, updatedData);
+        
+        // Appeler la fonction d'origine pour tout traitement supplémentaire
+        originalRegisterFunction();
+      } else {
+        // C'est une nouvelle entreprise
+        console.log("Création d'une nouvelle entreprise:", companyName);
+        
+        // Appeler la fonction d'origine
+        originalRegisterFunction();
+        
+        // Créer un nouvel objet entreprise
+        const newCompany = {
+          id: Date.now(),
+          name: companyName,
+          address: document.getElementById('company-address')?.value || "",
+          postalCode: document.getElementById('company-postal')?.value || "",
+          city: document.getElementById('company-city')?.value || "",
+          website: document.getElementById('company-website')?.value || "",
+          email: document.getElementById('company-email')?.value || "",
+          resources: {
+            categories: Array.isArray(resourceCategories) ? [...resourceCategories] : [], // Copier le tableau
+            description: document.getElementById('resource-description')?.value || "",
+            frequency: document.getElementById('resource-frequency')?.value || "",
+            mode: document.getElementById('resource-mode')?.value || "",
+            expertise: document.getElementById('resource-expertise')?.value || ""
+          },
+          needs: {
+            categories: Array.isArray(needsCategories) ? [...needsCategories] : [], // Copier le tableau
+            description: document.getElementById('needs-description')?.value || "",
+            frequency: document.getElementById('needs-frequency')?.value || "",
+            mode: document.getElementById('needs-mode')?.value || "",
+            expertise: document.getElementById('needs-expertise')?.value || ""
+          },
+          notificationPreferences: document.getElementById('notification-pref')?.value || "all"
+        };
+        
+        console.log("Nouvelle entreprise créée:", newCompany);
+        
+        // Ajouter la nouvelle entreprise à la liste
+        companies.push(newCompany);
+        localStorage.setItem('regenere_companies', JSON.stringify(companies));
+        console.log("Entreprise ajoutée à localStorage");
+        
+        // Rechercher des matchs pour la nouvelle entreprise
+        const newMatches = findMatches();
+        console.log(`${newMatches.length} nouveaux matchs trouvés`);
+        
+        if (newMatches.length > 0) {
+          // Afficher une notification avec les nouveaux matchs
+          setTimeout(() => {
+            showMatchNotification(newMatches);
+            displayMatches(); // Mettre à jour l'affichage
+          }, 1000);
+        }
       }
     };
   } else {
