@@ -1155,26 +1155,9 @@ function displayMatches() {
     </div>
   `;
   
-  // Créer un bouton pour générer de nouveaux matchs (pour le test)
-  const testButton = document.createElement('button');
-  testButton.textContent = 'Tester: Trouver de nouveaux matchs';
-  testButton.className = 'submit-btn';
-  testButton.style.marginTop = '30px';
-  testButton.style.width = '300px';
-  testButton.onclick = function() {
-    const newMatches = findMatches();
-    if (newMatches.length > 0) {
-      showMatchNotification(newMatches);
-      displayMatches(); // Rafraîchir l'affichage
-    } else {
-      showNotification('Aucun nouveau match trouvé.', 'info');
-    }
-  };
-  
-  // Ajouter le bouton à la section
-  const container = matchesSection.querySelector('.container');
-  container.appendChild(testButton);
-}
+<script>
+// Aucun bouton de test n'est créé ici - le matching est automatique
+</script>
 
 // Fonction pour afficher une notification de nouveaux matchs
 function showMatchNotification(newMatches) {
