@@ -421,13 +421,17 @@
             background-color: #217c70;
         }
         
-        .modality-section {
-            border-left: 3px solid #2A9D8F;
-            padding: 15px 0 15px 20px;
-            margin: 25px 0;
-            background-color: #f0f8f8;
-            border-radius: 0 4px 4px 0;
-        }
+        .modality-section::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 100' preserveAspectRatio='none'%3E%3Cpath d='M1,0 Q10,15 10,50 Q10,85 1,100' stroke='%232A9D8F' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
         
         .modality-row {
             display: flex;
