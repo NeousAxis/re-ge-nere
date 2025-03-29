@@ -1,25 +1,15 @@
 // Structure pour stocker des entreprises et des matchs
 let companies = [];
 let matches = [];
-// Variables pour stocker les catégories sélectionnées (si ces variables n'existent pas déjà dans votre code)
-if (typeof resourceCategories === 'undefined') {
-  var resourceCategories = [];
-}
-if (typeof needsCategories === 'undefined') {
-  var needsCategories = [];
-}
 
-// Fonction pour initialiser des données de test si nécessaire
+// Fonction pour initialiser des données de test
 function initTestData() {
-  console.log("Initialisation des données de test...");
-  
   // Vérifier si des données existent déjà en localStorage
   const storedCompanies = localStorage.getItem('regenere_companies');
   const storedMatches = localStorage.getItem('regenere_matches');
   
   if (storedCompanies) {
     companies = JSON.parse(storedCompanies);
-    console.log(`${companies.length} entreprises chargées depuis localStorage`);
   } else {
     // Créer quelques entreprises de test si aucune n'existe
     companies = [
@@ -56,7 +46,7 @@ function initTestData() {
         city: "Genève",
         website: "www.bureauflex.ch",
         resources: {
-          categories: ["Espace", "Équipements & Outils"],
+          categories: ["Espace", "Équipements"],
           description: "Salle de réunion disponible les mardis et jeudis, matériel informatique à partager",
           frequency: "régulière",
           mode: "présentiel",
@@ -97,82 +87,32 @@ function initTestData() {
       }
     ];
     localStorage.setItem('regenere_companies', JSON.stringify(companies));
-    console.log("3 entreprises de test créées et enregistrées");
   }
   
   if (storedMatches) {
     matches = JSON.parse(storedMatches);
-    console.log(`${matches.length} matchs chargés depuis localStorage`);
   } else {
     matches = [];
     localStorage.setItem('regenere_matches', JSON.stringify(matches));
-    console.log("Aucun match existant, initialisation d'un tableau vide");
   }
-}
-
-// Fonction pour inspecter les données des entreprises (diagnostic)
-function inspectCompanyData() {
-  const companies = JSON.parse(localStorage.getItem('regenere_companies')) || [];
-  
-  console.log("===== INSPECTION DES DONNÉES =====");
-  console.log(`Nombre d'entreprises: ${companies.length}`);
-  
-  companies.forEach((company, index) => {
-    console.log(`\n--- Entreprise ${index + 1}: ${company.name} ---`);
-    
-    console.log("Ressources:");
-    if (company.resources) {
-      console.log("Categories:", company.resources.categories);
-      if (Array.isArray(company.resources.categories)) {
-        console.log("Nombre de catégories:", company.resources.categories.length);
-      } else {
-        console.log("ERREUR: categories n'est pas un tableau");
-      }
-    } else {
-      console.log("ERREUR: Pas de propriété resources");
-    }
-    
-    console.log("Besoins:");
-    if (company.needs) {
-      console.log("Categories:", company.needs.categories);
-      if (Array.isArray(company.needs.categories)) {
-        console.log("Nombre de catégories:", company.needs.categories.length);
-      } else {
-        console.log("ERREUR: categories n'est pas un tableau");
-      }
-    } else {
-      console.log("ERREUR: Pas de propriété needs");
-    }
-  });
 }
 
 // Fonction pour trouver des matchs potentiels
 function findMatches() {
-  console.log("Recherche de matchs...");
-  console.log("Nombre d'entreprises:", companies.length);
-  
   let newMatches = [];
   
   // Pour chaque paire d'entreprises
   for (let i = 0; i < companies.length; i++) {
-    for (let j = 0; j < companies.length; j++) {
-      // Ne pas comparer une entreprise avec elle-même
-      if (i !== j) {
-        console.log(`Comparaison entre ${companies[i].name} et ${companies[j].name}`);
-        
-        // Vérifier les ressources de l'entreprise i avec les besoins de l'entreprise j
-        const matchesFound = findMatchBetweenCompanies(companies[i], companies[j]);
-        if (matchesFound.length > 0) {
-          console.log(`${matchesFound.length} match(s) trouvé(s) entre ${companies[i].name} et ${companies[j].name}`);
-          newMatches = [...newMatches, ...matchesFound];
-        }
-      }
+    for (let j = i + 1; j < companies.length; j++) {
+      // Vérifier les matchs dans les deux directions
+      const matches1 = findMatchBetweenCompanies(companies[i], companies[j]);
+      const matches2 = findMatchBetweenCompanies(companies[j], companies[i]);
+      
+      newMatches = [...newMatches, ...matches1, ...matches2];
     }
   }
   
   // Filtrer pour éliminer les doublons et les matchs déjà existants
-  console.log("Nombre total de matchs trouvés:", newMatches.length);
-  
   const uniqueNewMatches = newMatches.filter((match, index, self) => 
     index === self.findIndex(m => 
       m.provider.id === match.provider.id && 
@@ -180,8 +120,6 @@ function findMatches() {
       m.resourceCategory === match.resourceCategory
     )
   );
-  
-  console.log("Matchs uniques:", uniqueNewMatches.length);
   
   // Filtrer pour ne garder que les matchs qui n'existent pas déjà
   const actuallyNewMatches = uniqueNewMatches.filter(newMatch => 
@@ -191,8 +129,6 @@ function findMatches() {
       existingMatch.resourceCategory === newMatch.resourceCategory
     )
   );
-  
-  console.log("Nouveaux matchs:", actuallyNewMatches.length);
   
   // Ajouter la date aux nouveaux matchs
   actuallyNewMatches.forEach(match => {
@@ -213,38 +149,24 @@ function findMatches() {
 function findMatchBetweenCompanies(provider, receiver) {
   let foundMatches = [];
   
-  // Vérifier que les catégories existent
-  if (!provider.resources || !provider.resources.categories || !Array.isArray(provider.resources.categories) ||
-      !receiver.needs || !receiver.needs.categories || !Array.isArray(receiver.needs.categories)) {
-    console.log("Structure de données incorrecte pour la comparaison");
-    return foundMatches;
-  }
-  
-  console.log("Ressources offertes:", provider.resources.categories);
-  console.log("Besoins recherchés:", receiver.needs.categories);
-  
   // Pour chaque catégorie de ressources du fournisseur
   provider.resources.categories.forEach(resourceCategory => {
     // Vérifier si cette catégorie correspond à un besoin du receveur
-    receiver.needs.categories.forEach(needCategory => {
-      if (resourceCategory === needCategory) {
-        console.log(`Match trouvé! ${provider.name} peut fournir "${resourceCategory}" à ${receiver.name}`);
-        
-        foundMatches.push({
-          provider: {
-            id: provider.id || Date.now(),
-            name: provider.name
-          },
-          receiver: {
-            id: receiver.id || Date.now() + 1,
-            name: receiver.name
-          },
-          resourceCategory: resourceCategory,
-          providerDescription: provider.resources.description || "",
-          receiverDescription: receiver.needs.description || ""
-        });
-      }
-    });
+    if (receiver.needs.categories.includes(resourceCategory)) {
+      foundMatches.push({
+        provider: {
+          id: provider.id,
+          name: provider.name
+        },
+        receiver: {
+          id: receiver.id,
+          name: receiver.name
+        },
+        resourceCategory: resourceCategory,
+        providerDescription: provider.resources.description,
+        receiverDescription: receiver.needs.description
+      });
+    }
   });
   
   return foundMatches;
@@ -253,11 +175,7 @@ function findMatchBetweenCompanies(provider, receiver) {
 // Fonction pour récupérer les derniers matchs
 function getLatestMatches(count = 3) {
   // Trier par date décroissante
-  return [...matches].sort((a, b) => {
-    const dateA = a.date ? new Date(a.date) : new Date(0);
-    const dateB = b.date ? new Date(b.date) : new Date(0);
-    return dateB - dateA;
-  }).slice(0, count);
+  return [...matches].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, count);
 }
 
 // Fonction pour afficher les matchs sur la page
@@ -267,11 +185,6 @@ function displayMatches() {
   if (!matchesSection) {
     // Créer la section de matchs après la section "Comment ça marche"
     const howItWorksSection = document.getElementById('how-it-works');
-    
-    if (!howItWorksSection) {
-      console.error("Section 'how-it-works' non trouvée");
-      return;
-    }
     
     matchesSection = document.createElement('section');
     matchesSection.id = 'matches-section';
@@ -297,7 +210,7 @@ function displayMatches() {
           <div class="match-card" style="background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
               <span style="background-color: #2A9D8F; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Match</span>
-              <span style="color: #6c757d; font-size: 0.9rem;">${match.date ? new Date(match.date).toLocaleDateString() : 'Date non spécifiée'}</span>
+              <span style="color: #6c757d; font-size: 0.9rem;">${new Date(match.date).toLocaleDateString()}</span>
             </div>
             <h3 style="margin-top: 0; color: #264653; margin-bottom: 15px;">Catégorie: ${match.resourceCategory}</h3>
             <div style="margin-bottom: 15px;">
@@ -310,8 +223,8 @@ function displayMatches() {
             </div>
             <hr style="border: 0; height: 1px; background-color: #e0e0e0; margin: 15px 0;">
             <div style="font-size: 0.9rem; color: #333;">
-              <div>Ressource: <span style="font-style: italic;">${match.providerDescription ? (match.providerDescription.substring(0, 100) + (match.providerDescription.length > 100 ? '...' : '')) : ''}</span></div>
-              <div>Besoin: <span style="font-style: italic;">${match.receiverDescription ? (match.receiverDescription.substring(0, 100) + (match.receiverDescription.length > 100 ? '...' : '')) : ''}</span></div>
+              <div>Ressource: <span style="font-style: italic;">${match.providerDescription.substring(0, 100)}${match.providerDescription.length > 100 ? '...' : ''}</span></div>
+              <div>Besoin: <span style="font-style: italic;">${match.receiverDescription.substring(0, 100)}${match.receiverDescription.length > 100 ? '...' : ''}</span></div>
             </div>
           </div>
         `).join('') : `
@@ -322,9 +235,7 @@ function displayMatches() {
       </div>
     </div>
   `;
-  
-  // Obtenir la référence au conteneur sans ajouter de bouton de test
-  const container = matchesSection.querySelector('.container');
+}
 
 // Fonction pour afficher une notification de nouveaux matchs
 function showMatchNotification(newMatches) {
@@ -383,225 +294,81 @@ function showMatchNotification(newMatches) {
   });
 }
 
-// Fonction pour afficher une notification simple
-function showNotification(message, type) {
-  // Vérifier si la fonction existe déjà dans le code
-  if (typeof window.showNotification === 'function') {
-    window.showNotification(message, type);
-    return;
-  }
+// Fonction pour ajouter un bouton de démo
+function addDemoMatchButton() {
+  // Ajouter un bouton discret pour créer des matchs de démonstration (utile pour les tests)
+  const registrationSection = document.getElementById('registration');
+  const demoButtonContainer = document.createElement('div');
+  demoButtonContainer.style.textAlign = 'center';
+  demoButtonContainer.style.marginTop = '20px';
   
-  // Créer notre propre notification si la fonction n'existe pas
-  let notification = document.getElementById('notification');
+  const demoButton = document.createElement('button');
+  demoButton.textContent = 'Générer des exemples de matchs (démonstration)';
+  demoButton.className = 'btn-add';
+  demoButton.style.background = '#E9C46A';
+  demoButton.style.marginTop = '20px';
   
-  // Créer l'élément de notification s'il n'existe pas
-  if (!notification) {
-    notification = document.createElement('div');
-    notification.id = 'notification';
-    notification.style.position = 'fixed';
-    notification.style.top = '20px';
-    notification.style.right = '20px';
-    notification.style.padding = '15px 25px';
-    notification.style.borderRadius = '4px';
-    notification.style.color = 'white';
-    notification.style.fontWeight = 'bold';
-    notification.style.zIndex = '1001';
-    document.body.appendChild(notification);
-  }
-  
-  // Définir le style selon le type
-  if (type === 'success') {
-    notification.style.backgroundColor = '#2A9D8F';
-  } else if (type === 'error') {
-    notification.style.backgroundColor = '#E76F51';
-  } else if (type === 'info') {
-    notification.style.backgroundColor = '#E9C46A';
-    notification.style.color = '#264653';
-  }
-  
-  // Définir le message et afficher la notification
-  notification.textContent = message;
-  notification.style.display = 'block';
-  
-  // Masquer la notification après 5 secondes
-  setTimeout(() => {
-    notification.style.display = 'none';
-  }, 5000);
-}
-
-// Fonction pour mettre à jour une entreprise existante et rechercher des matchs
-function updateCompanyAndFindMatches(companyId, updatedData) {
-  console.log(`Mise à jour de l'entreprise ID:${companyId} avec de nouvelles données`);
-  
-  // Trouver l'entreprise dans le tableau
-  const companyIndex = companies.findIndex(company => company.id === companyId);
-  if (companyIndex === -1) {
-    console.error(`Entreprise avec ID:${companyId} non trouvée`);
-    return;
-  }
-  
-  // Mettre à jour l'entreprise avec les nouvelles données
-  const oldCompany = {...companies[companyIndex]};
-  companies[companyIndex] = {...companies[companyIndex], ...updatedData};
-  
-  // Sauvegarder les modifications dans localStorage
-  localStorage.setItem('regenere_companies', JSON.stringify(companies));
-  console.log("Entreprise mise à jour dans localStorage");
-  
-  // Rechercher automatiquement de nouveaux matchs
-  const newMatches = findMatches();
-  if (newMatches.length > 0) {
-    console.log(`${newMatches.length} nouveaux matchs trouvés après mise à jour`);
-    showMatchNotification(newMatches);
-    displayMatches(); // Rafraîchir l'affichage
-  } else {
-    console.log("Aucun nouveau match trouvé après la mise à jour");
-  }
-  
-  return {
-    success: true,
-    message: "Entreprise mise à jour avec succès",
-    newMatches: newMatches.length
-  };
-}
-
-// Fonction pour initialiser la fonctionnalité de match
-function initMatchFunctionality() {
-  console.log("Initialisation de la fonctionnalité de match...");
-  
-  // Initialiser les données de test
-  initTestData();
-  
-  // Rechercher automatiquement des matchs au chargement
-  const newMatches = findMatches();
-  if (newMatches.length > 0) {
-    console.log(`${newMatches.length} nouveaux matchs trouvés automatiquement au chargement`);
-    // Une notification discrète peut être affichée ici si désiré
-  }
-  
-  // Afficher les matchs existants
-  displayMatches();
-  
-  // Exposer la fonction de mise à jour dans la portée globale
-  window.updateCompanyAndFindMatches = updateCompanyAndFindMatches;
-  
-  // Mettre à jour la fonction d'enregistrement pour inclure la recherche de matchs
-  const originalRegisterFunction = window.registerCompany;
-  if (typeof originalRegisterFunction === 'function') {
-    console.log("Fonction registerCompany trouvée, extension avec fonctionnalité de match");
+  demoButton.addEventListener('click', function() {
+    // Créer une entreprise de démonstration
+    const demoCompany = {
+      id: Date.now(),
+      name: "Entreprise Demo " + Math.floor(Math.random() * 100),
+      address: "1 Rue de la Démo",
+      postalCode: "1200",
+      city: "Genève",
+      website: "www.demo-enterprise.ch",
+      email: "contact@demo-enterprise.ch",
+      resources: {
+        categories: ["Équipements", "Expertise", "Formation"],
+        description: "Équipements informatiques disponibles, expertise en développement durable et formation en économie circulaire",
+        frequency: "régulière",
+        mode: "mixte",
+        expertise: "expert"
+      },
+      needs: {
+        categories: ["Espace", "Matières premières", "Compétences numériques"],
+        description: "Recherche espace de coworking, matières premières recyclées et aide en développement web",
+        frequency: "ponctuelle",
+        mode: "présentiel",
+        expertise: "intermédiaire"
+      },
+      notificationPreferences: "all"
+    };
     
-    window.registerCompany = function() {
-      console.log("Fonction registerCompany appelée");
+    // Ajouter l'entreprise de démo
+    companies.push(demoCompany);
+    localStorage.setItem('regenere_companies', JSON.stringify(companies));
+    
+    // Trouver des matchs
+    const newMatches = findMatches();
+    
+    // Afficher les nouveaux matchs
+    if (newMatches.length > 0) {
+      showMatchNotification(newMatches);
+      displayMatches();
+      showNotification('Matchs de démonstration générés!', 'success');
+    } else {
+      showNotification('Aucun nouveau match trouvé. Essayez avec d\'autres données.', 'error');
+    }
+  });
+  
+  demoButtonContainer.appendChild(demoButton);
+  registrationSection.querySelector('.container').appendChild(demoButtonContainer);
+}
+
+// Fonction pour montrer des matchs initiaux
+function showInitialMatches() {
+  // Créer un match initial si aucun n'existe
+  if (matches.length === 0) {
+    // Créer un match d'exemple entre les deux premières entreprises si elles existent
+    if (companies.length >= 2) {
+      const provider = companies[0];
+      const receiver = companies[1];
       
-      // Récupérer les données du formulaire
-      const companyName = document.getElementById('company-name')?.value;
-      if (!companyName) {
-        console.log("Nom d'entreprise non valide, arrêt de l'enregistrement");
-        return; // Formulaire non valide
-      }
-      
-      // Vérifier si c'est une mise à jour ou une nouvelle entreprise
-      const existingCompanyIndex = companies.findIndex(c => 
-        c.name === companyName &&
-        c.email === document.getElementById('company-email')?.value
+      // Vérifier s'il y a une correspondance potentielle
+      const commonCategory = provider.resources.categories.find(cat => 
+        receiver.needs.categories.includes(cat)
       );
       
-      if (existingCompanyIndex >= 0) {
-        // C'est une mise à jour d'une entreprise existante
-        console.log("Mise à jour d'une entreprise existante:", companyName);
-        
-        // Créer les données mises à jour
-        const updatedData = {
-          address: document.getElementById('company-address')?.value || "",
-          postalCode: document.getElementById('company-postal')?.value || "",
-          city: document.getElementById('company-city')?.value || "",
-          website: document.getElementById('company-website')?.value || "",
-          resources: {
-            categories: Array.isArray(resourceCategories) ? [...resourceCategories] : [],
-            description: document.getElementById('resource-description')?.value || "",
-            frequency: document.getElementById('resource-frequency')?.value || "",
-            mode: document.getElementById('resource-mode')?.value || "",
-            expertise: document.getElementById('resource-expertise')?.value || ""
-          },
-          needs: {
-            categories: Array.isArray(needsCategories) ? [...needsCategories] : [],
-            description: document.getElementById('needs-description')?.value || "",
-            frequency: document.getElementById('needs-frequency')?.value || "",
-            mode: document.getElementById('needs-mode')?.value || "",
-            expertise: document.getElementById('needs-expertise')?.value || ""
-          },
-          notificationPreferences: document.getElementById('notification-pref')?.value || "all"
-        };
-        
-        // Mettre à jour l'entreprise et rechercher des matchs
-        const existingCompanyId = companies[existingCompanyIndex].id;
-        updateCompanyAndFindMatches(existingCompanyId, updatedData);
-        
-        // Appeler la fonction d'origine pour tout traitement supplémentaire
-        originalRegisterFunction();
-      } else {
-        // C'est une nouvelle entreprise
-        console.log("Création d'une nouvelle entreprise:", companyName);
-        
-        // Appeler la fonction d'origine
-        originalRegisterFunction();
-        
-        // Créer un nouvel objet entreprise
-        const newCompany = {
-          id: Date.now(),
-          name: companyName,
-          address: document.getElementById('company-address')?.value || "",
-          postalCode: document.getElementById('company-postal')?.value || "",
-          city: document.getElementById('company-city')?.value || "",
-          website: document.getElementById('company-website')?.value || "",
-          email: document.getElementById('company-email')?.value || "",
-          resources: {
-            categories: Array.isArray(resourceCategories) ? [...resourceCategories] : [], // Copier le tableau
-            description: document.getElementById('resource-description')?.value || "",
-            frequency: document.getElementById('resource-frequency')?.value || "",
-            mode: document.getElementById('resource-mode')?.value || "",
-            expertise: document.getElementById('resource-expertise')?.value || ""
-          },
-          needs: {
-            categories: Array.isArray(needsCategories) ? [...needsCategories] : [], // Copier le tableau
-            description: document.getElementById('needs-description')?.value || "",
-            frequency: document.getElementById('needs-frequency')?.value || "",
-            mode: document.getElementById('needs-mode')?.value || "",
-            expertise: document.getElementById('needs-expertise')?.value || ""
-          },
-          notificationPreferences: document.getElementById('notification-pref')?.value || "all"
-        };
-        
-        console.log("Nouvelle entreprise créée:", newCompany);
-        
-        // Ajouter la nouvelle entreprise à la liste
-        companies.push(newCompany);
-        localStorage.setItem('regenere_companies', JSON.stringify(companies));
-        console.log("Entreprise ajoutée à localStorage");
-        
-        // Rechercher des matchs pour la nouvelle entreprise
-        const newMatches = findMatches();
-        console.log(`${newMatches.length} nouveaux matchs trouvés`);
-        
-        if (newMatches.length > 0) {
-          // Afficher une notification avec les nouveaux matchs
-          setTimeout(() => {
-            showMatchNotification(newMatches);
-            displayMatches(); // Mettre à jour l'affichage
-          }, 1000);
-        }
-      }
-    };
-  } else {
-    console.warn("Fonction registerCompany non trouvée, impossible d'étendre avec la fonctionnalité de match");
-  }
-}
-
-// Lancer l'initialisation quand le DOM est chargé
-document.addEventListener('DOMContentLoaded', initMatchFunctionality);
-
-// Si le document est déjà chargé, initialiser immédiatement
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  console.log("Document déjà chargé, initialisation immédiate");
-  initMatchFunctionality();
-}
+      if (commonCategory) {
+        const example
