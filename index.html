@@ -784,32 +784,132 @@
         // Tableau pour stocker les catégories ajoutées
         let resourceCategories = [];
         let needsCategories = [];
+        // Variables pour stocker la catégorie d'entreprise
+let companyCategory = "";
+let isCustomCategory = false;
+
+// Fonction pour gérer l'option "Autre" pour la catégorie d'entreprise
+function setCustomCompanyCategory() {
+    const input = document.getElementById('company-category-other-input');
+    const customCategory = input.value.trim();
+    
+    if (customCategory) {
+        // Sauvegarder la catégorie personnalisée
+        companyCategory = customCategory;
+        isCustomCategory = true;
         
-        // Fonction pour ajouter une catégorie de ressource
-        function addResourceCategory() {
-            const selectElement = document.getElementById('resource-category');
-            const selectedValue = selectElement.value;
-            const selectedText = selectElement.options[selectElement.selectedIndex].text;
+        // Ajouter la catégorie à la liste déroulante pour les futurs utilisateurs
+        const select = document.getElementById('company-category');
+        const option = document.createElement('option');
+        option.value = customCategory;
+        option.text = customCategory;
+        
+        // Insérer avant l'option "Autre"
+        const otherOptionIndex = Array.from(select.options).findIndex(opt => opt.value === "Autre");
+        select.add(option, otherOptionIndex);
+        
+        // Sélectionner la nouvelle option
+        select.value = customCategory;
+        
+        // Sauvegarder dans localStorage
+        saveCustomCategory('company_categories', customCategory);
+        
+        // Cacher le champ
+        document.getElementById('company-category-other-container').style.display = 'none';
+        
+        // Afficher une notification
+        showNotification('Catégorie ajoutée avec succès', 'success');
+    }
+}
+
+// Modification de la fonction registerCompany pour inclure la catégorie d'entreprise
+function registerCompany() {
+    const companyName = document.getElementById('company-name').value;
+    const companyAddress = document.getElementById('company-address').value;
+    const companyPostal = document.getElementById('company-postal').value;
+    const companyCity = document.getElementById('company-city').value;
+    const companyWebsite = document.getElementById('company-website').value;
+    const companyEmail = document.getElementById('company-email').value;
+    
+    // Récupérer la catégorie d'entreprise
+    if (!isCustomCategory) {
+        companyCategory = document.getElementById('company-category').value;
+    }
+    
+    // Validation basique des champs obligatoires
+    if (!companyName || !companyAddress || !companyPostal || !companyCity || 
+        !companyEmail || !companyCategory || resourceCategories.length === 0 || 
+        needsCategories.length === 0) {
+        showNotification('Veuillez remplir tous les champs obligatoires.', 'error');
+        return;
+    }
+    
+    // Reste du code de la fonction...
+    // ...
+    
+    // Ajout de la catégorie d'entreprise à l'objet companyData
+    const companyData = {
+        name: companyName,
+        address: companyAddress,
+        postalCode: companyPostal,
+        city: companyCity,
+        website: companyWebsite,
+        email: companyEmail,
+        category: companyCategory, // Nouvelle propriété
+        resources: {
+            categories: resourceCategories,
+            description: document.getElementById('resource-description').value,
+            frequency: document.getElementById('resource-frequency').value,
+            mode: document.getElementById('resource-mode').value,
+            expertise: document.getElementById('resource-expertise').value
+        },
+        needs: {
+            categories: needsCategories,
+            description: document.getElementById('needs-description').value,
+            frequency: document.getElementById('needs-frequency').value,
+            mode: document.getElementById('needs-mode').value,
+            expertise: document.getElementById('needs-expertise').value
+        },
+        notificationPreferences: document.getElementById('notification-pref').value
+    };
+    
+    // Suite du code de la fonction...
+}
+
+// Ajout à l'initialisation pour charger les catégories d'entreprises personnalisées
+document.addEventListener('DOMContentLoaded', function() {
+    // Code existant...
+    
+    // Charger les catégories d'entreprises personnalisées
+    const companyCustomCategories = JSON.parse(localStorage.getItem('regenere_custom_company_categories') || '[]');
+    const companyCategorySelect = document.getElementById('company-category');
+    
+    companyCustomCategories.forEach(category => {
+        if (category && category.trim() !== "") {
+            const option = document.createElement('option');
+            option.value = category;
+            option.text = category;
             
-            if (selectedValue === "Autre") {
-                // Afficher le champ de saisie pour l'option "Autre"
-                document.getElementById('resource-other-container').style.display = 'flex';
-                return;
-            }
-            
-            if (selectedValue && !resourceCategories.includes(selectedValue)) {
-                resourceCategories.push(selectedValue);
-                
-                const tagsContainer = document.getElementById('resource-tags');
-                const tag = document.createElement('div');
-                tag.className = 'tag';
-                tag.innerHTML = `${selectedText} <span class="remove" onclick="removeResourceCategory('${selectedValue}')">&times;</span>`;
-                tagsContainer.appendChild(tag);
-                
-                // Réinitialiser la sélection
-                selectElement.value = '';
+            // Insérer juste avant l'option "Autre"
+            const otherIndex = Array.from(companyCategorySelect.options).findIndex(opt => opt.value === "Autre");
+            if (otherIndex > -1) {
+                companyCategorySelect.add(option, otherIndex);
+            } else {
+                companyCategorySelect.add(option);
             }
         }
+    });
+    
+    // Gestion de l'option "Autre" pour la catégorie d'entreprise
+    document.getElementById('company-category').addEventListener('change', function() {
+        if (this.value === "Autre") {
+            document.getElementById('company-category-other-container').style.display = 'flex';
+        } else {
+            companyCategory = this.value;
+            isCustomCategory = false;
+        }
+    });
+});
         
         // Fonction pour ajouter une catégorie personnalisée pour les ressources
         function addCustomResourceCategory() {
