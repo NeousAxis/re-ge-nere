@@ -587,6 +587,33 @@
                         <span class="input-icon">⋮</span>
                     </div>
                 </div>
+                <!-- Catégorie d'entreprise -->
+<div class="form-field">
+    <label for="company-category">Catégorie d'entreprise*</label>
+    <select id="company-category" class="category-select">
+        <option value="">Sélectionnez votre secteur d'activité</option>
+        <option value="Agriculture">Agriculture & Alimentation</option>
+        <option value="Art">Art, Culture & Événementiel</option>
+        <option value="Commerce">Commerce & Distribution</option>
+        <option value="Communication">Communication & Marketing</option>
+        <option value="Construction">Construction & Immobilier</option>
+        <option value="Éducation">Éducation & Formation</option>
+        <option value="Énergie">Énergie & Environnement</option>
+        <option value="Industrie">Industrie & Fabrication</option>
+        <option value="Numérique">Numérique & Technologie</option>
+        <option value="Santé">Santé & Bien-être</option>
+        <option value="Services">Services aux entreprises</option>
+        <option value="Transport">Transport & Logistique</option>
+        <option value="Tourisme">Tourisme & Hôtellerie</option>
+        <option value="Autre">Autre (préciser)</option>
+    </select>
+    
+    <!-- Container for "Autre" input field for company category -->
+    <div id="company-category-other-container" style="display: none;" class="other-input-container">
+        <input type="text" id="company-category-other-input" class="other-input" placeholder="Précisez votre secteur d'activité">
+        <button class="btn-add" onclick="setCustomCompanyCategory()">Valider</button>
+    </div>
+</div>
                 
                 <!-- Catégories de ressources disponibles -->
                 <div class="form-field">
