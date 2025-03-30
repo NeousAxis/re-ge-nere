@@ -1635,6 +1635,57 @@ document.addEventListener('DOMContentLoaded', function() {
   createInitialMatches();
   console.log("Script de matching initialisé");
 });
+// Fonction pour tester l'envoi d'un email de correspondance
+function testMatchEmail() {
+    // Récupérer les données d'entreprises test
+    let companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
+    
+    // Vérifier qu'il y a au moins deux entreprises
+    if (companies.length < 2) {
+        alert("Pas assez d'entreprises pour tester. Inscrivez au moins deux entreprises.");
+        return;
+    }
+    
+    // Créer un exemple de correspondance
+    const testMatch = {
+        id: "test-" + Date.now(),
+        provider: {
+            id: companies[0].id,
+            name: companies[0].name
+        },
+        receiver: {
+            id: companies[1].id,
+            name: companies[1].name
+        },
+        resourceCategory: companies[0].resources.categories[0],
+        providerDescription: companies[0].resources.description,
+        receiverDescription: companies[1].needs.description,
+        match_score: 85
+    };
+    
+    // Préparer les paramètres pour le modèle d'email
+    const templateParams = {
+        name: testMatch.receiver.name,
+        your_item: testMatch.receiverDescription,
+        matching_company: testMatch.provider.name,
+        matching_item: testMatch.providerDescription,
+        match_score: testMatch.match_score,
+        match_id: testMatch.id
+    };
+    
+    // Afficher les paramètres dans la console pour vérification
+    console.log("Paramètres d'email:", templateParams);
+    
+    // Envoyer l'email
+    emailjs.send('service_n485hr9', 'template_zm00bwr', templateParams)
+        .then(function(response) {
+            alert('Email de test envoyé! Statut: ' + response.status);
+            console.log('Email envoyé!', response.status, response.text);
+        }, function(error) {
+            alert('Erreur lors de l\'envoi de l\'email: ' + error);
+            console.log('Erreur lors de l\'envoi de l\'email...', error);
+        });
+}
 </script>
 
 <!-- Pied de page -->
