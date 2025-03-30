@@ -432,18 +432,17 @@
     <!-- Notification Component -->
     <div id="notification"></div>
     
-    <header style="background-color: #5aaa9a; padding: 15px 40px;">
-  <!-- Logo à gauche, plus grand -->
-  <div style="display: flex; justify-content: flex-start; margin-bottom: 15px;">
-    <img src="./Logo transparant - Blanc - 512X512.png" alt="Ré(GE)nère" style="height: 160px; width: auto;">
-  </div>
-  
-  <!-- Texte de plateforme sous le logo, aligné sur la même ligne que Connexion -->
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <span style="color: white; font-size: 16px;">Plateforme d'Écosystème Mutualisé</span>
-    <span style="color: white; font-size: 16px;">Connexion / Inscription</span>
-  </div>
-</header>
+    <header>
+        <div class="container">
+            <div>
+                <h1>Ré(GE)nère</h1>
+                <h2>Plateforme d'Écosystème Mutualisé</h2>
+            </div>
+            <div id="auth-status">
+                <button class="submit-btn" onclick="openModal('loginModal')">Connexion / Inscription</button>
+            </div>
+        </div>
+    </header>
     
     <nav>
         <div class="container">
