@@ -25,7 +25,7 @@ Sur desktop : utilisez l'option d'installation proposée par le navigateur
 Contribution
 Ce projet est ouvert aux contributions. N'hésitez pas à proposer des améliorations via des pull requests ou à signaler des problèmes dans la section Issues.
 
-https://neousaxis.github.io/re-ge-nere/
+https://re-ge-nere.app/
 
 Licence
 Projet open-source sous licence CREATIVE COMMONS
