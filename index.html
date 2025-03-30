@@ -423,67 +423,37 @@
             font-size: 0.7rem;
             z-index: 1000;
         }
-        .logo-container {
-    display: flex;
-    align-items: center;
-}
-
-.site-logo {
-    height: 80px;
-    margin-right: 10px;
-}
-
-.title-container {
-    margin-right: auto;
-}
-
-.site-subtitle {
-    margin: 0;
-    font-size: 1rem;
-    white-space: nowrap;
-}
-
-.visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-
-.auth-links {
-    margin-left: 1rem;
-}
     </style>
-<!-- Favicons -->
-    <link rel="icon" href="./LOGO_favicon-192x192.png">
-    <link rel="apple-touch-icon" href="./LOGO_favicon-192x192.png">
 </head>
 <body>
     <!-- Version tag -->
-    <div class="version-tag">v2.0</div> 
+    <div class="version-tag">v2.0</div>
     
-   <!-- Notification Component -->
-<div id="notification"></div>
+    <!-- Notification Component -->
+    <div id="notification"></div>
     
-<header style="background-color: #5aaa9a; padding: 15px 40px;">
-  <!-- Logo à gauche, plus grand -->
-  <div style="display: flex; justify-content: flex-start; margin-bottom: 15px;">
-    <img src="./Logo transparant - Blanc - 512X512.png" alt="Ré(GE)nère" style="height: 160px; width: auto;">
-  </div>
-  
-  <!-- Texte de plateforme sous le logo, aligné sur la même ligne que Connexion -->
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <span style="color: white; font-size: 16px;">Plateforme d'Écosystème Mutualisé</span>
-    <span style="color: white; font-size: 16px;">Connexion / Inscription</span>
-  </div>
-</header>
+    <header>
+        <div class="container">
+            <div>
+                <h1>Ré(GE)nère</h1>
+                <h2>Plateforme d'Écosystème Mutualisé</h2>
+            </div>
+            <div id="auth-status">
+                <button class="submit-btn" onclick="openModal('loginModal')">Connexion / Inscription</button>
+            </div>
+        </div>
+    </header>
     
-<nav>
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#about">À propos</a></li>
+                <li><a href="#benefits">Bénéfices</a></li>
+                <li><a href="#how-it-works">Comment ça marche</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
     
     <!-- Section introduction principale -->
     <section id="intro" class="intro">
