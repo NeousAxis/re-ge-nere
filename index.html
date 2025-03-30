@@ -1503,6 +1503,24 @@ function displayMatches() {
 function showMatchNotification(newMatches) {
   // Création d'un élément modal pour la notification
   let modalOverlay = document.createElement('div');
+// Envoyer des emails pour chaque nouvelle correspondance
+  newMatches.forEach(match => {
+    const templateParams = {
+      name: match.receiver.name,
+      your_item: match.receiverDescription,
+      matching_company: match.provider.name,
+      matching_item: match.providerDescription,
+      match_score: 85, // Vous pouvez ajuster ce score selon vos besoins
+      match_id: match.id
+    };
+    
+    emailjs.send('service_n485hr9', 'template_zm00bwr', templateParams)
+      .then(function(response) {
+        console.log('Email de notification envoyé!', response.status, response.text);
+      }, function(error) {
+        console.log('Erreur lors de l\'envoi de l\'email...', error);
+      });
+  });
   modalOverlay.style.position = 'fixed';
   modalOverlay.style.top = '0';
   modalOverlay.style.left = '0';
