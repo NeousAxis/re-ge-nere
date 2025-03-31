@@ -153,10 +153,6 @@ function findMatchBetweenCompanies(provider, receiver) {
   provider.resources.categories.forEach(resourceCategory => {
     // Vérifier si cette catégorie correspond à un besoin du receveur
     if (receiver.needs.categories.includes(resourceCategory)) {
-      // Extraire les descriptions spécifiques à cette catégorie
-      const specificProviderDesc = extractMatchSpecificInfo(provider.resources.description, resourceCategory);
-      const specificReceiverDesc = extractMatchSpecificInfo(receiver.needs.description, resourceCategory);
-      
       foundMatches.push({
         provider: {
           id: provider.id,
@@ -168,22 +164,21 @@ function findMatchBetweenCompanies(provider, receiver) {
         },
         resourceCategory: resourceCategory,
         providerDescription: provider.resources.description,
-        receiverDescription: receiver.needs.description,
-        // Ajouter les descriptions spécifiques
-        specificProviderDesc: specificProviderDesc,
-        specificReceiverDesc: specificReceiverDesc
+        receiverDescription: receiver.needs.description
       });
     }
   });
   
   return foundMatches;
 }
+
 // Fonction pour récupérer les derniers matchs
 function getLatestMatches(count = 3) {
   // Trier par date décroissante
   return [...matches].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, count);
 }
 
+// Fonction pour afficher les matchs sur la page
 function displayMatches() {
   // Créer un conteneur pour les matchs s'il n'existe pas déjà
   let matchesSection = document.getElementById('matches-section');
@@ -211,12 +206,7 @@ function displayMatches() {
       <p class="text-center" style="margin-bottom: 30px;">Découvrez les dernières synergies créées entre entreprises genevoises.</p>
       
       <div class="matches-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-        ${latestMatches.length > 0 ? latestMatches.map(match => {
-          // Extraire uniquement les informations pertinentes à cette catégorie
-          let resourceDescription = extractMatchSpecificInfo(match.providerDescription, match.resourceCategory);
-          let needDescription = extractMatchSpecificInfo(match.receiverDescription, match.resourceCategory);
-          
-          return `
+        ${latestMatches.length > 0 ? latestMatches.map(match => `
           <div class="match-card" style="background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
               <span style="background-color: #2A9D8F; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Match</span>
@@ -233,12 +223,11 @@ function displayMatches() {
             </div>
             <hr style="border: 0; height: 1px; background-color: #e0e0e0; margin: 15px 0;">
             <div style="font-size: 0.9rem; color: #333;">
-              <div>Ressource: <span style="font-style: italic;">${resourceDescription}</span></div>
-              <div>Besoin: <span style="font-style: italic;">${needDescription}</span></div>
+              <div>Ressource: <span style="font-style: italic;">${match.providerDescription.substring(0, 100)}${match.providerDescription.length > 100 ? '...' : ''}</span></div>
+              <div>Besoin: <span style="font-style: italic;">${match.receiverDescription.substring(0, 100)}${match.receiverDescription.length > 100 ? '...' : ''}</span></div>
             </div>
           </div>
-        `;
-        }).join('') : `
+        `).join('') : `
           <div style="grid-column: 1 / -1; text-align: center; padding: 30px; background-color: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
             <p>Aucun match n'a encore été réalisé. Rejoignez notre écosystème pour créer les premières synergies !</p>
           </div>
