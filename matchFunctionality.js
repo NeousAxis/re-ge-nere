@@ -153,6 +153,10 @@ function findMatchBetweenCompanies(provider, receiver) {
   provider.resources.categories.forEach(resourceCategory => {
     // Vérifier si cette catégorie correspond à un besoin du receveur
     if (receiver.needs.categories.includes(resourceCategory)) {
+      // Extraire les descriptions spécifiques à cette catégorie
+      const specificProviderDesc = extractMatchSpecificInfo(provider.resources.description, resourceCategory);
+      const specificReceiverDesc = extractMatchSpecificInfo(receiver.needs.description, resourceCategory);
+      
       foundMatches.push({
         provider: {
           id: provider.id,
@@ -164,14 +168,16 @@ function findMatchBetweenCompanies(provider, receiver) {
         },
         resourceCategory: resourceCategory,
         providerDescription: provider.resources.description,
-        receiverDescription: receiver.needs.description
+        receiverDescription: receiver.needs.description,
+        // Ajouter les descriptions spécifiques
+        specificProviderDesc: specificProviderDesc,
+        specificReceiverDesc: specificReceiverDesc
       });
     }
   });
   
   return foundMatches;
 }
-
 // Fonction pour récupérer les derniers matchs
 function getLatestMatches(count = 3) {
   // Trier par date décroissante
