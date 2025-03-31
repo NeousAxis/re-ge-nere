@@ -213,9 +213,9 @@ function displayMatches() {
       
       <div class="matches-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
         ${latestMatches.length > 0 ? latestMatches.map(match => {
-          // Extraire uniquement les informations pertinentes liées à la ressource/besoin spécifique
-          const resourceInfo = extractMatchSpecificInfo(match.providerDescription, match.resourceCategory);
-          const needInfo = extractMatchSpecificInfo(match.receiverDescription, match.resourceCategory);
+          // Utiliser les descriptions spécifiques si elles existent, sinon les extraire
+const resourceInfo = match.specificProviderDesc || extractMatchSpecificInfo(match.providerDescription, match.resourceCategory);
+const needInfo = match.specificReceiverDesc || extractMatchSpecificInfo(match.receiverDescription, match.resourceCategory);
           
           return `
           <div class="match-card" style="background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
