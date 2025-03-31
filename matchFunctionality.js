@@ -184,7 +184,6 @@ function getLatestMatches(count = 3) {
   return [...matches].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, count);
 }
 
-// Fonction pour afficher les matchs sur la page
 function displayMatches() {
   // Créer un conteneur pour les matchs s'il n'existe pas déjà
   let matchesSection = document.getElementById('matches-section');
@@ -213,9 +212,9 @@ function displayMatches() {
       
       <div class="matches-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
         ${latestMatches.length > 0 ? latestMatches.map(match => {
-          // Utiliser les descriptions spécifiques si elles existent, sinon les extraire
-const resourceInfo = match.specificProviderDesc || extractMatchSpecificInfo(match.providerDescription, match.resourceCategory);
-const needInfo = match.specificReceiverDesc || extractMatchSpecificInfo(match.receiverDescription, match.resourceCategory);
+          // Extraire uniquement les informations pertinentes à cette catégorie
+          let resourceDescription = extractMatchSpecificInfo(match.providerDescription, match.resourceCategory);
+          let needDescription = extractMatchSpecificInfo(match.receiverDescription, match.resourceCategory);
           
           return `
           <div class="match-card" style="background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
@@ -227,16 +226,15 @@ const needInfo = match.specificReceiverDesc || extractMatchSpecificInfo(match.re
             <div style="margin-bottom: 15px;">
               <div style="font-weight: bold; color: #2A9D8F;">Fournisseur</div>
               <div>${match.provider.name}</div>
-              <div style="margin-top: 5px;">
-                <strong>Ressource:</strong> <span style="font-style: italic;">${resourceInfo}</span>
-              </div>
             </div>
             <div style="margin-bottom: 15px;">
               <div style="font-weight: bold; color: #E76F51;">Receveur</div>
               <div>${match.receiver.name}</div>
-              <div style="margin-top: 5px;">
-                <strong>Besoin:</strong> <span style="font-style: italic;">${needInfo}</span>
-              </div>
+            </div>
+            <hr style="border: 0; height: 1px; background-color: #e0e0e0; margin: 15px 0;">
+            <div style="font-size: 0.9rem; color: #333;">
+              <div>Ressource: <span style="font-style: italic;">${resourceDescription}</span></div>
+              <div>Besoin: <span style="font-style: italic;">${needDescription}</span></div>
             </div>
           </div>
         `;
