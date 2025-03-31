@@ -206,7 +206,12 @@ function displayMatches() {
       <p class="text-center" style="margin-bottom: 30px;">Découvrez les dernières synergies créées entre entreprises genevoises.</p>
       
       <div class="matches-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-        ${latestMatches.length > 0 ? latestMatches.map(match => `
+        ${latestMatches.length > 0 ? latestMatches.map(match => {
+          // Extraire uniquement les informations pertinentes liées à la ressource/besoin spécifique
+          const resourceInfo = extractMatchSpecificInfo(match.providerDescription, match.resourceCategory);
+          const needInfo = extractMatchSpecificInfo(match.receiverDescription, match.resourceCategory);
+          
+          return `
           <div class="match-card" style="background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
               <span style="background-color: #2A9D8F; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Match</span>
@@ -216,18 +221,20 @@ function displayMatches() {
             <div style="margin-bottom: 15px;">
               <div style="font-weight: bold; color: #2A9D8F;">Fournisseur</div>
               <div>${match.provider.name}</div>
+              <div style="margin-top: 5px;">
+                <strong>Ressource:</strong> <span style="font-style: italic;">${resourceInfo}</span>
+              </div>
             </div>
             <div style="margin-bottom: 15px;">
               <div style="font-weight: bold; color: #E76F51;">Receveur</div>
               <div>${match.receiver.name}</div>
-            </div>
-            <hr style="border: 0; height: 1px; background-color: #e0e0e0; margin: 15px 0;">
-            <div style="font-size: 0.9rem; color: #333;">
-              <div>Ressource: <span style="font-style: italic;">${match.providerDescription.substring(0, 100)}${match.providerDescription.length > 100 ? '...' : ''}</span></div>
-              <div>Besoin: <span style="font-style: italic;">${match.receiverDescription.substring(0, 100)}${match.receiverDescription.length > 100 ? '...' : ''}</span></div>
+              <div style="margin-top: 5px;">
+                <strong>Besoin:</strong> <span style="font-style: italic;">${needInfo}</span>
+              </div>
             </div>
           </div>
-        `).join('') : `
+        `;
+        }).join('') : `
           <div style="grid-column: 1 / -1; text-align: center; padding: 30px; background-color: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
             <p>Aucun match n'a encore été réalisé. Rejoignez notre écosystème pour créer les premières synergies !</p>
           </div>
