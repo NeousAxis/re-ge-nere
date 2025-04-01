@@ -1791,6 +1791,19 @@ window.onclick = function(event) {
         closeLoginModal();
     }
 }
+
+// Attacher les événements aux boutons après le chargement du DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // Bouton de connexion
+    document.getElementById('login-button').addEventListener('click', function() {
+        openLoginModal();
+    });
+    
+    // Bouton d'inscription
+    document.getElementById('register-button').addEventListener('click', function() {
+        scrollToRegistration();
+    });
+});
 </script>
 </section>
     
