@@ -1,3 +1,6 @@
+function seDeconnecter() {
+    logoutUser();
+}
 // Fonction pour ouvrir la modal de connexion
 function openLoginModal() {
     document.getElementById('loginModal').style.display = 'flex';
