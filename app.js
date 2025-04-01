@@ -52,9 +52,8 @@ function loginUser() {
 function logoutUser() {
     document.getElementById('auth-status').innerHTML = `
         <div style="display: flex; gap: 10px;">
-            <button id="login-button" class="submit-btn" style="background-color: #264653;">Connexion</button>
-            <button id="register-button" class="submit-btn" onclick="scrollToRegistration()">Inscription</button>
+            <button style="background-color: transparent; color: white; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer;" onclick="openLoginModal()">Connexion</button>
+            <button class="submit-btn" onclick="scrollToRegistration()">Inscription</button>
         </div>
     `;
-    showNotification('Vous avez été déconnecté.', 'success');
 }
