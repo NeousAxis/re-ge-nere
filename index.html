@@ -1725,9 +1725,75 @@ function testMatchEmail() {
             <button onclick="loginUser()" style="background-color: #2A9D8F; color: white; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer;">Se connecter</button>
         </div>
     </div>
-</div>   
+</div>
+
+    // Fonction pour ouvrir la modal de connexion
+function openLoginModal() {
+    document.getElementById('loginModal').style.display = 'flex';
+}
+
+// Fonction pour fermer la modal de connexion
+function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+}
+
+// Fonction pour faire défiler jusqu'au formulaire d'inscription
+function scrollToRegistration() {
+    document.getElementById('registration').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Fonction pour gérer la connexion utilisateur
+function loginUser() {
+    const email = document.getElementById('login-email').value;
+    
+    if (!email) {
+        showNotification('Veuillez entrer votre email professionnel.', 'error');
+        return;
+    }
+    
+    // Rechercher l'entreprise correspondante dans le localStorage
+    const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
+    const company = companies.find(comp => comp.email === email);
+    
+    if (company) {
+        // Simuler une connexion réussie
+        showNotification('Connexion réussie! Bienvenue ' + company.name, 'success');
+        closeLoginModal();
+        
+        // Mettre à jour l'interface pour montrer que l'utilisateur est connecté
+        document.getElementById('auth-status').innerHTML = `
+            <div style="color: white; text-align: right;">
+                <div>Connecté en tant que:</div>
+                <div style="font-weight: bold;">${company.name}</div>
+                <button class="submit-btn" style="margin-top: 5px;" onclick="logoutUser()">Déconnexion</button>
+            </div>
+        `;
+    } else {
+        showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
+    }
+}
+
+// Fonction pour la déconnexion
+function logoutUser() {
+    document.getElementById('auth-status').innerHTML = `
+        <div style="display: flex; gap: 10px;">
+            <button class="submit-btn" style="background-color: #264653;" onclick="openLoginModal()">Connexion</button>
+            <button class="submit-btn" onclick="scrollToRegistration()">Inscription</button>
+        </div>
+    `;
+    showNotification('Vous avez été déconnecté.', 'success');
+}
+
+// Fermer la modale si l'utilisateur clique en dehors
+window.onclick = function(event) {
+    const modal = document.getElementById('loginModal');
+    if (event.target === modal) {
+        closeLoginModal();
+    }
+}
 </script>
 </section>
+    
 <!-- Pied de page -->
 <footer id="contact" style="background-color: #264653; color: white; padding: 30px 0; margin-top: 50px;">
     <div class="container">
