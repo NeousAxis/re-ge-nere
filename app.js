@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         <button class="submit-btn" style="background-color: #264653; margin: 0;" onclick="seDeconnecter()">Déconnexion</button>
     </div>
-`;
+`}
 
     // Fonction de déconnexion
     function seDeconnecter() {
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button id="login-button" class="submit-btn" style="background-color: #264653;">Connexion</button>
                     <button id="register-button" class="submit-btn">Inscription</button>
                 </div>
-            `;
+            `}
             
             // Réattacher les écouteurs d'événements
             document.getElementById('login-button').addEventListener('click', ouvrirModalConnexion);
