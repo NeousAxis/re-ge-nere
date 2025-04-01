@@ -43,20 +43,15 @@ document.addEventListener('DOMContentLoaded', function() {
             fermerModalConnexion();
             
             // Mettre à jour l'interface pour montrer que l'utilisateur est connecté
-            const zoneAuthentification = document.getElementById('auth-status');
-            if (zoneAuthentification) {
-                zoneAuthentification.innerHTML = `
-                    <div style="color: white; text-align: right;">
-                        <div>Connecté en tant que :</div>
-                        <div style="font-weight: bold;">${entrepriseCorrespondante.name}</div>
-                        <button class="submit-btn" style="margin-top: 5px;" onclick="seDeconnecter()">Déconnexion</button>
-                    </div>
-                `;
-            }
-        } else {
-            afficherNotification('Aucune entreprise trouvée avec cet email', 'erreur');
-        }
-    }
+            document.getElementById('auth-status').innerHTML = `
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; flex-direction: column; align-items: flex-end; margin-right: 10px;">
+            <div style="color: white; font-size: 0.9rem;">Connecté en tant que :</div>
+            <div style="color: white; font-weight: bold;">${entrepriseCorrespondante.name}</div>
+        </div>
+        <button class="submit-btn" style="background-color: #264653; margin: 0;" onclick="seDeconnecter()">Déconnexion</button>
+    </div>
+`;
 
     // Fonction de déconnexion
     function seDeconnecter() {
