@@ -1838,24 +1838,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 
-<!-- Modal de connexion -->
-<div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background-color: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%;">
-        <h2 style="color: #2A9D8F; margin-top: 0;">Connexion</h2>
-        <p>Entrez votre email professionnel pour accéder à votre espace entreprise.</p>
-        
-        <div style="margin-bottom: 20px;">
-            <label for="login-email" style="display: block; margin-bottom: 8px; font-weight: 600; color: #264653;">Email professionnel*</label>
-            <input type="email" id="login-email" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
-        </div>
-        
-        <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-            <button onclick="closeLoginModal()" style="background-color: #ccc; color: #333; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer;">Annuler</button>
-            <button onclick="loginUser()" style="background-color: #2A9D8F; color: white; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer;">Se connecter</button>
-        </div>
-    </div>
-</div>
-
     // Fonction pour ouvrir la modal de connexion
 function openLoginModal() {
     document.getElementById('loginModal').style.display = 'flex';
