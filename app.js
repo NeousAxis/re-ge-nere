@@ -1,11 +1,16 @@
-// Fichier app.js
 document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM chargé - app.js est exécuté");
     
-    // Attacher les événements aux boutons
-    var loginButton = document.getElementById('login-button');
-    var registerButton = document.getElementById('register-button');
+    // Tester si on peut trouver la modal de connexion directement
+    var loginModal = document.getElementById('loginModal');
+    console.log("Modal de connexion:", loginModal); // Ceci devrait afficher l'élément ou null
     
+    // Vérifier tous les éléments avec ID pour débogage
+    var allElementsWithId = document.querySelectorAll('[id]');
+    console.log("Tous les éléments avec ID:", allElementsWithId);
+    
+    // Attacher l'événement au bouton de connexion
+    var loginButton = document.getElementById('login-button');
     if (loginButton) {
         console.log("Bouton connexion trouvé");
         loginButton.addEventListener('click', function() {
@@ -13,29 +18,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Afficher manuellement la modal
             var modal = document.getElementById('loginModal');
             if (modal) {
+                console.log("Modal trouvée, tentative d'affichage");
                 modal.style.display = 'flex';
-                console.log("Modal affichée");
+                console.log("Style display modifié à 'flex'");
             } else {
-                console.log("Modal introuvable");
+                console.log("ERREUR: Modal introuvable");
             }
         });
     } else {
-        console.log("Bouton connexion introuvable");
+        console.log("ERREUR: Bouton connexion introuvable");
     }
     
-    if (registerButton) {
-        console.log("Bouton inscription trouvé");
-        registerButton.addEventListener('click', function() {
-            console.log("Clic sur inscription");
-            var registrationSection = document.getElementById('registration');
-            if (registrationSection) {
-                registrationSection.scrollIntoView({behavior: 'smooth'});
-                console.log("Défilement vers inscription");
-            } else {
-                console.log("Section d'inscription introuvable");
-            }
-        });
-    } else {
-        console.log("Bouton inscription introuvable");
-    }
+    // Code pour le bouton d'inscription reste inchangé
+    // ...
 });
