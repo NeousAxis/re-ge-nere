@@ -1771,11 +1771,10 @@ function testMatchEmail() {
 function logoutUser() {
     document.getElementById('auth-status').innerHTML = `
         <div style="display: flex; gap: 10px;">
-            <button class="submit-btn" style="background-color: #264653;" onclick="openLoginModal()">Connexion</button>
+            <button class="submit-btn" onclick="openLoginModal()">Connexion</button>
             <button class="submit-btn" onclick="scrollToRegistration()">Inscription</button>
         </div>
     `;
-    showNotification('Vous avez été déconnecté.', 'success');
 }
 
 // Fermer la modale si l'utilisateur clique en dehors
