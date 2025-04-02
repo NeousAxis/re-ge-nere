@@ -29,7 +29,7 @@
             padding: 0 20px;
         }
         header {
-            background-color: #01447a;
+            background-color: #2A9D8F;
             color: white;
             padding: 20px 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -50,7 +50,7 @@
             opacity: 0.9;
         }
         nav {
-            background-color: #025fac;
+            background-color: #264653;
             color: white;
         }
         nav ul {
@@ -76,13 +76,13 @@
         section h2 {
             text-align: center;
             margin-bottom: 30px;
-            color: #f6960e;
+            color: #264653;
             font-size: 2rem;
             font-weight: 600;
         }
         .intro {
-            background-color: #f6960e;
-            color: #FFFFFF;
+            background-color: #E9C46A;
+            color: #264653;
         }
         .intro p {
             font-size: 1.2rem;
@@ -109,7 +109,7 @@
             transform: translateY(-5px);
         }
         .benefit-card h3 {
-            color: #01447a;
+            color: #2A9D8F;
             margin-top: 0;
         }
         .how-it-works {
@@ -125,7 +125,7 @@
             align-items: center;
         }
         .step-number {
-            background-color: #f6960e;
+            background-color: #E76F51;
             color: white;
             width: 50px;
             height: 50px;
@@ -156,7 +156,7 @@
             display: block;
             margin-bottom: 12px;
             font-weight: 600;
-            color: #025fac;
+            color: #264653;
             font-size: 1.1rem;
         }
         .form-field input, 
@@ -182,7 +182,7 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #01447a;
+            color: #2A9D8F;
             font-weight: bold;
         }
         
@@ -197,7 +197,7 @@
         }
         
         .submit-btn {
-            background-color: #01447a;
+            background-color: #2A9D8F;
             color: white;
             border: none;
             padding: 15px 30px;
@@ -218,7 +218,7 @@
         
         /* Style pour le bouton Ajouter */
         .btn-add {
-            background-color: #01447a;
+            background-color: #2A9D8F;
             color: white;
             border: none;
             padding: 8px 20px;
@@ -240,8 +240,8 @@
         }
         
         .tag {
-            background-color: #0a8c18;
-            color: #025fac;
+            background-color: #E9C46A;
+            color: #264653;
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.9rem;
@@ -263,7 +263,7 @@
         .modality-section h3 {
             margin-top: 0;
             font-size: 1.1rem;
-            color: #025fac;
+            color: #264653;
             margin-bottom: 20px;
         }
         
@@ -282,7 +282,7 @@
         
         .modality-title {
             font-weight: 600;
-            color: #025fac;
+            color: #264653;
             margin-bottom: 12px;
             font-size: 1rem;
         }
@@ -354,10 +354,10 @@
             display: none;
         }
         #notification.success {
-            background-color: #01447a;
+            background-color: #2A9D8F;
         }
         #notification.error {
-            background-color: #f6960e;
+            background-color: #E76F51;
         }
         
         /* Responsive adjustments */
@@ -418,7 +418,7 @@
             position: fixed;
             bottom: 5px;
             right: 5px;
-            background-color: rgba(1, 68, 122, 0.8);
+            background-color: rgba(42, 157, 143, 0.8);
             color: white;
             padding: 3px 8px;
             border-radius: 4px;
@@ -1533,16 +1533,16 @@ function displayMatches() {
         ${latestMatches.length > 0 ? latestMatches.map(match => `
           <div class="match-card" style="background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-              <span style="background-color: #01447a; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Match</span>
+              <span style="background-color: #2A9D8F; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Match</span>
               <span style="color: #6c757d; font-size: 0.9rem;">${new Date(match.date).toLocaleDateString()}</span>
             </div>
-            <h3 style="margin-top: 0; color: #025fac; margin-bottom: 15px;">Catégorie: ${match.resourceCategory}</h3>
+            <h3 style="margin-top: 0; color: #264653; margin-bottom: 15px;">Catégorie: ${match.resourceCategory}</h3>
             <div style="margin-bottom: 15px;">
-              <div style="font-weight: bold; color: #01447a;">Fournisseur</div>
+              <div style="font-weight: bold; color: #2A9D8F;">Fournisseur</div>
               <div>${match.provider.name}</div>
             </div>
             <div style="margin-bottom: 15px;">
-              <div style="font-weight: bold; color: #f6960e;">Receveur</div>
+              <div style="font-weight: bold; color: #E76F51;">Receveur</div>
               <div>${match.receiver.name}</div>
             </div>
             <hr style="border: 0; height: 1px; background-color: #e0e0e0; margin: 15px 0;">
@@ -1605,19 +1605,19 @@ function showMatchNotification(newMatches) {
   
   // Titre et contenu
   modalContent.innerHTML = `
-    <h2 style="color: #01447a; margin-top: 0;">Nouveaux matchs trouvés! 🎉</h2>
+    <h2 style="color: #2A9D8F; margin-top: 0;">Nouveaux matchs trouvés! 🎉</h2>
     <p>Félicitations! Nous avons trouvé ${newMatches.length} nouveau${newMatches.length > 1 ? 'x' : ''} match${newMatches.length > 1 ? 's' : ''} entre entreprises:</p>
     
     <div style="margin-top: 20px;">
       ${newMatches.map(match => `
-        <div style="border-left: 4px solid #01447a; padding-left: 15px; margin-bottom: 20px;">
-          <h3 style="margin-top: 0; color: #025fac;">Catégorie: ${match.resourceCategory}</h3>
-          <p><strong style="color: #01447a;">${match.provider.name}</strong> peut fournir à <strong style="color: #f6960e;">${match.receiver.name}</strong></p>
+        <div style="border-left: 4px solid #2A9D8F; padding-left: 15px; margin-bottom: 20px;">
+          <h3 style="margin-top: 0; color: #264653;">Catégorie: ${match.resourceCategory}</h3>
+          <p><strong style="color: #2A9D8F;">${match.provider.name}</strong> peut fournir à <strong style="color: #E76F51;">${match.receiver.name}</strong></p>
         </div>
       `).join('')}
     </div>
     
-    <button id="close-modal" style="background-color: #01447a; color: white; border: none; padding: 12px 24px; font-size: 1rem; border-radius: 4px; cursor: pointer; margin-top: 20px; float: right;">Fermer</button>
+    <button id="close-modal" style="background-color: #2A9D8F; color: white; border: none; padding: 12px 24px; font-size: 1rem; border-radius: 4px; cursor: pointer; margin-top: 20px; float: right;">Fermer</button>
   `;
   
   modalOverlay.appendChild(modalContent);
@@ -1803,27 +1803,27 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Modal de connexion -->
 <div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
     <div style="background-color: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%;">
-        <h2 style="color: #01447a; margin-top: 0;">Connexion</h2>
+        <h2 style="color: #2A9D8F; margin-top: 0;">Connexion</h2>
         <p>Entrez votre email professionnel pour accéder à votre espace entreprise.</p>
         
         <div style="margin-bottom: 20px;">
-            <label for="login-email" style="display: block; margin-bottom: 8px; font-weight: 600; color: #025fac;">Email professionnel*</label>
+            <label for="login-email" style="display: block; margin-bottom: 8px; font-weight: 600; color: #264653;">Email professionnel*</label>
             <input type="email" id="login-email" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
         </div>
         
         <div style="display: flex; justify-content: space-between; margin-top: 30px;">
             <button onclick="closeLoginModal()" style="background-color: #ccc; color: #333; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer;">Annuler</button>
-            <button onclick="loginUser()" style="background-color: #01447a; color: white; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer;">Se connecter</button>
+            <button onclick="loginUser()" style="background-color: #2A9D8F; color: white; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer;">Se connecter</button>
         </div>
     </div>
 </div>
 
 <!-- Pied de page -->
-<footer id="contact" style="background-color: #025fac; color: white; padding: 30px 0; margin-top: 50px;">
+<footer id="contact" style="background-color: #264653; color: white; padding: 30px 0; margin-top: 50px;">
     <div class="container">
         <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
             <div style="margin-bottom: 20px;">
-                <h3 style="margin-top: 0; font-size: 1.4rem; color: #FFFFFF;">Ré(GE)nère</h3>
+                <h3 style="margin-top: 0; font-size: 1.4rem; color: #E9C46A;">Ré(GE)nère</h3>
                 <p style="margin-bottom: 5px;">Plateforme d'Écosystème Mutualisé</p>
                 <p style="font-size: 0.9rem;">© Association Eclore 2025. Tous droits réservés.</p>
             </div>
