@@ -29,7 +29,7 @@
             padding: 0 20px;
         }
         header {
-            background-color: #2A9D8F;
+            background-color: #01447a;
             color: white;
             padding: 20px 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -109,7 +109,7 @@
             transform: translateY(-5px);
         }
         .benefit-card h3 {
-            color: #2A9D8F;
+            color: #01447a;
             margin-top: 0;
         }
         .how-it-works {
@@ -182,7 +182,7 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #2A9D8F;
+            color: #01447a;
             font-weight: bold;
         }
         
@@ -197,7 +197,7 @@
         }
         
         .submit-btn {
-            background-color: #2A9D8F;
+            background-color: #01447a;
             color: white;
             border: none;
             padding: 15px 30px;
@@ -218,7 +218,7 @@
         
         /* Style pour le bouton Ajouter */
         .btn-add {
-            background-color: #2A9D8F;
+            background-color: #01447a;
             color: white;
             border: none;
             padding: 8px 20px;
@@ -354,7 +354,7 @@
             display: none;
         }
         #notification.success {
-            background-color: #2A9D8F;
+            background-color: #01447a;
         }
         #notification.error {
             background-color: #E76F51;
@@ -1533,12 +1533,12 @@ function displayMatches() {
         ${latestMatches.length > 0 ? latestMatches.map(match => `
           <div class="match-card" style="background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-              <span style="background-color: #2A9D8F; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Match</span>
+              <span style="background-color: #01447a; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Match</span>
               <span style="color: #6c757d; font-size: 0.9rem;">${new Date(match.date).toLocaleDateString()}</span>
             </div>
             <h3 style="margin-top: 0; color: #264653; margin-bottom: 15px;">Catégorie: ${match.resourceCategory}</h3>
             <div style="margin-bottom: 15px;">
-              <div style="font-weight: bold; color: #2A9D8F;">Fournisseur</div>
+              <div style="font-weight: bold; color: #01447a;">Fournisseur</div>
               <div>${match.provider.name}</div>
             </div>
             <div style="margin-bottom: 15px;">
@@ -1605,19 +1605,19 @@ function showMatchNotification(newMatches) {
   
   // Titre et contenu
   modalContent.innerHTML = `
-    <h2 style="color: #2A9D8F; margin-top: 0;">Nouveaux matchs trouvés! 🎉</h2>
+    <h2 style="color: #01447a; margin-top: 0;">Nouveaux matchs trouvés! 🎉</h2>
     <p>Félicitations! Nous avons trouvé ${newMatches.length} nouveau${newMatches.length > 1 ? 'x' : ''} match${newMatches.length > 1 ? 's' : ''} entre entreprises:</p>
     
     <div style="margin-top: 20px;">
       ${newMatches.map(match => `
-        <div style="border-left: 4px solid #2A9D8F; padding-left: 15px; margin-bottom: 20px;">
+        <div style="border-left: 4px solid #01447a; padding-left: 15px; margin-bottom: 20px;">
           <h3 style="margin-top: 0; color: #264653;">Catégorie: ${match.resourceCategory}</h3>
-          <p><strong style="color: #2A9D8F;">${match.provider.name}</strong> peut fournir à <strong style="color: #E76F51;">${match.receiver.name}</strong></p>
+          <p><strong style="color: #01447a;">${match.provider.name}</strong> peut fournir à <strong style="color: #E76F51;">${match.receiver.name}</strong></p>
         </div>
       `).join('')}
     </div>
     
-    <button id="close-modal" style="background-color: #2A9D8F; color: white; border: none; padding: 12px 24px; font-size: 1rem; border-radius: 4px; cursor: pointer; margin-top: 20px; float: right;">Fermer</button>
+    <button id="close-modal" style="background-color: #01447a; color: white; border: none; padding: 12px 24px; font-size: 1rem; border-radius: 4px; cursor: pointer; margin-top: 20px; float: right;">Fermer</button>
   `;
   
   modalOverlay.appendChild(modalContent);
@@ -1803,7 +1803,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Modal de connexion -->
 <div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
     <div style="background-color: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%;">
-        <h2 style="color: #2A9D8F; margin-top: 0;">Connexion</h2>
+        <h2 style="color: #01447a; margin-top: 0;">Connexion</h2>
         <p>Entrez votre email professionnel pour accéder à votre espace entreprise.</p>
         
         <div style="margin-bottom: 20px;">
@@ -1813,7 +1813,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         <div style="display: flex; justify-content: space-between; margin-top: 30px;">
             <button onclick="closeLoginModal()" style="background-color: #ccc; color: #333; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer;">Annuler</button>
-            <button onclick="loginUser()" style="background-color: #2A9D8F; color: white; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer;">Se connecter</button>
+            <button onclick="loginUser()" style="background-color: #01447a; color: white; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer;">Se connecter</button>
         </div>
     </div>
 </div>
