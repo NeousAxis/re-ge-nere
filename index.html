@@ -125,7 +125,7 @@
             align-items: center;
         }
         .step-number {
-            background-color: #E76F51;
+            background-color: #f6960e;
             color: white;
             width: 50px;
             height: 50px;
@@ -357,7 +357,7 @@
             background-color: #01447a;
         }
         #notification.error {
-            background-color: #E76F51;
+            background-color: #f6960e;
         }
         
         /* Responsive adjustments */
@@ -1542,7 +1542,7 @@ function displayMatches() {
               <div>${match.provider.name}</div>
             </div>
             <div style="margin-bottom: 15px;">
-              <div style="font-weight: bold; color: #E76F51;">Receveur</div>
+              <div style="font-weight: bold; color: #f6960e;">Receveur</div>
               <div>${match.receiver.name}</div>
             </div>
             <hr style="border: 0; height: 1px; background-color: #e0e0e0; margin: 15px 0;">
@@ -1612,7 +1612,7 @@ function showMatchNotification(newMatches) {
       ${newMatches.map(match => `
         <div style="border-left: 4px solid #01447a; padding-left: 15px; margin-bottom: 20px;">
           <h3 style="margin-top: 0; color: #025fac;">Catégorie: ${match.resourceCategory}</h3>
-          <p><strong style="color: #01447a;">${match.provider.name}</strong> peut fournir à <strong style="color: #E76F51;">${match.receiver.name}</strong></p>
+          <p><strong style="color: #01447a;">${match.provider.name}</strong> peut fournir à <strong style="color: #f6960e;">${match.receiver.name}</strong></p>
         </div>
       `).join('')}
     </div>
