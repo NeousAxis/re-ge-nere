@@ -1844,98 +1844,48 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
     <script>
-    function showCompanyProfile(company) {
-    // Créer ou récupérer la section de profil
-    let profileSection = document.getElementById('company-profile');
-    if (!profileSection) {
-        profileSection = document.createElement('section');
-        profileSection.id = 'company-profile';
-        profileSection.className = 'registration';
-        
-        // Insérer après la section how-it-works
-        const howItWorksSection = document.getElementById('how-it-works');
-        howItWorksSection.parentNode.insertBefore(profileSection, howItWorksSection.nextSibling);
-    }
+  function showCompanyProfile(company) {
+    // Créer une section pour le profil
+    const profileSection = document.createElement('section');
+    profileSection.id = 'company-profile';
+    profileSection.className = 'benefits'; // Utiliser le style de la section benefits
     
-    // Contenu HTML pour le profil
+    // Contenu du profil en version simple
     profileSection.innerHTML = `
         <div class="container">
-            <h2>Votre fiche entreprise</h2>
-            <div class="form-container">
-                <div class="form-field">
-                    <label>Nom de l'entreprise</label>
-                    <div class="input-with-icon">
-                        <input type="text" id="profile-name" value="${company.name}">
-                        <span class="input-icon" style="cursor: pointer;">✎</span>
-                    </div>
+            <h2>Profil de ${company.name}</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h3>Informations générales</h3>
+                    <p><strong>Adresse:</strong> ${company.address}, ${company.postalCode} ${company.city}</p>
+                    <p><strong>Email:</strong> ${company.email}</p>
+                    <p><strong>Site web:</strong> ${company.website || 'Non renseigné'}</p>
                 </div>
-                
-                <div class="form-field">
-                    <label>Adresse</label>
-                    <div class="input-with-icon">
-                        <input type="text" id="profile-address" value="${company.address}">
-                        <span class="input-icon" style="cursor: pointer;">✎</span>
-                    </div>
+                <div class="benefit-card">
+                    <h3>Ressources disponibles</h3>
+                    <p><strong>Catégories:</strong> ${company.resources.categories.join(', ')}</p>
+                    <p><strong>Description:</strong> ${company.resources.description}</p>
                 </div>
-                
-                <div class="form-field">
-                    <label>Code postal</label>
-                    <div class="input-with-icon">
-                        <input type="text" id="profile-postal" value="${company.postalCode}">
-                        <span class="input-icon" style="cursor: pointer;">✎</span>
-                    </div>
+                <div class="benefit-card">
+                    <h3>Besoins recherchés</h3>
+                    <p><strong>Catégories:</strong> ${company.needs.categories.join(', ')}</p>
+                    <p><strong>Description:</strong> ${company.needs.description}</p>
                 </div>
-                
-                <div class="form-field">
-                    <label>Ville</label>
-                    <div class="input-with-icon">
-                        <input type="text" id="profile-city" value="${company.city}">
-                        <span class="input-icon" style="cursor: pointer;">✎</span>
-                    </div>
-                </div>
-                
-                <div class="form-field">
-                    <label>Email professionnel</label>
-                    <div class="input-with-icon">
-                        <input type="email" id="profile-email" value="${company.email}">
-                        <span class="input-icon" style="cursor: pointer;">✎</span>
-                    </div>
-                </div>
-                
-                <div class="form-field">
-                    <label>Site web</label>
-                    <div class="input-with-icon">
-                        <input type="url" id="profile-website" value="${company.website || ''}">
-                        <span class="input-icon" style="cursor: pointer;">✎</span>
-                    </div>
-                </div>
-                
-                <h3>Ressources disponibles</h3>
-                
-                <div class="form-field">
-                    <label>Catégories de ressources</label>
-                    <div id="profile-resources-container">
-                        <div class="tag-container">
-                            ${company.resources.categories.map(cat => `<div class="tag">${cat}</div>`).join('')}
-                        </div>
-                    </div>
-                    <button class="btn-add">Modifier</button>
-                </div>
-                
-                <div class="form-field">
-                    <label>Description des ressources</label>
-                    <div class="input-with-icon">
-                        <textarea id="profile-resource-description" rows="4">${company.resources.description}</textarea>
-                        <span class="input-icon" style="cursor: pointer;">✎</span>
-                    </div>
-                </div>
-                
-                <button class="submit-btn">Mettre à jour ma fiche</button>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="submit-btn" onclick="editCompanyProfile(${company.id})">Modifier ma fiche</button>
             </div>
         </div>
     `;
     
-    // Faire défiler vers la section
+    // Insérer après la section how-it-works
+    const howItWorksSection = document.getElementById('how-it-works');
+    howItWorksSection.parentNode.insertBefore(profileSection, howItWorksSection.nextSibling);
+    
+    // Cacher la section d'inscription
+    document.getElementById('registration').style.display = 'none';
+    
+    // Faire défiler jusqu'au profil
     profileSection.scrollIntoView({ behavior: 'smooth' });
 }
     <script>
