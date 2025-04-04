@@ -474,38 +474,36 @@
     function scrollToRegistration() {
         document.getElementById('registration').scrollIntoView({ behavior: 'smooth' });
     }
+    // Fonction pour gérer la connexion utilisateur
     function loginUser() {
-    const email = document.getElementById('login-email').value;
-    
-    if (!email) {
-        showNotification('Veuillez entrer votre email professionnel.', 'error');
-        return;
-    }
-    
-    // Rechercher l'entreprise correspondante dans le localStorage
-    const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
-    const company = companies.find(comp => comp.email === email);
-    
-    if (company) {
-        // Connexion réussie
-        showNotification('Connexion réussie! Bienvenue ' + company.name, 'success');
-        closeLoginModal();
+        const email = document.getElementById('login-email').value;
         
-        // Mettre à jour l'interface pour montrer que l'utilisateur est connecté
-        document.getElementById('auth-status').innerHTML = `
-            <div style="color: white; text-align: right;">
-                <div>Connecté en tant que:</div>
-                <div style="font-weight: bold;">${company.name}</div>
-                <button class="submit-btn" style="margin-top: 5px;" onclick="logoutUser()">Déconnexion</button>
-            </div>
-        `;
+        if (!email) {
+            showNotification('Veuillez entrer votre email professionnel.', 'error');
+            return;
+        }
         
-        // Afficher le profil de l'entreprise
-        showCompanyProfile(company);
-    } else {
-        showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
+        // Rechercher l'entreprise correspondante dans le localStorage
+        const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
+        const company = companies.find(comp => comp.email === email);
+        
+        if (company) {
+            // Simuler une connexion réussie
+            showNotification('Connexion réussie! Bienvenue ' + company.name, 'success');
+            closeLoginModal();
+            
+            // Mettre à jour l'interface pour montrer que l'utilisateur est connecté
+            document.getElementById('auth-status').innerHTML = `
+                <div style="color: white; text-align: right;">
+                    <div>Connecté en tant que:</div>
+                    <div style="font-weight: bold;">${company.name}</div>
+                    <button class="submit-btn" style="margin-top: 5px;" onclick="logoutUser()">Déconnexion</button>
+                </div>
+            `;
+        } else {
+            showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
+        }
     }
-}
 </script>
     
     <nav>
@@ -1845,53 +1843,6 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 </div>
-
-    <script>
-  function showCompanyProfile(company) {
-    // Créer une section pour le profil
-    const profileSection = document.createElement('section');
-    profileSection.id = 'company-profile';
-    profileSection.className = 'benefits'; // Utiliser le style de la section benefits
-    
-    // Contenu du profil en version simple
-    profileSection.innerHTML = `
-        <div class="container">
-            <h2>Profil de ${company.name}</h2>
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <h3>Informations générales</h3>
-                    <p><strong>Adresse:</strong> ${company.address}, ${company.postalCode} ${company.city}</p>
-                    <p><strong>Email:</strong> ${company.email}</p>
-                    <p><strong>Site web:</strong> ${company.website || 'Non renseigné'}</p>
-                </div>
-                <div class="benefit-card">
-                    <h3>Ressources disponibles</h3>
-                    <p><strong>Catégories:</strong> ${company.resources.categories.join(', ')}</p>
-                    <p><strong>Description:</strong> ${company.resources.description}</p>
-                </div>
-                <div class="benefit-card">
-                    <h3>Besoins recherchés</h3>
-                    <p><strong>Catégories:</strong> ${company.needs.categories.join(', ')}</p>
-                    <p><strong>Description:</strong> ${company.needs.description}</p>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 30px;">
-                <button class="submit-btn" onclick="editCompanyProfile(${company.id})">Modifier ma fiche</button>
-            </div>
-        </div>
-    `;
-    
-    // Insérer après la section how-it-works
-    const howItWorksSection = document.getElementById('how-it-works');
-    howItWorksSection.parentNode.insertBefore(profileSection, howItWorksSection.nextSibling);
-    
-    // Cacher la section d'inscription
-    document.getElementById('registration').style.display = 'none';
-    
-    // Faire défiler jusqu'au profil
-    profileSection.scrollIntoView({ behavior: 'smooth' });
-}
-    <script>
 
 <!-- Pied de page -->
 <footer id="contact" style="background-color: #264653; color: white; padding: 30px 0; margin-top: 50px;">
