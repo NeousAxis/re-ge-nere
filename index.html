@@ -1068,6 +1068,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 selectElement.value = '';
             }
         }
+
+        // Fonction pour ajouter une catégorie de ressources
+function addResourceCategory() {
+    const selectElement = document.getElementById('resource-category');
+    const selectedValue = selectElement.value;
+    const selectedText = selectElement.options[selectElement.selectedIndex].text;
+    
+    if (selectedValue === "Autre") {
+        // Afficher le champ de saisie pour l'option "Autre"
+        document.getElementById('resource-other-container').style.display = 'flex';
+        return;
+    }
+    
+    if (selectedValue && !resourceCategories.includes(selectedValue)) {
+        resourceCategories.push(selectedValue);
+        
+        const tagsContainer = document.getElementById('resource-tags');
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.innerHTML = `${selectedText} <span class="remove" onclick="removeResourceCategory('${selectedValue}')">&times;</span>`;
+        tagsContainer.appendChild(tag);
+        
+        // Réinitialiser la sélection
+        selectElement.value = '';
+    }
+}
         
         // Fonction pour ajouter une catégorie personnalisée pour les besoins
         function addCustomNeedsCategory() {
