@@ -474,14 +474,41 @@
     function scrollToRegistration() {
         document.getElementById('registration').scrollIntoView({ behavior: 'smooth' });
     }
-    // Fonction pour gérer la connexion utilisateur
     function loginUser() {
-        const email = document.getElementById('login-email').value;
+    const email = document.getElementById('login-email').value;
+    
+    if (!email) {
+        showNotification('Veuillez entrer votre email professionnel.', 'error');
+        return;
+    }
+    
+    // Rechercher l'entreprise correspondante dans le localStorage
+    const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
+    const company = companies.find(comp => comp.email === email);
+    
+    if (company) {
+        // Connexion réussie
+        showNotification('Connexion réussie! Bienvenue ' + company.name, 'success');
+        closeLoginModal();
         
-        if (!email) {
-            showNotification('Veuillez entrer votre email professionnel.', 'error');
-            return;
-        }
+        // Mettre à jour l'interface pour montrer que l'utilisateur est connecté
+        document.getElementById('auth-status').innerHTML = `
+            <div style="color: white; text-align: right;">
+                <div>Connecté en tant que:</div>
+                <div style="font-weight: bold;">${company.name}</div>
+                <button class="submit-btn" style="margin-top: 5px;" onclick="logoutUser()">Déconnexion</button>
+            </div>
+        `;
+        
+        // Cacher la section d'inscription standard
+        document.getElementById('registration').style.display = 'none';
+        
+        // Afficher le formulaire de profil
+        showCompanyProfile(company);
+    } else {
+        showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
+    }
+}
         
         // Rechercher l'entreprise correspondante dans le localStorage
         const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
