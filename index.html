@@ -1871,6 +1871,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 
+    <script>
     function showCompanyProfile(company) {
     // Créer ou récupérer la section de profil
     let profileSection = document.getElementById('company-profile');
@@ -1889,12 +1890,11 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="container">
             <h2>Votre fiche entreprise</h2>
             <div class="form-container">
-                <!-- Informations générales -->
                 <div class="form-field">
                     <label>Nom de l'entreprise</label>
                     <div class="input-with-icon">
                         <input type="text" id="profile-name" value="${company.name}">
-                        <span class="input-icon" style="cursor: pointer;" onclick="editField('profile-name')">✎</span>
+                        <span class="input-icon" style="cursor: pointer;">✎</span>
                     </div>
                 </div>
                 
@@ -1902,7 +1902,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label>Adresse</label>
                     <div class="input-with-icon">
                         <input type="text" id="profile-address" value="${company.address}">
-                        <span class="input-icon" style="cursor: pointer;" onclick="editField('profile-address')">✎</span>
+                        <span class="input-icon" style="cursor: pointer;">✎</span>
                     </div>
                 </div>
                 
@@ -1910,7 +1910,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label>Code postal</label>
                     <div class="input-with-icon">
                         <input type="text" id="profile-postal" value="${company.postalCode}">
-                        <span class="input-icon" style="cursor: pointer;" onclick="editField('profile-postal')">✎</span>
+                        <span class="input-icon" style="cursor: pointer;">✎</span>
                     </div>
                 </div>
                 
@@ -1918,7 +1918,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label>Ville</label>
                     <div class="input-with-icon">
                         <input type="text" id="profile-city" value="${company.city}">
-                        <span class="input-icon" style="cursor: pointer;" onclick="editField('profile-city')">✎</span>
+                        <span class="input-icon" style="cursor: pointer;">✎</span>
                     </div>
                 </div>
                 
@@ -1926,7 +1926,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label>Email professionnel</label>
                     <div class="input-with-icon">
                         <input type="email" id="profile-email" value="${company.email}">
-                        <span class="input-icon" style="cursor: pointer;" onclick="editField('profile-email')">✎</span>
+                        <span class="input-icon" style="cursor: pointer;">✎</span>
                     </div>
                 </div>
                 
@@ -1934,141 +1934,39 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label>Site web</label>
                     <div class="input-with-icon">
                         <input type="url" id="profile-website" value="${company.website || ''}">
-                        <span class="input-icon" style="cursor: pointer;" onclick="editField('profile-website')">✎</span>
+                        <span class="input-icon" style="cursor: pointer;">✎</span>
                     </div>
                 </div>
                 
-                <!-- Ressources -->
                 <h3>Ressources disponibles</h3>
                 
                 <div class="form-field">
                     <label>Catégories de ressources</label>
                     <div id="profile-resources-container">
-                        ${displayCategories(company.resources.categories)}
+                        <div class="tag-container">
+                            ${company.resources.categories.map(cat => `<div class="tag">${cat}</div>`).join('')}
+                        </div>
                     </div>
-                    <button class="btn-add" onclick="showResourceCategoryModal()">Modifier</button>
+                    <button class="btn-add">Modifier</button>
                 </div>
                 
                 <div class="form-field">
                     <label>Description des ressources</label>
                     <div class="input-with-icon">
                         <textarea id="profile-resource-description" rows="4">${company.resources.description}</textarea>
-                        <span class="input-icon" style="cursor: pointer;" onclick="editField('profile-resource-description')">✎</span>
+                        <span class="input-icon" style="cursor: pointer;">✎</span>
                     </div>
                 </div>
                 
-                <!-- Modalités ressources -->
-                <div class="modality-section">
-                    <h3>Modalités d'échange (ressources)</h3>
-                    
-                    <div>
-                        <div class="modality-title">Fréquence</div>
-                        <select id="profile-resource-frequency" class="modality-select">
-                            <option value="">Sélectionnez</option>
-                            <option value="ponctuelle" ${company.resources.frequency === 'ponctuelle' ? 'selected' : ''}>Ponctuelle</option>
-                            <option value="régulière" ${company.resources.frequency === 'régulière' ? 'selected' : ''}>Régulière</option>
-                            <option value="permanente" ${company.resources.frequency === 'permanente' ? 'selected' : ''}>Permanente</option>
-                        </select>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <div class="modality-title">Mode d'échange</div>
-                        <select id="profile-resource-mode" class="modality-select">
-                            <option value="">Sélectionnez</option>
-                            <option value="présentiel" ${company.resources.mode === 'présentiel' ? 'selected' : ''}>Présentiel</option>
-                            <option value="distanciel" ${company.resources.mode === 'distanciel' ? 'selected' : ''}>Distanciel</option>
-                            <option value="mixte" ${company.resources.mode === 'mixte' ? 'selected' : ''}>Mixte</option>
-                        </select>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <div class="modality-title">Niveau d'expertise</div>
-                        <select id="profile-resource-expertise" class="modality-select">
-                            <option value="">Sélectionnez</option>
-                            <option value="débutant" ${company.resources.expertise === 'débutant' ? 'selected' : ''}>Débutant</option>
-                            <option value="intermédiaire" ${company.resources.expertise === 'intermédiaire' ? 'selected' : ''}>Intermédiaire</option>
-                            <option value="expert" ${company.resources.expertise === 'expert' ? 'selected' : ''}>Expert</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Besoins -->
-                <h3>Besoins recherchés</h3>
-                
-                <div class="form-field">
-                    <label>Catégories de besoins</label>
-                    <div id="profile-needs-container">
-                        ${displayCategories(company.needs.categories)}
-                    </div>
-                    <button class="btn-add" onclick="showNeedsCategoryModal()">Modifier</button>
-                </div>
-                
-                <div class="form-field">
-                    <label>Description des besoins</label>
-                    <div class="input-with-icon">
-                        <textarea id="profile-needs-description" rows="4">${company.needs.description}</textarea>
-                        <span class="input-icon" style="cursor: pointer;" onclick="editField('profile-needs-description')">✎</span>
-                    </div>
-                </div>
-                
-                <!-- Modalités besoins -->
-                <div class="modality-section">
-                    <h3>Modalités d'échange (besoins)</h3>
-                    
-                    <div>
-                        <div class="modality-title">Fréquence</div>
-                        <select id="profile-needs-frequency" class="modality-select">
-                            <option value="">Sélectionnez</option>
-                            <option value="ponctuelle" ${company.needs.frequency === 'ponctuelle' ? 'selected' : ''}>Ponctuelle</option>
-                            <option value="régulière" ${company.needs.frequency === 'régulière' ? 'selected' : ''}>Régulière</option>
-                            <option value="permanente" ${company.needs.frequency === 'permanente' ? 'selected' : ''}>Permanente</option>
-                        </select>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <div class="modality-title">Mode d'échange</div>
-                        <select id="profile-needs-mode" class="modality-select">
-                            <option value="">Sélectionnez</option>
-                            <option value="présentiel" ${company.needs.mode === 'présentiel' ? 'selected' : ''}>Présentiel</option>
-                            <option value="distanciel" ${company.needs.mode === 'distanciel' ? 'selected' : ''}>Distanciel</option>
-                            <option value="mixte" ${company.needs.mode === 'mixte' ? 'selected' : ''}>Mixte</option>
-                        </select>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <div class="modality-title">Niveau d'expertise</div>
-                        <select id="profile-needs-expertise" class="modality-select">
-                            <option value="">Sélectionnez</option>
-                            <option value="débutant" ${company.needs.expertise === 'débutant' ? 'selected' : ''}>Débutant</option>
-                            <option value="intermédiaire" ${company.needs.expertise === 'intermédiaire' ? 'selected' : ''}>Intermédiaire</option>
-                            <option value="expert" ${company.needs.expertise === 'expert' ? 'selected' : ''}>Expert</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Préférences de notification -->
-                <div class="form-field">
-                    <label>Préférences de notification</label>
-                    <select id="profile-notification-pref" class="notification-select">
-                        <option value="all" ${company.notificationPreferences === 'all' ? 'selected' : ''}>Toutes les correspondances</option>
-                        <option value="weekly" ${company.notificationPreferences === 'weekly' ? 'selected' : ''}>Résumé hebdomadaire</option>
-                        <option value="important" ${company.notificationPreferences === 'important' ? 'selected' : ''}>Correspondances importantes uniquement</option>
-                        <option value="none" ${company.notificationPreferences === 'none' ? 'selected' : ''}>Aucune notification</option>
-                    </select>
-                </div>
-                
-                <!-- Bouton de mise à jour -->
-                <button class="submit-btn" onclick="updateCompanyProfile(${company.id})">Mettre à jour ma fiche</button>
+                <button class="submit-btn">Mettre à jour ma fiche</button>
             </div>
         </div>
     `;
     
-    // Ajouter des attributs pour désactiver les champs au départ
-    disableAllFields();
-    
     // Faire défiler vers la section
     profileSection.scrollIntoView({ behavior: 'smooth' });
 }
+    <script>
 
 <!-- Pied de page -->
 <footer id="contact" style="background-color: #264653; color: white; padding: 30px 0; margin-top: 50px;">
