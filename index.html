@@ -487,7 +487,7 @@
     const company = companies.find(comp => comp.email === email);
     
     if (company) {
-        // Connexion réussie
+        // Simuler une connexion réussie
         showNotification('Connexion réussie! Bienvenue ' + company.name, 'success');
         closeLoginModal();
         
@@ -500,10 +500,10 @@
             </div>
         `;
         
-        // Cacher la section d'inscription standard
+        // Cacher la section d'inscription
         document.getElementById('registration').style.display = 'none';
         
-        // Afficher le formulaire de profil
+        // Afficher le profil de l'entreprise
         showCompanyProfile(company);
     } else {
         showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
