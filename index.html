@@ -499,6 +499,9 @@
                 <button class="submit-btn" style="margin-top: 5px;" onclick="logoutUser()">Déconnexion</button>
             </div>
         `;
+        
+        // Afficher le profil de l'entreprise
+        showCompanyProfile(company);
     } else {
         showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
     }
