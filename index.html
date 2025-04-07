@@ -2324,7 +2324,94 @@ function showEditableProfile() {
 function updateCompanyCategory() {
     // Après avoir ajouté la catégorie
     setTimeout(() => {
-        // Mettre à jour directement l
+        // Mettre à jour directement l'élément où la catégorie est affichée
+        const categoryElement = document.querySelector('#info-view p:first-child strong');
+        if (categoryElement && categoryElement.nextSibling) {
+            categoryElement.nextSibling.textContent = ` Services aux entreprises`;
+        }
+    }, 1000);
+}
+
+// Rendre les fonctions disponibles globalement
+window.showEditableProfile = showEditableProfile;
+window.updateCompanyCategory = updateCompanyCategory;
+
+// Fonction de notification (si elle n'existe pas déjà dans votre code)
+function showNotification(message, type) {
+    let notification = document.getElementById('notification');
+    
+    // Créer la notification si elle n'existe pas
+    if (!notification) {
+        notification = document.createElement('div');
+        notification.id = 'notification';
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.padding = '15px 25px';
+        notification.style.borderRadius = '4px';
+        notification.style.color = 'white';
+        notification.style.fontWeight = 'bold';
+        notification.style.zIndex = '1001';
+        document.body.appendChild(notification);
+    }
+    
+    // Définir le style selon le type
+    if (type === 'success') {
+        notification.style.backgroundColor = '#2A9D8F';
+    } else if (type === 'error') {
+        notification.style.backgroundColor = '#E76F51';
+    }
+    
+    // Afficher le message
+    notification.textContent = message;
+    notification.style.display = 'block';
+    
+    // Cacher la notification après 5 secondes
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 5000);
+}
+    // Ajouter une entreprise test dans le localStorage lors du chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    // Vérifier si l'entreprise existe déjà
+    const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
+    const associationEcloreExists = companies.some(comp => comp.name === "Association Éclore");
+    
+    if (!associationEcloreExists) {
+        // Ajouter l'entreprise de test
+        const eclore = {
+            id: Date.now(),
+            name: "Association Éclore",
+            address: "15 Rue des Eaux-Vives",
+            postalCode: "1207",
+            city: "Genève",
+            website: "www.eclore-asso.org",
+            email: "info@eclore-asso.org",
+            category: "Services aux entreprises",
+            resources: {
+                categories: ["Expertise", "Formation", "Animation"],
+                description: "Accompagnement dans la mise en place de synergies locales, ateliers de sensibilisation au développement durable",
+                frequency: "régulière",
+                mode: "présentiel",
+                expertise: "expert"
+            },
+            needs: {
+                categories: ["Espace", "Bénévolat", "Compétences numériques"],
+                description: "Recherche d'espace pour organiser des ateliers, compétences en développement web, bénévoles pour événements",
+                frequency: "ponctuelle",
+                mode: "mixte",
+                expertise: "intermédiaire"
+            },
+            notificationPreferences: "weekly"
+        };
+        
+        companies.push(eclore);
+        localStorage.setItem('regenere_companies', JSON.stringify(companies));
+        console.log("Entreprise test 'Association Éclore' ajoutée avec succès");
+    }
+});
+    
+</script>
 
 <!-- Pied de page -->
 <footer id="contact" style="background-color: #264653; color: white; padding: 30px 0; margin-top: 50px;">
