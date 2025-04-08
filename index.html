@@ -474,36 +474,137 @@
     function scrollToRegistration() {
         document.getElementById('registration').scrollIntoView({ behavior: 'smooth' });
     }
-    // Fonction pour gérer la connexion utilisateur
-    function loginUser() {
-        const email = document.getElementById('login-email').value;
-        
-        if (!email) {
-            showNotification('Veuillez entrer votre email professionnel.', 'error');
-            return;
-        }
-        
-        // Rechercher l'entreprise correspondante dans le localStorage
-        const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
-        const company = companies.find(comp => comp.email === email);
-        
-        if (company) {
-            // Simuler une connexion réussie
-            showNotification('Connexion réussie! Bienvenue ' + company.name, 'success');
-            closeLoginModal();
-            
-            // Mettre à jour l'interface pour montrer que l'utilisateur est connecté
-            document.getElementById('auth-status').innerHTML = `
-                <div style="color: white; text-align: right;">
-                    <div>Connecté en tant que:</div>
-                    <div style="font-weight: bold;">${company.name}</div>
-                    <button class="submit-btn" style="margin-top: 5px;" onclick="logoutUser()">Déconnexion</button>
-                </div>
-            `;
-        } else {
-            showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
-        }
+   // Fonction pour gérer la connexion utilisateur
+function loginUser() {
+    const email = document.getElementById('login-email').value;
+    
+    if (!email) {
+        showNotification('Veuillez entrer votre email professionnel.', 'error');
+        return;
     }
+    
+    // Rechercher l'entreprise correspondante dans le localStorage
+    const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
+    const company = companies.find(comp => comp.email === email);
+    
+    if (company) {
+        // Simuler une connexion réussie
+        showNotification('Connexion réussie! Bienvenue ' + company.name, 'success');
+        closeLoginModal();
+        
+        // Mettre à jour l'interface pour montrer que l'utilisateur est connecté
+        document.getElementById('auth-status').innerHTML = `
+            <div style="color: white; text-align: right;">
+                <div>Connecté en tant que:</div>
+                <div style="font-weight: bold;">${company.name}</div>
+                <button id="login-button" class="submit-btn" onclick="showEditableProfile()">Mon compte</button>
+                <button class="submit-btn" onclick="logoutUser()">Déconnexion</button>
+            </div>
+        `;
+        
+        // Stocker l'email de l'entreprise connectée pour le récupérer facilement
+        localStorage.setItem('regenere_connected_email', email);
+        
+        // Afficher immédiatement la fiche entreprise
+        showEditableProfile();
+    } else {
+        showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
+    }
+}
+</script>
+
+    <script>
+// Fonction pour afficher la fiche entreprise
+function showEditableProfile() {
+    // Récupérer l'email de l'entreprise connectée
+    const connectedEmail = localStorage.getItem('regenere_connected_email') || "cyril@eclore-asso.org";
+    
+    // Récupérer les informations de l'entreprise
+    const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
+    const company = companies.find(comp => comp.email === connectedEmail);
+    
+    if (!company) {
+        showNotification('Entreprise non trouvée.', 'error');
+        return;
+    }
+    
+    // Créer une modal pour afficher les détails de l'entreprise
+    let modalOverlay = document.createElement('div');
+    modalOverlay.style.position = 'fixed';
+    modalOverlay.style.top = '0';
+    modalOverlay.style.left = '0';
+    modalOverlay.style.width = '100%';
+    modalOverlay.style.height = '100%';
+    modalOverlay.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    modalOverlay.style.display = 'flex';
+    modalOverlay.style.justifyContent = 'center';
+    modalOverlay.style.alignItems = 'center';
+    modalOverlay.style.zIndex = '1000';
+    
+    let modalContent = document.createElement('div');
+    modalContent.style.backgroundColor = 'white';
+    modalContent.style.padding = '30px';
+    modalContent.style.borderRadius = '8px';
+    modalContent.style.maxWidth = '800px';
+    modalContent.style.width = '90%';
+    modalContent.style.maxHeight = '80vh';
+    modalContent.style.overflow = 'auto';
+    
+    // Créer le HTML pour les tags de catégories
+    function createCategoryTags(categories) {
+        return categories.map(cat => 
+            `<span style="display: inline-block; background-color: #E9C46A; color: #264653; padding: 4px 8px; 
+                   border-radius: 12px; margin: 2px; font-size: 0.9rem;">${cat}</span>`
+        ).join(' ');
+    }
+    
+    modalContent.innerHTML = `
+        <h2 style="color: #2A9D8F; margin-top: 0;">Profil de ${company.name}</h2>
+        
+        <div style="margin-bottom: 20px;">
+            <h3 style="color: #264653;">Informations</h3>
+            <p><strong>Catégorie d'entreprise:</strong> ${company.category || 'Non spécifié'}</p>
+            <p><strong>Adresse:</strong> ${company.address}, ${company.postalCode} ${company.city}</p>
+            <p><strong>Email:</strong> ${company.email}</p>
+            <p><strong>Site web:</strong> ${company.website || 'Non spécifié'}</p>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <h3 style="color: #264653;">Ressources disponibles</h3>
+            <p><strong>Catégories:</strong> ${createCategoryTags(company.resources.categories)}</p>
+            <p><strong>Description:</strong> ${company.resources.description}</p>
+            <p><strong>Fréquence:</strong> ${company.resources.frequency || 'Non spécifié'}</p>
+            <p><strong>Mode d'échange:</strong> ${company.resources.mode || 'Non spécifié'}</p>
+            <p><strong>Niveau d'expertise:</strong> ${company.resources.expertise || 'Non spécifié'}</p>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <h3 style="color: #264653;">Besoins recherchés</h3>
+            <p><strong>Catégories:</strong> ${createCategoryTags(company.needs.categories)}</p>
+            <p><strong>Description:</strong> ${company.needs.description}</p>
+            <p><strong>Fréquence:</strong> ${company.needs.frequency || 'Non spécifié'}</p>
+            <p><strong>Mode d'échange:</strong> ${company.needs.mode || 'Non spécifié'}</p>
+            <p><strong>Niveau d'expertise:</strong> ${company.needs.expertise || 'Non spécifié'}</p>
+        </div>
+        
+        <button id="close-profile-modal" style="background-color: #2A9D8F; color: white; border: none; padding: 12px 24px; font-size: 1rem; border-radius: 4px; cursor: pointer; margin-top: 20px; float: right;">Fermer</button>
+    `;
+    
+    modalOverlay.appendChild(modalContent);
+    document.body.appendChild(modalOverlay);
+    
+    // Gestionnaire pour fermer la modal
+    document.getElementById('close-profile-modal').addEventListener('click', function() {
+        document.body.removeChild(modalOverlay);
+    });
+    
+    // Gestionnaire pour fermer la modal en cliquant sur l'overlay
+    modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) {
+            document.body.removeChild(modalOverlay);
+        }
+    });
+}
 </script>
     
     <nav>
