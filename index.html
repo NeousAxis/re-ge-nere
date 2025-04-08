@@ -511,10 +511,14 @@ function loginUser() {
         showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
     }
 }
-// Fonction pour afficher la fiche entreprise
 function showEditableProfile() {
-    // Récupérer l'email de l'entreprise connectée ou utiliser celui que nous connaissons
-    const connectedEmail = "cyril@eclore-asso.org";
+    // Récupérer l'email de l'entreprise connectée depuis le localStorage
+    const connectedEmail = localStorage.getItem('regenere_connected_email');
+    
+    if (!connectedEmail) {
+        alert('Aucune entreprise connectée.');
+        return;
+    }
     
     // Récupérer les informations de l'entreprise
     const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
@@ -546,7 +550,7 @@ function showEditableProfile() {
     modalContent.style.width = '90%';
     modalContent.style.maxHeight = '80vh';
     modalContent.style.overflow = 'auto';
-    
+
     // Liste des catégories d'entreprise
     const companyCategories = [
         "Agriculture & Alimentation",
@@ -610,22 +614,20 @@ function showEditableProfile() {
         
         return html;
     }
-    
+
+    // Construction du HTML - titre et début du contenu
     modalContent.innerHTML = `
         <h2 style="color: #2A9D8F; margin-top: 0;">Profil de ${company.name}</h2>
         
         <div style="margin-bottom: 20px;">
             <h3 style="color: #264653; display: flex; justify-content: space-between; align-items: center;">
-                Informations
-                <button class="edit-btn" data-section="info" style="background-color: #2A9D8F; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Modifier</button>
+                Catégorie d'entreprise
+                <button class="edit-btn" data-section="category" style="background-color: #2A9D8F; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Modifier</button>
             </h3>
-            <div id="info-view">
-                <p><strong>Catégorie d'entreprise:</strong> ${company.category || 'Non spécifié'}</p>
-                <p><strong>Adresse:</strong> ${company.address}, ${company.postalCode} ${company.city}</p>
-                <p><strong>Email:</strong> ${company.email}</p>
-                <p><strong>Site web:</strong> ${company.website || 'Non spécifié'}</p>
+            <div id="category-view">
+                <p><strong>Catégorie:</strong> ${company.category || 'Non spécifié'}</p>
             </div>
-            <div id="info-edit" style="display: none;">
+            <div id="category-edit" style="display: none;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: block; margin-bottom: 5px;">Catégorie d'entreprise:</label>
                     <select id="edit-company-category" style="width: 100%; padding: 8px;">
@@ -640,6 +642,22 @@ function showEditableProfile() {
                                placeholder="Précisez votre secteur d'activité" value="${companyCategories.includes(company.category) ? '' : company.category || ''}">
                     </div>
                 </div>
+                <button class="save-btn" data-section="category" style="background-color: #E76F51; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">Enregistrer</button>
+                <button class="cancel-btn" data-section="category" style="background-color: #ccc; color: #333; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-left: 10px;">Annuler</button>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <h3 style="color: #264653; display: flex; justify-content: space-between; align-items: center;">
+                Informations
+                <button class="edit-btn" data-section="info" style="background-color: #2A9D8F; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Modifier</button>
+            </h3>
+            <div id="info-view">
+                <p><strong>Adresse:</strong> ${company.address}, ${company.postalCode} ${company.city}</p>
+                <p><strong>Email:</strong> ${company.email}</p>
+                <p><strong>Site web:</strong> ${company.website || 'Non spécifié'}</p>
+            </div>
+            <div id="info-edit" style="display: none;">
                 <div style="margin-bottom: 10px;">
                     <label style="display: block; margin-bottom: 5px;">Adresse:</label>
                     <input id="edit-address" type="text" value="${company.address}" style="width: 100%; padding: 8px;">
@@ -664,7 +682,7 @@ function showEditableProfile() {
                 <button class="cancel-btn" data-section="info" style="background-color: #ccc; color: #333; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-left: 10px;">Annuler</button>
             </div>
         </div>
-        
+
         <div style="margin-bottom: 20px;">
             <h3 style="color: #264653; display: flex; justify-content: space-between; align-items: center;">
                 Ressources disponibles
@@ -719,7 +737,7 @@ function showEditableProfile() {
                 <button class="cancel-btn" data-section="resources" style="background-color: #ccc; color: #333; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-left: 10px;">Annuler</button>
             </div>
         </div>
-        
+
         <div style="margin-bottom: 20px;">
             <h3 style="color: #264653; display: flex; justify-content: space-between; align-items: center;">
                 Besoins recherchés
@@ -774,10 +792,55 @@ function showEditableProfile() {
                 <button class="cancel-btn" data-section="needs" style="background-color: #ccc; color: #333; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-left: 10px;">Annuler</button>
             </div>
         </div>
+
+        <div style="margin-bottom: 20px;">
+            <h3 style="color: #264653;">Matchs</h3>
+            <div id="matches-container">
+                <!-- Récupérer et afficher les matchs -->
+                ${getCompanyMatches(company)}
+            </div>
+        </div>
         
         <button id="close-profile-modal" style="background-color: #2A9D8F; color: white; border: none; padding: 12px 24px; font-size: 1rem; border-radius: 4px; cursor: pointer; margin-top: 20px; float: right;">Fermer</button>
     `;
     
+    // Fonction pour récupérer et afficher les matchs de l'entreprise
+    function getCompanyMatches(company) {
+        const matches = JSON.parse(localStorage.getItem('regenere_matches') || '[]');
+        const companyMatches = matches.filter(match => 
+            match.provider.id === company.id || match.receiver.id === company.id
+        );
+        
+        if (companyMatches.length === 0) {
+            return '<p>Aucun match trouvé pour votre entreprise.</p>';
+        }
+        
+        let matchesHTML = '<div class="matches-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">';
+        
+        companyMatches.forEach(match => {
+            const isProvider = match.provider.id === company.id;
+            const otherCompany = isProvider ? match.receiver : match.provider;
+            
+            matchesHTML += `
+                <div class="match-card" style="background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <span style="background-color: #2A9D8F; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Match</span>
+                        <span style="color: #6c757d; font-size: 0.9rem;">${new Date(match.date).toLocaleDateString()}</span>
+                    </div>
+                    <h4 style="margin-top: 0; color: #264653;">Catégorie: ${match.resourceCategory}</h4>
+                    <p>${isProvider ? 'Vous fournissez à' : 'Vous recevez de'}: <strong>${otherCompany.name}</strong></p>
+                    <hr style="border: 0; height: 1px; background-color: #e0e0e0; margin: 15px 0;">
+                    <div style="font-size: 0.9rem; color: #555;">
+                        ${isProvider ? `<p>Votre ressource: ${match.providerDescription.substring(0, 100)}${match.providerDescription.length > 100 ? '...' : ''}</p>` : 
+                                      `<p>Votre besoin: ${match.receiverDescription.substring(0, 100)}${match.receiverDescription.length > 100 ? '...' : ''}</p>`}
+                    </div>
+                </div>
+            `;
+        });
+        
+        matchesHTML += '</div>';
+        return matchesHTML;
+    }
     modalOverlay.appendChild(modalContent);
     document.body.appendChild(modalOverlay);
     
@@ -834,7 +897,7 @@ function showEditableProfile() {
             const company = companies[companyIndex];
             
             // Mettre à jour les informations selon la section
-            if (section === 'info') {
+            if (section === 'category') {
                 // Gérer la catégorie d'entreprise (standard ou personnalisée)
                 const categorySelect = document.getElementById('edit-company-category');
                 if (categorySelect.value === 'Autre') {
@@ -842,12 +905,17 @@ function showEditableProfile() {
                 } else {
                     company.category = categorySelect.value;
                 }
-                
+            } else if (section === 'info') {
                 company.address = document.getElementById('edit-address').value;
                 company.postalCode = document.getElementById('edit-postal').value;
                 company.city = document.getElementById('edit-city').value;
                 company.email = document.getElementById('edit-email').value;
                 company.website = document.getElementById('edit-website').value;
+                
+                // Mettre à jour l'email connecté si l'email a changé
+                if (company.email !== connectedEmail) {
+                    localStorage.setItem('regenere_connected_email', company.email);
+                }
             } else if (section === 'resources') {
                 // Récupérer toutes les catégories sélectionnées
                 const selectedResourceCategories = [];
@@ -878,12 +946,55 @@ function showEditableProfile() {
             companies[companyIndex] = company;
             localStorage.setItem('regenere_companies', JSON.stringify(companies));
             
+            // Afficher une notification
+            if (typeof showNotification === 'function') {
+                showNotification('Modifications enregistrées avec succès!', 'success');
+            } else {
+                alert('Modifications enregistrées avec succès!');
+            }
+            
             // Mettre à jour l'affichage
             document.body.removeChild(modalOverlay);
             showEditableProfile(); // Rafraîchir la modal avec les nouvelles données
         });
     });
 }
+    function loginUser() {
+    const email = document.getElementById('login-email').value;
+    
+    if (!email) {
+        showNotification('Veuillez entrer votre email professionnel.', 'error');
+        return;
+    }
+    
+    // Rechercher l'entreprise correspondante dans le localStorage
+    const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
+    const company = companies.find(comp => comp.email === email);
+    
+    if (company) {
+        // Simuler une connexion réussie
+        showNotification('Connexion réussie! Bienvenue ' + company.name, 'success');
+        closeLoginModal();
+        
+        // Stocker l'email de l'entreprise connectée
+        localStorage.setItem('regenere_connected_email', email);
+        
+        // Mettre à jour l'interface pour montrer que l'utilisateur est connecté
+        document.getElementById('auth-status').innerHTML = `
+            <div style="color: white; text-align: right;">
+                <div>Connecté en tant que:</div>
+                <div style="font-weight: bold;">${company.name}</div>
+                <button class="submit-btn" onclick="logoutUser()">Déconnexion</button>
+            </div>
+        `;
+        
+        // Afficher immédiatement la fiche entreprise
+        showEditableProfile();
+    } else {
+        showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
+    }
+}
+    
 </script>
     
     <nav>
