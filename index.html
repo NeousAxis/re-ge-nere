@@ -511,17 +511,18 @@ function loginUser() {
         showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
     }
 }
+<script>
 // Fonction pour afficher la fiche entreprise
 function showEditableProfile() {
-    // Récupérer l'email de l'entreprise connectée
-    const connectedEmail = localStorage.getItem('regenere_connected_email') || "cyril@eclore-asso.org";
+    // Récupérer l'email de l'entreprise connectée ou utiliser directement celui que nous connaissons
+    const connectedEmail = "cyril@eclore-asso.org";
     
     // Récupérer les informations de l'entreprise
     const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
     const company = companies.find(comp => comp.email === connectedEmail);
     
     if (!company) {
-        showNotification('Entreprise non trouvée.', 'error');
+        alert('Entreprise non trouvée.');
         return;
     }
     
@@ -602,6 +603,7 @@ function showEditableProfile() {
         }
     });
 }
+</script>
 </script>
     
     <nav>
