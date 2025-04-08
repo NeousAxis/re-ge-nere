@@ -1890,6 +1890,34 @@ function initTestData() {
         },
         notificationPreferences: "important"
       }
+        const eclore = {
+  id: Date.now(),
+  name: "Association Éclore",
+  address: "15 Rue des Eaux-Vives",
+  postalCode: "1207",
+  city: "Genève",
+  website: "www.eclore-asso.org",
+  email: "cyril@eclore-asso.org",
+  category: "Services aux entreprises",
+  resources: {
+    categories: ["Expertise", "Formation", "Animation"],
+    description: "Accompagnement dans la mise en place de synergies locales",
+    frequency: "régulière",
+    mode: "présentiel",
+    expertise: "expert"
+  },
+  needs: {
+    categories: ["Espace", "Bénévolat", "Compétences numériques"],
+    description: "Recherche d'espace pour organiser des ateliers",
+    frequency: "ponctuelle",
+    mode: "mixte",
+    expertise: "intermédiaire"
+  },
+  notificationPreferences: "weekly"
+};
+
+const companies = [eclore];
+localStorage.setItem('regenere_companies', JSON.stringify(companies));
     ];
     localStorage.setItem('regenere_companies', JSON.stringify(companies));
   }
