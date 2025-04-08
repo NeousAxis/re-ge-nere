@@ -511,7 +511,7 @@ function loginUser() {
         showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
     }
 }
-function showEditableProfile() {
+    function showEditableProfile() {
     // Récupérer l'email de l'entreprise connectée depuis le localStorage
     const connectedEmail = localStorage.getItem('regenere_connected_email');
     
@@ -551,7 +551,7 @@ function showEditableProfile() {
     modalContent.style.maxHeight = '80vh';
     modalContent.style.overflow = 'auto';
 
-    // Liste des catégories d'entreprise
+        // Liste des catégories d'entreprise
     const companyCategories = [
         "Agriculture & Alimentation",
         "Art, Culture & Événementiel",
@@ -615,7 +615,7 @@ function showEditableProfile() {
         return html;
     }
 
-    // Construction du HTML - titre et début du contenu
+        // Construction du HTML - titre et début du contenu
     modalContent.innerHTML = `
         <h2 style="color: #2A9D8F; margin-top: 0;">Profil de ${company.name}</h2>
         
@@ -841,7 +841,7 @@ function showEditableProfile() {
         matchesHTML += '</div>';
         return matchesHTML;
     }
-    modalOverlay.appendChild(modalContent);
+        modalOverlay.appendChild(modalContent);
     document.body.appendChild(modalOverlay);
     
     // Gestionnaire pour fermer la modal
@@ -959,42 +959,6 @@ function showEditableProfile() {
         });
     });
 }
-    function loginUser() {
-    const email = document.getElementById('login-email').value;
-    
-    if (!email) {
-        showNotification('Veuillez entrer votre email professionnel.', 'error');
-        return;
-    }
-    
-    // Rechercher l'entreprise correspondante dans le localStorage
-    const companies = JSON.parse(localStorage.getItem('regenere_companies') || '[]');
-    const company = companies.find(comp => comp.email === email);
-    
-    if (company) {
-        // Simuler une connexion réussie
-        showNotification('Connexion réussie! Bienvenue ' + company.name, 'success');
-        closeLoginModal();
-        
-        // Stocker l'email de l'entreprise connectée
-        localStorage.setItem('regenere_connected_email', email);
-        
-        // Mettre à jour l'interface pour montrer que l'utilisateur est connecté
-        document.getElementById('auth-status').innerHTML = `
-            <div style="color: white; text-align: right;">
-                <div>Connecté en tant que:</div>
-                <div style="font-weight: bold;">${company.name}</div>
-                <button class="submit-btn" onclick="logoutUser()">Déconnexion</button>
-            </div>
-        `;
-        
-        // Afficher immédiatement la fiche entreprise
-        showEditableProfile();
-    } else {
-        showNotification('Email non reconnu. Veuillez vous inscrire.', 'error');
-    }
-}
-    
 </script>
     
     <nav>
