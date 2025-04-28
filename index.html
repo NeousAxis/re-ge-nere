@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ré(GE)nère - Mutualisez vos ressources</title>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      emailjs.init("GX0U6Fx-DT8e7v6xo");
+    })();
+  </script>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -104,7 +110,7 @@
     </p>
 
     <a href="https://eclore.gumroad.com/l/re-ge-nere" class="cta-button" target="_blank">
-      Je réserve mon accès (5 CHF) 📚 Livre Blanc offert
+      Je soutiens & je réserve mon accès (5 CHF) 📚 Livre Blanc offert
     </a>
 
     <a href="app.html" class="cta-button" style="background-color: #E76F51;">
@@ -150,5 +156,35 @@
   <footer>
     <p>© 2025 Ré(GE)nère - Tous droits réservés</p>
   </footer>
+
+  <script>
+    function sendForm(event) {
+      event.preventDefault();
+      document.getElementById('loader').style.display = 'block';
+
+      const form = document.getElementById('survey-form');
+      const formData = new FormData(form);
+
+      const templateParams = {
+        interest: formData.get('interest') || 'Non précisé',
+        willingness: formData.get('willingness') || 'Non précisé',
+        type: formData.get('type') || 'Non précisé',
+        description: formData.get('description') || 'Non précisé',
+        email: formData.get('email') || 'Non précisé'
+      };
+
+      emailjs.send('service_n485hr9', 'template_zm00bwr', templateParams)
+        .then(function(response) {
+          console.log('SUCCESS!', response.status, response.text);
+          alert('Merci ! Votre réponse a bien été envoyée.');
+          form.reset();
+          document.getElementById('loader').style.display = 'none';
+        }, function(error) {
+          console.error('FAILED...', error);
+          alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+          document.getElementById('loader').style.display = 'none';
+        });
+    }
+  </script>
 </body>
 </html>
