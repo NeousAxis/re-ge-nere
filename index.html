@@ -1,11 +1,95 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  ... (tout ton head identique) ...
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ré(GE)nère - Mutualisez vos ressources</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      color: #264653;
+      margin: 0;
+      padding: 0;
+    }
+    header, footer {
+      background-color: #2A9D8F;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .banner {
+      background-color: #E9C46A;
+      text-align: center;
+      padding: 15px;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .content {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .cta-button {
+      display: inline-block;
+      background-color: #2A9D8F;
+      color: white;
+      padding: 15px 25px;
+      margin: 20px 10px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
+    .cta-button:hover {
+      transform: scale(1.05);
+    }
+    .badge {
+      margin-left: 10px;
+    }
+    .form-container {
+      background: white;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    form label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="email"], textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    input[type="radio"] {
+      margin: 10px;
+    }
+    #loader {
+      display: none;
+      margin-top: 10px;
+      font-style: italic;
+      color: #2A9D8F;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    footer p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
   <header>
-    ... (ton header identique) ...
+    <h1>Ré(GE)nère</h1>
+    <p>Mutualisez vos ressources, économisez, coopérez</p>
   </header>
 
   <div class="banner">
@@ -20,11 +104,9 @@
     </p>
 
     <a href="https://eclore.gumroad.com/l/re-ge-nere" class="cta-button" target="_blank">
-      Je soutiens & je réserve mon accès (5 CHF)
-      <span class="badge">📚 Livre Blanc offert</span>
+      Je soutiens & je réserve mon accès (5 CHF) 📚 Livre Blanc offert
     </a>
 
-    <br>
     <a href="app.html" class="cta-button" style="background-color: #E76F51;">
       🚀 Découvrir l'application Re-GE-nère
     </a>
@@ -66,7 +148,7 @@
   </div>
 
   <footer>
-    ... (ton footer identique) ...
+    <p>© 2025 Ré(GE)nère - Tous droits réservés</p>
   </footer>
 </body>
 </html>
