@@ -1,142 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mutualisez vos ressources - re-ge-nere.app</title>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function() {
-      emailjs.init("GX0U6Fx-DT8e7v6xo");
-    })();
-
-    function sendForm(event) {
-      event.preventDefault();
-      const form = document.getElementById('survey-form');
-      const loader = document.getElementById('loader');
-      loader.style.display = 'block';
-
-      const data = {
-        interest: form.querySelector('input[name="interest"]:checked')?.value || '',
-        willingness: form.querySelector('input[name="willingness"]:checked')?.value || '',
-        type: form.querySelector('input[name="type"]:checked')?.value || '',
-        description: form.querySelector('textarea[name="description"]').value,
-        email: form.querySelector('input[name="email"]').value,
-      };
-
-      emailjs.send('service_n485hr9', 'template_zm00bwr', data)
-        .then(function(response) {
-          alert('Merci pour votre réponse !');
-          form.reset();
-          loader.style.display = 'none';
-        }, function(error) {
-          alert('Erreur lors de l\'envoi. Veuillez réessayer.');
-          loader.style.display = 'none';
-        });
-    }
-  </script>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background-color: #f7f9fc;
-      color: #264653;
-    }
-    header {
-      background-color: #2A9D8F;
-      color: white;
-      text-align: center;
-      padding: 40px 20px;
-    }
-    .banner {
-      background-color: #E9C46A;
-      color: #264653;
-      text-align: center;
-      font-weight: bold;
-      padding: 15px;
-    }
-    .content {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
-      text-align: center;
-    }
-    .cta-button {
-      background-color: #2A9D8F;
-      color: white;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 1.2rem;
-      display: inline-block;
-      margin: 20px 0;
-      transition: background-color 0.3s;
-    }
-    .cta-button:hover {
-      background-color: #1f7268;
-    }
-    .badge {
-      background-color: #E9C46A;
-      color: #264653;
-      padding: 5px 10px;
-      margin-left: 10px;
-      border-radius: 5px;
-      font-size: 0.9rem;
-    }
-    .form-container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      margin-top: 40px;
-    }
-    form {
-      text-align: left;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 20px;
-    }
-    input[type="radio"], input[type="email"], textarea {
-      margin-top: 10px;
-    }
-    input[type="email"], textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    textarea {
-      resize: vertical;
-    }
-    #loader {
-      display: none;
-      margin-top: 10px;
-      color: #2A9D8F;
-      font-size: 1rem;
-      animation: pulse 1s infinite;
-    }
-    @keyframes pulse {
-      0% { opacity: 0.6; }
-      50% { opacity: 1; }
-      100% { opacity: 0.6; }
-    }
-    footer {
-      background-color: #264653;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      margin-top: 50px;
-    }
-  </style>
+  ... (tout ton head identique) ...
 </head>
 <body>
   <header>
-    <h1>Mutualisez vos ressources, économisez, coopérez.<br>Découvrez re-ge-nere.app</h1>
-    <p>Re-ge-nere.app est la future plateforme pour mutualiser vos ressources, réduire vos coûts et développer des synergies locales durables. Rejoignez un écosystème inspiré du vivant, conçu pour la transition écologique et sociale.</p>
+    ... (ton header identique) ...
   </header>
 
   <div class="banner">
@@ -153,6 +22,11 @@
     <a href="https://eclore.gumroad.com/l/re-ge-nere" class="cta-button" target="_blank">
       Je soutiens & je réserve mon accès (5 CHF)
       <span class="badge">📚 Livre Blanc offert</span>
+    </a>
+
+    <br>
+    <a href="app.html" class="cta-button" style="background-color: #E76F51;">
+      🚀 Découvrir l'application Re-GE-nère
     </a>
 
     <div class="form-container">
@@ -174,7 +48,7 @@
         <input type="radio" name="type" value="Les deux"> Les deux
 
         <label>Précisez votre/vos ressource(s) ou besoin(s) :</label>
-        <textarea name="description" rows="3"></textarea>
+        <textarea name="description" rows="3" placeholder="Exemples : mise à disposition de palettes bois, besoin de conseils juridiques, prêt d'une salle de réunion, recherche d'équipements recyclés..."></textarea>
 
         <label>Votre email pour être informé(e) du lancement :</label>
         <input type="email" name="email">
@@ -192,8 +66,7 @@
   </div>
 
   <footer>
-    Projet en phase de prototype. Vos données resteront confidentielles.<br>
-    Porté par une association suisse engagée dans la transition écologique.
+    ... (ton footer identique) ...
   </footer>
 </body>
 </html>
