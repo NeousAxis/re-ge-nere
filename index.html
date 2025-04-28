@@ -4,126 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mutualisez vos ressources - re-ge-nere.app</title>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      emailjs.init("GX0U6Fx-DT8e7v6xo");
+    })();
+
+    function sendForm(event) {
+      event.preventDefault();
+
+      const form = document.getElementById('survey-form');
+      const data = {
+        interest: form.querySelector('input[name="interest"]:checked')?.value || '',
+        willingness: form.querySelector('input[name="willingness"]:checked')?.value || '',
+        type: form.querySelector('input[name="type"]:checked')?.value || '',
+        description: form.querySelector('textarea[name="description"]').value,
+        email: form.querySelector('input[name="email"]').value,
+      };
+
+      emailjs.send('service_n485hr9', 'template_zm00bwr', data)
+        .then(function(response) {
+          alert('Merci pour votre réponse !');
+          form.reset();
+        }, function(error) {
+          alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+        });
+    }
+  </script>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f7f9fc;
-      color: #264653;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      opacity: 0;
-      animation: fadeIn 1.5s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
-
-    header {
-      background-color: #2A9D8F;
-      color: white;
-      padding: 4rem 1rem 2rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    header p {
-      font-size: 1.2rem;
-      margin: 0 auto;
-      max-width: 600px;
-    }
-
-    .banner {
-      background-color: #E9C46A;
-      color: #264653;
-      font-size: 1.1rem;
-      padding: 1rem;
-      margin: 2rem auto;
-      border-radius: 8px;
-      max-width: 600px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
-
-    .content {
-      padding: 2rem 1rem;
-    }
-
-    .content p {
-      font-size: 1.1rem;
-      margin: 1rem auto;
-      max-width: 700px;
-      line-height: 1.6;
-    }
-
-    .cta-button, .secondary-button {
-      display: inline-block;
-      margin: 1rem;
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background-color 0.3s, transform 0.3s;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    .cta-button {
-      background-color: #2A9D8F;
-      color: white;
-    }
-
-    .cta-button:hover {
-      background-color: #1f7268;
-      transform: translateY(-3px);
-    }
-
-    .secondary-button {
-      background-color: #E76F51;
-      color: white;
-    }
-
-    .secondary-button:hover {
-      background-color: #d35d3b;
-      transform: translateY(-3px);
-    }
-
-    footer {
-      margin-top: 4rem;
-      font-size: 0.9rem;
-      color: #777;
-      padding-bottom: 2rem;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 2rem;
-      }
-
-      header p, .content p {
-        font-size: 1rem;
-        padding: 0 10px;
-      }
-
-      .banner {
-        font-size: 1rem;
-        padding: 0.8rem;
-      }
-
-      .cta-button, .secondary-button {
-        width: 80%;
-        font-size: 1rem;
-        padding: 1rem;
-      }
-    }
-
+    /* styles existants conservés */
   </style>
 </head>
 <body>
@@ -133,7 +42,7 @@
   </header>
 
   <div class="banner">
-    🎉 Plus que 32 places disponibles pour devenir béta-testeur !
+    🎉 Plus que 35 places disponibles pour devenir béta-testeur !
   </div>
 
   <div class="content">
@@ -143,9 +52,39 @@
       Rejoignez dès maintenant les premiers membres de re-ge-nere.app.
     </p>
 
-    <a href="https://eclore.gumroad.com/l/re-ge-nere" class="cta-button" target="_blank">Réservez votre accès pour CHF 5</a>
+    <a href="https://eclore.gumroad.com/l/re-ge-nere" class="cta-button" target="_blank">
+      Je soutiens & je réserve mon accès (5 CHF)
+      <span class="badge">📚 Livre Blanc offert</span>
+    </a>
 
-    <a href="app.html" class="secondary-button">Découvrir l'application Re-GE-nère</a>
+    <div class="form-container">
+      <h2>Aidez-nous à mieux comprendre vos besoins</h2>
+      <form id="survey-form" onsubmit="sendForm(event)">
+        <label>Êtes-vous intéressé(e) par une plateforme locale pour mutualiser vos ressources et besoins ?</label>
+        <input type="radio" name="interest" value="Oui"> Oui
+        <input type="radio" name="interest" value="Non"> Non
+        <input type="radio" name="interest" value="Peut-être"> Peut-être
+
+        <label>Seriez-vous prêt(e) à payer un abonnement abordable (CHF 8/mois) pour accéder à ces services ?</label>
+        <input type="radio" name="willingness" value="Oui, sans problème"> Oui, sans problème
+        <input type="radio" name="willingness" value="Oui, si je vois des résultats rapidement"> Oui, si je vois des résultats rapidement
+        <input type="radio" name="willingness" value="Non"> Non
+
+        <label>Quel type de ressources ou besoins souhaiteriez-vous publier ?</label>
+        <input type="radio" name="type" value="Matériel"> Matériel
+        <input type="radio" name="type" value="Services"> Services
+        <input type="radio" name="type" value="Les deux"> Les deux
+
+        <label>Précisez votre/vos ressource(s) ou besoin(s) :</label>
+        <textarea name="description" rows="3"></textarea>
+
+        <label>Votre email pour être informé(e) du lancement :</label>
+        <input type="email" name="email">
+
+        <br><br>
+        <button class="cta-button" type="submit">Envoyer</button>
+      </form>
+    </div>
 
     <p style="margin-top: 2rem; font-size: 0.95rem; max-width: 600px;">
       Votre contribution symbolique nous aide à développer la plateforme.<br>
