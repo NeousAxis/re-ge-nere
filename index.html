@@ -14,6 +14,9 @@
       event.preventDefault();
 
       const form = document.getElementById('survey-form');
+      const loader = document.getElementById('loader');
+      loader.style.display = 'block';
+
       const data = {
         interest: form.querySelector('input[name="interest"]:checked')?.value || '',
         willingness: form.querySelector('input[name="willingness"]:checked')?.value || '',
@@ -26,13 +29,21 @@
         .then(function(response) {
           alert('Merci pour votre réponse !');
           form.reset();
+          loader.style.display = 'none';
         }, function(error) {
           alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+          loader.style.display = 'none';
         });
     }
   </script>
   <style>
     /* styles existants conservés */
+    #loader {
+      display: none;
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #2A9D8F;
+    }
   </style>
 </head>
 <body>
@@ -83,6 +94,7 @@
 
         <br><br>
         <button class="cta-button" type="submit">Envoyer</button>
+        <div id="loader">⏳ Envoi en cours...</div>
       </form>
     </div>
 
