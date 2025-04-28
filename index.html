@@ -12,7 +12,6 @@
 
     function sendForm(event) {
       event.preventDefault();
-
       const form = document.getElementById('survey-form');
       const loader = document.getElementById('loader');
       loader.style.display = 'block';
@@ -37,12 +36,100 @@
     }
   </script>
   <style>
-    /* styles existants conservés */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #f7f9fc;
+      color: #264653;
+    }
+    header {
+      background-color: #2A9D8F;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .banner {
+      background-color: #E9C46A;
+      color: #264653;
+      text-align: center;
+      font-weight: bold;
+      padding: 15px;
+    }
+    .content {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .cta-button {
+      background-color: #2A9D8F;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      display: inline-block;
+      margin: 20px 0;
+      transition: background-color 0.3s;
+    }
+    .cta-button:hover {
+      background-color: #1f7268;
+    }
+    .badge {
+      background-color: #E9C46A;
+      color: #264653;
+      padding: 5px 10px;
+      margin-left: 10px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+    }
+    .form-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-top: 40px;
+    }
+    form {
+      text-align: left;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+    }
+    input[type="radio"], input[type="email"], textarea {
+      margin-top: 10px;
+    }
+    input[type="email"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    textarea {
+      resize: vertical;
+    }
     #loader {
       display: none;
       margin-top: 10px;
-      font-size: 1rem;
       color: #2A9D8F;
+      font-size: 1rem;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    footer {
+      background-color: #264653;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
     }
   </style>
 </head>
@@ -98,7 +185,7 @@
       </form>
     </div>
 
-    <p style="margin-top: 2rem; font-size: 0.95rem; max-width: 600px;">
+    <p style="margin-top: 2rem; font-size: 0.95rem; max-width: 600px; margin: auto;">
       Votre contribution symbolique nous aide à développer la plateforme.<br>
       Vous serez invité(e) en priorité pour tester les premières fonctionnalités.
     </p>
