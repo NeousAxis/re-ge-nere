@@ -6,22 +6,32 @@
   <title>Mutualisez vos ressources - re-ge-nere.app</title>
   <style>
     body {
-      font-family: 'Helvetica Neue', sans-serif;
-      background-color: #f9f7f2; /* fond beige clair */
-      color: #445242; /* vert doux pour le texte */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      color: #264653;
       margin: 0;
       padding: 0;
       text-align: center;
+      opacity: 0;
+      animation: fadeIn 1.5s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
     }
 
     header {
+      background-color: #2A9D8F;
+      color: white;
       padding: 4rem 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     header h1 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
-      color: #445242;
     }
 
     header p {
@@ -31,15 +41,14 @@
     }
 
     .banner {
-      background-color: #d6e2d2;
-      color: #445242;
+      background-color: #E9C46A;
+      color: #264653;
       font-size: 1.1rem;
       padding: 1rem;
-      margin: 2rem 0;
+      margin: 2rem auto;
       border-radius: 8px;
       max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
 
     .content {
@@ -53,38 +62,36 @@
       line-height: 1.6;
     }
 
-    .cta-button {
+    .cta-button, .secondary-button {
       display: inline-block;
       margin: 1rem;
       padding: 1rem 2rem;
-      background-color: #b8c4b0; /* vert doux pour bouton */
-      color: white;
       font-size: 1.2rem;
       border: none;
       border-radius: 8px;
       text-decoration: none;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, transform 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .cta-button {
+      background-color: #2A9D8F;
+      color: white;
     }
 
     .cta-button:hover {
-      background-color: #98a897;
+      background-color: #1f7268;
+      transform: translateY(-3px);
     }
 
     .secondary-button {
-      display: inline-block;
-      margin: 1rem;
-      padding: 1rem 2rem;
-      background-color: #6b8f71; /* vert plus soutenu */
+      background-color: #E76F51;
       color: white;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background-color 0.3s;
     }
 
     .secondary-button:hover {
-      background-color: #557a5e;
+      background-color: #d35d3b;
+      transform: translateY(-3px);
     }
 
     footer {
@@ -92,6 +99,29 @@
       font-size: 0.9rem;
       color: #777;
       padding-bottom: 2rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      header p, .content p {
+        font-size: 1rem;
+        padding: 0 10px;
+      }
+
+      .banner {
+        font-size: 1rem;
+        padding: 0.8rem;
+      }
+
+      .cta-button, .secondary-button {
+        width: 80%;
+        font-size: 1rem;
+        padding: 1rem;
+      }
     }
 
   </style>
