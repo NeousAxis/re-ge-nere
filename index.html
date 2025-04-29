@@ -98,9 +98,9 @@
     <p>Mutualisez vos ressources, économisez, coopérez</p>
   </header>
 
-  <div class="banner">
-    🎉 Plus que 31 places disponibles pour devenir béta-testeur !
-  </div>
+  <div id="beta-banner" class="banner">
+  🎉 Plus que <span id="beta-count">31</span> places disponibles pour devenir béta-testeur !
+</div>
 
   <div class="content">
     <p>
@@ -216,5 +216,19 @@
 </footer>
 
         <script src="app.js"></script>
+  <script>
+  document.querySelector('a[href*="gumroad.com"]').addEventListener('click', function () {
+    const countEl = document.getElementById('beta-count');
+    let count = parseInt(countEl.textContent);
+
+    if (count > 1) {
+      count -= 1;
+      countEl.textContent = count;
+    } else {
+      countEl.textContent = '0';
+      document.getElementById('beta-banner').textContent = '🎉 Les inscriptions sont presque complètes !';
+    }
+  });
+</script>
 </body>
 </html>
