@@ -3,155 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ré(GE)nère - Mutualisez vos ressources</title>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function() {
-      emailjs.init("GX0U6Fx-DT8e7v6xo");
-    })();
+  <title>Ré(GE)nère - Mutualisons nos ressources</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    (function() { emailjs.init("GX0U6Fx-DT8e7v6xo"); })();
   </script>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f7f9fc;
-      color: #264653;
-      margin: 0;
-      padding: 0;
-    }
-    header, footer {
-      background-color: #2A9D8F;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    .banner {
-      background-color: #E9C46A;
-      text-align: center;
-      padding: 15px;
-      font-weight: bold;
-      font-size: 1.2rem;
-    }
-    .content {
-      padding: 40px 20px;
-      text-align: center;
-    }
-    .cta-button {
-      display: inline-block;
-      background-color: #2A9D8F;
-      color: white;
-      padding: 15px 25px;
-      margin: 20px 10px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-      transition: transform 0.3s;
-    }
-    .cta-button:hover {
-      transform: scale(1.05);
-    }
-    .badge {
-      margin-left: 10px;
-    }
-    .form-container {
-      background: white;
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    form label {
-      display: block;
-      margin: 15px 0 5px;
-      font-weight: bold;
-    }
-    input[type="text"], input[type="email"], textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    input[type="radio"] {
-      margin: 10px;
-    }
-    #loader {
-      display: none;
-      margin-top: 10px;
-      font-style: italic;
-      color: #2A9D8F;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
-    footer p {
-      margin: 0;
-      font-size: 0.9rem;
-    }
-    /* === Mise en page général container centré === */
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+    /* Reset & base */
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f7f9fc; color: #264653; margin: 0; padding: 0; }
+    header, footer { background-color: #2A9D8F; color: white; text-align: center; padding: 20px; }
+    .cta-button { display: inline-block; background-color: #2A9D8F; color: white; padding: 15px 25px; margin: 20px 10px; text-decoration: none; border-radius: 8px; font-weight: bold; transition: transform 0.3s; }
+    .cta-button:hover { transform: scale(1.05); }
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
 
-/* === Bande jaune + intro centrée === */
-section.intro {
-  background-color: #E9C46A;
-  padding: 60px 0;
-  text-align: center;
-}
-section.intro h2 {
-  color: #264653;
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-section.intro .intro-text {
-  max-width: 800px;
-  margin: 0 auto;
-  font-size: 1.125rem;
-  line-height: 1.6;
-  color: #264653;
-}
+    /* Intro section */
+    section.intro { background-color: #E9C46A; padding: 60px 0; text-align: center; }
+    section.intro h2 { color: #264653; font-size: 2rem; margin-bottom: 20px; }
+    section.intro .intro-text { max-width: 800px; margin: 0 auto; font-size: 1.125rem; line-height: 1.6; color: #264653; }
+    section.intro .banner { margin-top: 30px; font-size: 1.2rem; font-weight: bold; color: #264653; }
 
-/* === Section « Pourquoi rejoindre » === */
-section.benefits {
-  background-color: #ffffff;
-  padding: 60px 0;
-}
-section.benefits h2 {
-  text-align: center;
-  color: #264653;
-  font-size: 2rem;
-  margin-bottom: 40px;
-}
+    /* Benefits section */
+    section.benefits { background-color: #ffffff; padding: 60px 0; }
+    section.benefits h2 { text-align: center; color: #264653; font-size: 2rem; margin-bottom: 40px; }
+    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+    .benefit-card { background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: left; }
+    .benefit-card h3 { color: #2A9D8F; margin-bottom: 10px; font-size: 1.25rem; }
+    .benefit-card p { color: #264653; line-height: 1.5; }
 
-/* === Grille responsive pour les cards === */
-.benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-}
+    /* How it works section */
+    section.how-it-works { background-color: #ffffff; padding: 60px 0; }
+    section.how-it-works h2 { text-align: center; color: #264653; font-size: 2rem; margin-bottom: 40px; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
+    .step { display: flex; align-items: flex-start; }
+    .step-number { background-color: #E9C46A; color: #264653; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0; }
+    .step-content h3 { margin: 0 0 8px; font-size: 1.2rem; color: #264653; }
+    .step-content p { margin: 0; color: #264653; line-height: 1.5; }
 
-/* === Style des cards === */
-.benefit-card {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  text-align: left;
-}
-.benefit-card h3 {
-  margin-top: 0;
-  color: #2A9D8F;
-  font-size: 1.25rem;
-}
-.benefit-card p {
-  margin-bottom: 0;
-  color: #264653;
-}
+    /* Form section */
+    .form-container { background: white; max-width: 700px; margin: 40px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    form label { display: block; margin: 15px 0 5px; font-weight: bold; }
+    input[type="email"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    input[type="radio"] { margin: 10px; }
+    #loader { display: none; margin-top: 10px; font-style: italic; color: #2A9D8F; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+    footer p { margin: 0; font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -159,192 +55,167 @@ section.benefits h2 {
     <h1>Ré(GE)nère</h1>
     <p>Mutualisez vos ressources, économisez, coopérez</p>
   </header>
-    <!-- Section introduction principale -->
-    <section id="intro" class="intro">
+
+  <section id="intro" class="intro">
     <div class="container">
-            <h2>Créons un écosystème durable. Mutualisons nos ressources !</h2>
-            <p class="intro-text">Ré(GE)nère connecte les entreprises genevoises pour créer des synergies locales, valoriser les déchets et optimiser l'utilisation des ressources dans une démarche d'économie locale.</p>
-     <div class="banner">
-      🌟 Réservez dès maintenant votre accès ! 🌟
+      <h2>Créons un écosystème durable. Mutualisons nos ressources !</h2>
+      <p class="intro-text">Ré(GE)nère connecte les entreprises genevoises pour créer des synergies locales, valoriser les déchets et optimiser l'utilisation des ressources dans une démarche d'économie locale.</p>
+      <div class="banner">🌟 Réservez dès maintenant votre accès ! 🌟</div>
+    </div>
+  </section>
+
+  <section id="benefits" class="benefits">
+    <div class="container">
+      <h2>Pourquoi rejoindre notre écosystème ?</h2>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <h3>Réseautage local</h3>
+          <p>Développez votre réseau professionnel en collaborant avec d'autres entreprises genevoises partageant vos valeurs.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Économies significatives</h3>
+          <p>Réduisez vos coûts d'élimination des déchets et trouvez des ressources à moindre coût auprès d'autres entreprises locales.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Impact environnemental positif</h3>
+          <p>Contribuez à réduire votre empreinte carbone en donnant une seconde vie à vos ressources inutilisées.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Image responsable</h3>
+          <p>Renforcez votre image d'entreprise engagée dans le développement durable et l'économie locale.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Innovation collaborative</h3>
+          <p>Découvrez de nouvelles façons d'utiliser vos ressources et inspirez-vous des pratiques d'autres entreprises.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Simplicité d'utilisation</h3>
+          <p>Une plateforme intuitive pour publier vos offres et demandes, et être mis en relation automatiquement avec des correspondances pertinentes.</p>
+        </div>
       </div>
     </div>
-    </section>
+  </section>
 
-<!-- Section Pourquoi rejoindre -->
-    <section id="benefits" class="benefits">
-        <div class="container">
-            <h2>Pourquoi rejoindre notre écosystème ?</h2>
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <h3>Réseautage local</h3>
-                    <p>Développez votre réseau professionnel en collaborant avec d'autres entreprises genevoises partageant vos valeurs.</p>
-                </div>
-                <div class="benefit-card">
-                    <h3>Économies significatives</h3>
-                    <p>Réduisez vos coûts d'élimination des déchets et trouvez des ressources à moindre coût auprès d'autres entreprises locales.</p>
-                </div>
-                <div class="benefit-card">
-                    <h3>Impact environnemental positif</h3>
-                    <p>Contribuez à réduire l'empreinte carbone de votre entreprise en donnant une seconde vie à vos ressources inutilisées.</p>
-                </div>
-                <div class="benefit-card">
-                    <h3>Image responsable</h3>
-                    <p>Renforcez votre image d'entreprise engagée dans le développement durable et l'économie locale.</p>
-                </div>
-                <div class="benefit-card">
-                    <h3>Innovation collaborative</h3>
-                    <p>Découvrez de nouvelles façons d'utiliser vos ressources et inspirez-vous des pratiques d'autres entreprises.</p>
-                </div>
-                <div class="benefit-card">
-                    <h3>Simplicité d'utilisation</h3>
-                    <p>Une plateforme intuitive pour publier vos offres et demandes, et être mis en relation automatiquement avec des correspondances pertinentes.</p>
-                </div>
-            </div>
+  <section id="how-it-works" class="how-it-works">
+    <div class="container">
+      <h2>Comment ça marche</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Inscrivez votre entreprise</h3>
+            <p>Remplissez le formulaire d'inscription avec les informations de votre entreprise. C'est gratuit et prend moins de 5 minutes.</p>
+          </div>
         </div>
-    </section>
-<!-- Section Comment ça marche -->
-    <section id="how-it-works" class="how-it-works">
-        <div class="container">
-            <h2>Comment ça marche</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Inscrivez votre entreprise</h3>
-                        <p>Remplissez le formulaire d'inscription avec les informations de votre entreprise. C'est gratuit et prend moins de 5 minutes.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Publiez vos ressources et besoins</h3>
-                        <p>Indiquez les ressources que vous pouvez offrir (déchets, matériaux, équipements, espaces, compétences) et celles dont vous avez besoin.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Recevez des correspondances</h3>
-                        <p>Notre algorithme identifie automatiquement les entreprises dont les besoins correspondent à vos ressources, et vice-versa.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>Collaborez localement</h3>
-                        <p>Entrez en contact avec les entreprises suggérées et établissez des partenariats bénéfiques pour tous, dans une logique d'économie locale.</p>
-                    </div>
-                </div>
-            </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Publiez vos ressources et besoins</h3>
+            <p>Indiquez les ressources que vous pouvez offrir et celles dont vous avez besoin.</p>
+          </div>
         </div>
-    </section>
-
-<h2 style="color: #E76F51;">Étape 1 : Remplissez le questionnaire</h2>
-    <div class="form-container">
-      <h2>Aidez-nous à mieux comprendre vos besoins</h2>
-      <form id="survey-form" onsubmit="sendForm(event)">
-        <label>Êtes-vous intéressé(e) par une plateforme locale pour mutualiser vos ressources et besoins ?</label>
-        <input type="radio" name="interest" value="Oui"> Oui
-        <input type="radio" name="interest" value="Non"> Non
-        <input type="radio" name="interest" value="Peut-être"> Peut-être
-
-        <label>Seriez-vous prêt(e) à payer un abonnement abordable (CHF 8/mois) pour accéder à ces services ?</label>
-        <input type="radio" name="willingness" value="Oui, sans problème"> Oui, sans problème
-        <input type="radio" name="willingness" value="Oui, si je vois des résultats rapidement"> Oui, si je vois des résultats rapidement
-        <input type="radio" name="willingness" value="Non"> Non
-
-        <label>Quel type de ressources ou besoins souhaiteriez-vous publier ?</label>
-        <input type="radio" name="type" value="Matériel"> Matériel
-        <input type="radio" name="type" value="Services"> Services
-        <input type="radio" name="type" value="Les deux"> Les deux
-
-        <label>Précisez votre/vos ressource(s) ou besoin(s) :</label>
-        <textarea name="description" rows="3" placeholder="Exemples : mise à disposition de palettes bois, besoin de conseils juridiques, prêt d'une salle de réunion, recherche d'équipements recyclés..."></textarea>
-
-        <label>Votre email pour être informé(e) du lancement :</label>
-        <input type="email" name="email">
-
-        <br><br>
-        <button class="cta-button" type="submit">Envoyer</button>
-        <div id="loader">⏳ Envoi en cours...</div>
-      </form>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Recevez des correspondances</h3>
+            <p>Notre algorithme identifie automatiquement les entreprises dont les besoins correspondent à vos ressources.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Collaborez localement</h3>
+            <p>Établissez des partenariats bénéfiques pour une économie locale circulaire.</p>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <p style="margin-top: 2rem; font-size: 0.95rem; max-width: 600px; margin: auto;">
-      Votre contribution symbolique nous aide à développer la plateforme.<br>
-      Vous serez invité(e) en priorité pour tester les premières fonctionnalités.
-    </p>
+  <h2 style="color: #E76F51; text-align: center;">Étape 1 : Remplissez le questionnaire</h2>
+  <div class="form-container">
+    <h2>Aidez-nous à mieux comprendre vos besoins</h2>
+    <form id="survey-form" onsubmit="sendForm(event)">
+      <label>Êtes-vous intéressé(e) par une plateforme locale pour mutualiser vos ressources et besoins ?</label>
+      <input type="radio" name="interest" value="Oui"> Oui
+      <input type="radio" name="interest" value="Non"> Non
+      <input type="radio" name="interest" value="Peut-être"> Peut-être
+
+      <label>Seriez-vous prêt(e) à payer un abonnement abordable (CHF 8/mois) ?</label>
+      <input type="radio" name="willingness" value="Oui, sans problème"> Oui, sans problème
+      <input type="radio" name="willingness" value="Oui, si je vois des résultats rapidement"> Oui, si je vois des résultats rapidement
+      <input type="radio" name="willingness" value="Non"> Non
+
+      <label>Quel type de ressources ou besoins ?</label>
+      <input type="radio" name="type" value="Matériel"> Matériel
+      <input type="radio" name="type" value="Services"> Services
+      <input type="radio" name="type" value="Les deux"> Les deux
+
+      <label>Précisez :</label>
+      <textarea name="description" rows="3" placeholder="Ex : palettes, conseils juridiques..."></textarea>
+
+      <label>Votre email :</label>
+      <input type="email" name="email">
+
+      <button class="cta-button" type="submit">Envoyer</button>
+      <div id="loader">⏳ Envoi en cours...</div>
+    </form>
   </div>
+
+  <p style="margin-top: 2rem; font-size: 0.95rem; max-width: 600px; margin: auto; text-align: center;">
+    Votre contribution symbolique nous aide à développer la plateforme. Vous serez invité(e) en priorité.
+  </p>
+
+  <div style="text-align: center; margin: 50px 0;">
+    <h2 style="color: #2A9D8F;">Étape 2 : Réservez votre accès (5 CHF)</h2>
+    <a href="https://eclore.gumroad.com/l/re-ge-nere" class="cta-button" target="_blank">
+      Je réserve mon accès (5 CHF) 📚 Livre Blanc offert
+    </a>
+    <a href="app.html" class="cta-button" style="background-color: #E76F51;">
+      🚀 Découvrir l'application Re-GE-nère
+    </a>
+  </div>
+
+  <footer id="contact" style="background-color: #264653; color: white; padding: 30px 0; margin-top: 50px;">
+    <div class="container">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+        <div style="margin-bottom: 20px;">
+          <h3 style="margin-top: 0; font-size: 1.4rem; color: #E9C46A;">Ré(GE)nère</h3>
+          <p style="margin-bottom: 5px;">Plateforme d'Écosystème Mutualisé</p>
+          <p style="font-size: 0.9rem;">© Association Eclore 2025. Tous droits réservés.</p>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <p style="margin-bottom: 10px; font-weight: bold;">Contact</p>
+          <p>Email: info[at]eclore-asso.org</p>
+          <p>Genève, Suisse</p>
+        </div>
+        <div style="margin-bottom: 20px; text-align:center;">
+          <img src="./cc-logo.png" alt="Licence Creative Commons" width="60" height="60" />
+          <p style="font-size: 0.8rem; margin-top: 5px;">Licence Creative Commons</p>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script>
     function sendForm(event) {
       event.preventDefault();
       document.getElementById('loader').style.display = 'block';
-
       const form = document.getElementById('survey-form');
-      const formData = new FormData(form);
-
-      const templateParams = {
-        interest: formData.get('interest') || 'Non précisé',
-        willingness: formData.get('willingness') || 'Non précisé',
-        type: formData.get('type') || 'Non précisé',
-        description: formData.get('description') || 'Non précisé',
-        email: formData.get('email') || 'Non précisé'
+      const data = new FormData(form);
+      const params = {
+        interest: data.get('interest') || 'Non précisé',
+        willingness: data.get('willingness') || 'Non précisé',
+        type: data.get('type') || 'Non précisé',
+        description: data.get('description') || 'Non précisé',
+        email: data.get('email') || 'Non précisé'
       };
-
-      emailjs.send('service_n485hr9', 'template_uj8d7ba', templateParams)
-        .then(function(response) {
-          console.log('SUCCESS!', response.status, response.text);
-          alert('Merci ! Votre réponse a bien été envoyée.');
-          form.reset();
-          document.getElementById('loader').style.display = 'none';
-        }, function(error) {
-          console.error('FAILED...', error);
-          alert('Erreur lors de l\'envoi. Veuillez réessayer.');
-          document.getElementById('loader').style.display = 'none';
-        });
+      emailjs.send('service_n485hr9', 'template_uj8d7ba', params)
+        .then(resp => { alert('Merci ! Votre réponse a bien été envoyée.'); form.reset(); document.getElementById('loader').style.display = 'none'; })
+        .catch(err => { alert('Erreur lors de l'envoi. Veuillez réessayer.'); document.getElementById('loader').style.display = 'none'; });
     }
   </script>
-  
-<div style="text-align: center; margin-top: 50px;">
-  <h2 style="color: #2A9D8F;">Étape 2 : Réservez votre accès (5 CHF)</h2>
 
-  <a href="https://eclore.gumroad.com/l/re-ge-nere" class="cta-button" target="_blank">
-    Je réserve mon accès (5 CHF) 📚 Livre Blanc offert
-  </a>
-
-  <a href="app.html" class="cta-button" style="background-color: #E76F51;">
-    🚀 Découvrir l'application Re-GE-nère
-  </a>
-</div>
-
-   <!-- Pied de page -->
-<footer id="contact" style="background-color: #264653; color: white; padding: 30px 0; margin-top: 50px;">
-    <div class="container">
-        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
-            <div style="margin-bottom: 20px;">
-                <h3 style="margin-top: 0; font-size: 1.4rem; color: #E9C46A;">Ré(GE)nère</h3>
-                <p style="margin-bottom: 5px;">Plateforme d'Écosystème Mutualisé</p>
-                <p style="font-size: 0.9rem;">© Association Eclore 2025. Tous droits réservés.</p>
-            </div>
-            <div style="margin-bottom: 20px;">
-                <p style="margin-bottom: 10px; font-weight: bold;">Contact</p>
-                <p style="margin-bottom: 5px;">Email: info[at]eclore-asso.org</p>
-                <p style="margin-bottom: 5px;">Genève, Suisse</p>
-            </div>
-            <div style="margin-bottom: 20px;">
-                <p style="font-size: 0.85rem; max-width: 300px;">Application @Ré(GE)nère 2025 créée par l'Association Eclore dans le cadre de son programme d'économie locale.</p>
-                <!-- Logo Creative Commons -->
-                <div style="margin-top: 10px; text-align: center;">
-                    <img src="./cc-logo.png" alt="Licence Creative Commons" width="60" height="60" />
-                    <p style="font-size: 0.8rem; margin-top: 5px;">Licence Creative Commons</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-</footer>
-
-        <script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
