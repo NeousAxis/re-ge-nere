@@ -90,6 +90,68 @@
       margin: 0;
       font-size: 0.9rem;
     }
+    /* === Mise en page général container centré === */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* === Bande jaune + intro centrée === */
+section.intro {
+  background-color: #E9C46A;
+  padding: 60px 0;
+  text-align: center;
+}
+section.intro h2 {
+  color: #264653;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+section.intro .intro-text {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #264653;
+}
+
+/* === Section « Pourquoi rejoindre » === */
+section.benefits {
+  background-color: #ffffff;
+  padding: 60px 0;
+}
+section.benefits h2 {
+  text-align: center;
+  color: #264653;
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+/* === Grille responsive pour les cards === */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+/* === Style des cards === */
+.benefit-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  text-align: left;
+}
+.benefit-card h3 {
+  margin-top: 0;
+  color: #2A9D8F;
+  font-size: 1.25rem;
+}
+.benefit-card p {
+  margin-bottom: 0;
+  color: #264653;
+}
   </style>
 </head>
 <body>
@@ -97,18 +159,17 @@
     <h1>Ré(GE)nère</h1>
     <p>Mutualisez vos ressources, économisez, coopérez</p>
   </header>
-
-  <div class="banner">
-    🌟 Réservez dès maintenant votre accès ! 🌟
-  </div>
-
     <!-- Section introduction principale -->
     <section id="intro" class="intro">
         <div class="container">
             <h2>Créons un écosystème durable. Mutualisons nos ressources !</h2>
             <p class="intro-text">Ré(GE)nère connecte les entreprises genevoises pour créer des synergies locales, valoriser les déchets et optimiser l'utilisation des ressources dans une démarche d'économie locale.</p>
-        </div>
-    </section>
+        <!-- BANNIÈRE DANS LE BLOC JAUNE -->
+    <div class="banner">
+      🌟 Réservez dès maintenant votre accès ! 🌟
+    </div>
+  </div>
+</section>
 
 <!-- Section Pourquoi rejoindre -->
     <section id="benefits" class="benefits">
