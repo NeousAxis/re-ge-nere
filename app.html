@@ -18,10 +18,10 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: #6F795C;
             margin: 0;
             padding: 0;
-            background-color: #f7f9fc;
+            background-color: #f7f5f0;
         }
         .container {
             max-width: 1200px;
@@ -29,7 +29,7 @@
             padding: 0 20px;
         }
         header {
-            background-color: #2A9D8F;
+            background-color: #6E785B;
             color: white;
             padding: 20px 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -50,7 +50,7 @@
             opacity: 0.9;
         }
         nav {
-            background-color: #264653;
+            background-color: #6D785A;
             color: white;
         }
         nav ul {
@@ -65,9 +65,10 @@
         nav a {
             color: white;
             text-decoration: none;
+            transition: color 0.3s;
         }
         nav a:hover {
-            text-decoration: underline;
+            color: #E67E35;
         }
         /* Sections */
         section {
@@ -76,22 +77,26 @@
         section h2 {
             text-align: center;
             margin-bottom: 30px;
-            color: #264653;
+            color: #6F795C;
             font-size: 2rem;
             font-weight: 600;
         }
         .intro {
-            background-color: #E9C46A;
-            color: #264653;
+            background-color: #6F795B;
+            color: white;
+        }
+        .intro h2 {
+            color: white;
         }
         .intro p {
             font-size: 1.2rem;
             max-width: 800px;
-            margin: 0 auto 60px auto; /* Ajoute 60px de marge en bas */
+            margin: 0 auto 60px auto;
             text-align: center;
+            color: white;
         }
         .benefits {
-            background-color: white;
+            background-color: #F7F3E9;
         }
         .benefits-grid {
             display: grid;
@@ -99,21 +104,25 @@
             gap: 30px;
         }
         .benefit-card {
-            background-color: #f7f9fc;
-            border-radius: 8px;
+            background-color: #FFF8F0;
+            border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(230,126,53,0.1);
             transition: transform 0.3s;
+            border-top: 4px solid #E67E35;
         }
         .benefit-card:hover {
             transform: translateY(-5px);
         }
         .benefit-card h3 {
-            color: #2A9D8F;
+            color: #6D775A;
             margin-top: 0;
         }
         .how-it-works {
-            background-color: #f7f9fc;
+            background-color: #6D785A;
+        }
+        .how-it-works h2 {
+            color: white;
         }
         .steps {
             max-width: 800px;
@@ -125,7 +134,7 @@
             align-items: center;
         }
         .step-number {
-            background-color: #E76F51;
+            background-color: #E67E35;
             color: white;
             width: 50px;
             height: 50px;
@@ -138,16 +147,23 @@
             margin-right: 20px;
             flex-shrink: 0;
         }
+        .step-content h3 {
+            color: white;
+        }
+        .step-content p {
+            color: white;
+        }
         .registration {
-            background-color: white;
+            background-color: #F7F3E9;
         }
         .form-container {
             max-width: 800px;
             margin: 0 auto;
-            background-color: #f7f9fc;
+            background-color: #FFF8F0;
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(230,126,53,0.15);
+            border: 1px solid #F0D5B8;
         }
         .form-field {
             margin-bottom: 25px;
@@ -156,7 +172,7 @@
             display: block;
             margin-bottom: 12px;
             font-weight: 600;
-            color: #264653;
+            color: #6F795C;
             font-size: 1.1rem;
         }
         .form-field input, 
@@ -164,12 +180,20 @@
         .form-field textarea {
             width: 100%;
             padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 2px solid #E0D0B8;
+            border-radius: 8px;
             font-size: 1rem;
             font-family: inherit;
             background-color: white;
             position: relative;
+            transition: border-color 0.3s;
+        }
+        
+        .form-field input:focus, 
+        .form-field select:focus, 
+        .form-field textarea:focus {
+            border-color: #E67E35;
+            outline: none;
         }
         
         /* Style pour les champs avec icône */
@@ -182,7 +206,7 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #2A9D8F;
+            color: #E67E35;
             font-weight: bold;
         }
         
@@ -190,46 +214,49 @@
         .form-field select {
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23264653' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23E67E35' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: calc(100% - 15px) center;
             padding-right: 40px;
         }
         
         .submit-btn {
-            background-color: #2A9D8F;
+            background-color: #E67E35;
             color: white;
             border: none;
             padding: 15px 30px;
             font-size: 1.1rem;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
             margin-top: 20px;
             display: block;
             width: 100%;
             max-width: 300px;
             margin-left: auto;
             margin-right: auto;
+            font-weight: bold;
         }
         .submit-btn:hover {
-            background-color: #1f7268;
+            background-color: #D96928;
+            transform: scale(1.05);
         }
         
         /* Style pour le bouton Ajouter */
         .btn-add {
-            background-color: #2A9D8F;
+            background-color: #E67E35;
             color: white;
             border: none;
             padding: 8px 20px;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 0.95rem;
             margin-top: 10px;
+            transition: background-color 0.3s;
         }
         
         .btn-add:hover {
-            background-color: #1f7268;
+            background-color: #D96928;
         }
         
         .tag-container {
@@ -240,9 +267,9 @@
         }
         
         .tag {
-            background-color: #E9C46A;
-            color: #264653;
-            padding: 6px 12px;
+            background-color: #6D775A;
+            color: white;
+            padding: 8px 15px;
             border-radius: 20px;
             font-size: 0.9rem;
             display: inline-flex;
@@ -253,17 +280,29 @@
             margin-left: 8px;
             cursor: pointer;
             font-weight: bold;
+            background-color: #E67E35;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
         }
         
         .modality-section {
             position: relative;
-            padding-left: 20px;
+            padding: 20px;
+            background-color: #F7F3E9;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #E67E35;
         }
         
         .modality-section h3 {
             margin-top: 0;
             font-size: 1.1rem;
-            color: #264653;
+            color: #6F795C;
             margin-bottom: 20px;
         }
         
@@ -282,7 +321,7 @@
         
         .modality-title {
             font-weight: 600;
-            color: #264653;
+            color: #6F795C;
             margin-bottom: 12px;
             font-size: 1rem;
         }
@@ -290,15 +329,21 @@
         .modality-select {
             width: 100%;
             padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 2px solid #E0D0B8;
+            border-radius: 8px;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23264653' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23E67E35' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: calc(100% - 15px) center;
             padding-right: 40px;
             background-color: white;
+            transition: border-color 0.3s;
+        }
+        
+        .modality-select:focus {
+            border-color: #E67E35;
+            outline: none;
         }
         
         /* Styles spécifiques pour correspondre à l'image */
@@ -306,16 +351,22 @@
             width: 100%;
             height: 44px;
             padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 2px solid #E0D0B8;
+            border-radius: 8px;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23264653' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23E67E35' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: calc(100% - 15px) center;
             padding-right: 40px;
             background-color: white;
             font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .category-select:focus {
+            border-color: #E67E35;
+            outline: none;
         }
         
         /* Style pour le dropdown de notification */
@@ -323,21 +374,27 @@
             width: 100%;
             height: 44px;
             padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 2px solid #E0D0B8;
+            border-radius: 8px;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23264653' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23E67E35' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: calc(100% - 15px) center;
             padding-right: 40px;
             background-color: white;
             font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .notification-select:focus {
+            border-color: #E67E35;
+            outline: none;
         }
         
         /* Utilitaires */
         .text-muted {
-            color: #6c757d;
+            color: #6F795C;
             font-size: 0.9rem;
         }
         
@@ -347,17 +404,17 @@
             top: 20px;
             right: 20px;
             padding: 15px 25px;
-            border-radius: 4px;
+            border-radius: 8px;
             color: white;
             font-weight: bold;
             z-index: 1001;
             display: none;
         }
         #notification.success {
-            background-color: #2A9D8F;
+            background-color: #E67E35;
         }
         #notification.error {
-            background-color: #E76F51;
+            background-color: #6E785A;
         }
         
         /* Responsive adjustments */
@@ -394,7 +451,7 @@
         
         /* Styles pour les placeholder et textes à l'intérieur des champs */
         ::placeholder {
-            color: #999;
+            color: #B0B8A6;
         }
         
         /* Style pour le champ de saisie de l'option "Autre" */
@@ -408,9 +465,15 @@
         .other-input {
             flex: 1;
             padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 2px solid #E0D0B8;
+            border-radius: 8px;
             margin-right: 10px;
+            transition: border-color 0.3s;
+        }
+        
+        .other-input:focus {
+            border-color: #E67E35;
+            outline: none;
         }
         
         /* Version tag */
@@ -418,12 +481,13 @@
             position: fixed;
             bottom: 5px;
             right: 5px;
-            background-color: rgba(42, 157, 143, 0.8);
+            background-color: rgba(230, 126, 53, 0.9);
             color: white;
             padding: 3px 8px;
             border-radius: 4px;
             font-size: 0.7rem;
             z-index: 1000;
+        }
 
         #auth-status {
             display: flex;
@@ -437,6 +501,66 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+        }
+        
+        /* Styles pour les sections de match */
+        .matches {
+            background-color: #F7F3E9;
+        }
+        
+        .match-card {
+            background-color: #FFF8F0;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(230,126,53,0.1);
+            border-top: 4px solid #E67E35;
+            transition: transform 0.3s;
+        }
+        
+        .match-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Style pour la modal de connexion */
+        #loginModal > div {
+            background-color: #FFF8F0;
+            border: 1px solid #F0D5B8;
+        }
+        
+        #loginModal h2 {
+            color: #6F795C !important;
+        }
+        
+        #loginModal input {
+            border: 2px solid #E0D0B8;
+            border-radius: 8px;
+        }
+        
+        #loginModal input:focus {
+            border-color: #E67E35;
+            outline: none;
+        }
+        
+        #loginModal button {
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        #loginModal button:first-child {
+            background-color: #6D785A;
+        }
+        
+        #loginModal button:first-child:hover {
+            background-color: #6F795C;
+        }
+        
+        #loginModal button:last-child {
+            background-color: #E67E35;
+        }
+        
+        #loginModal button:last-child:hover {
+            background-color: #D96928;
         }
     </style>
 </head>
@@ -1539,7 +1663,6 @@ function displayMatches() {
     matchesSection = document.createElement('section');
     matchesSection.id = 'matches-section';
     matchesSection.className = 'matches';
-    matchesSection.style.backgroundColor = '#f7f9fc';
     matchesSection.style.padding = '50px 0';
     
     // Insérer après la section "how-it-works"
@@ -1557,28 +1680,28 @@ function displayMatches() {
       
       <div class="matches-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
         ${latestMatches.length > 0 ? latestMatches.map(match => `
-          <div class="match-card" style="background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+          <div class="match-card">
             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-              <span style="background-color: #2A9D8F; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Match</span>
-              <span style="color: #6c757d; font-size: 0.9rem;">${new Date(match.date).toLocaleDateString()}</span>
+              <span style="background-color: #E67E35; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Match</span>
+              <span style="color: #6F795C; font-size: 0.9rem;">${new Date(match.date).toLocaleDateString()}</span>
             </div>
-            <h3 style="margin-top: 0; color: #264653; margin-bottom: 15px;">Catégorie: ${match.resourceCategory}</h3>
+            <h3 style="margin-top: 0; color: #6F795C; margin-bottom: 15px;">Catégorie: ${match.resourceCategory}</h3>
             <div style="margin-bottom: 15px;">
-              <div style="font-weight: bold; color: #2A9D8F;">Fournisseur</div>
+              <div style="font-weight: bold; color: #E67E35;">Fournisseur</div>
               <div>${match.provider.name}</div>
             </div>
             <div style="margin-bottom: 15px;">
-              <div style="font-weight: bold; color: #E76F51;">Receveur</div>
+              <div style="font-weight: bold; color: #6D775A;">Receveur</div>
               <div>${match.receiver.name}</div>
             </div>
-            <hr style="border: 0; height: 1px; background-color: #e0e0e0; margin: 15px 0;">
-            <div style="font-size: 0.9rem; color: #333;">
+            <hr style="border: 0; height: 1px; background-color: #E0D0B8; margin: 15px 0;">
+            <div style="font-size: 0.9rem; color: #6F795C;">
               <div>Ressource: <span style="font-style: italic;">${match.providerDescription.substring(0, 100)}${match.providerDescription.length > 100 ? '...' : ''}</span></div>
               <div>Besoin: <span style="font-style: italic;">${match.receiverDescription.substring(0, 100)}${match.receiverDescription.length > 100 ? '...' : ''}</span></div>
             </div>
           </div>
         `).join('') : `
-          <div style="grid-column: 1 / -1; text-align: center; padding: 30px; background-color: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+          <div style="grid-column: 1 / -1; text-align: center; padding: 30px; background-color: #FFF8F0; border-radius: 15px; box-shadow: 0 4px 12px rgba(230,126,53,0.1); border-top: 4px solid #E67E35;">
             <p>Aucun match n'a encore été réalisé. Rejoignez notre écosystème pour créer les premières synergies !</p>
           </div>
         `}
@@ -1621,29 +1744,30 @@ function showMatchNotification(newMatches) {
   modalOverlay.style.zIndex = '1000';
   
   let modalContent = document.createElement('div');
-  modalContent.style.backgroundColor = 'white';
+  modalContent.style.backgroundColor = '#FFF8F0';
   modalContent.style.padding = '30px';
-  modalContent.style.borderRadius = '8px';
+  modalContent.style.borderRadius = '15px';
   modalContent.style.maxWidth = '600px';
   modalContent.style.width = '90%';
   modalContent.style.maxHeight = '80vh';
   modalContent.style.overflow = 'auto';
+  modalContent.style.border = '1px solid #F0D5B8';
   
   // Titre et contenu
   modalContent.innerHTML = `
-    <h2 style="color: #2A9D8F; margin-top: 0;">Nouveaux matchs trouvés! 🎉</h2>
-    <p>Félicitations! Nous avons trouvé ${newMatches.length} nouveau${newMatches.length > 1 ? 'x' : ''} match${newMatches.length > 1 ? 's' : ''} entre entreprises:</p>
+    <h2 style="color: #E67E35; margin-top: 0;">Nouveaux matchs trouvés! 🎉</h2>
+    <p style="color: #6F795C;">Félicitations! Nous avons trouvé ${newMatches.length} nouveau${newMatches.length > 1 ? 'x' : ''} match${newMatches.length > 1 ? 's' : ''} entre entreprises:</p>
     
     <div style="margin-top: 20px;">
       ${newMatches.map(match => `
-        <div style="border-left: 4px solid #2A9D8F; padding-left: 15px; margin-bottom: 20px;">
-          <h3 style="margin-top: 0; color: #264653;">Catégorie: ${match.resourceCategory}</h3>
-          <p><strong style="color: #2A9D8F;">${match.provider.name}</strong> peut fournir à <strong style="color: #E76F51;">${match.receiver.name}</strong></p>
+        <div style="border-left: 4px solid #E67E35; padding-left: 15px; margin-bottom: 20px; background-color: #F7F3E9; padding: 15px; border-radius: 8px;">
+          <h3 style="margin-top: 0; color: #6F795C;">Catégorie: ${match.resourceCategory}</h3>
+          <p style="color: #6F795C;"><strong style="color: #E67E35;">${match.provider.name}</strong> peut fournir à <strong style="color: #6D775A;">${match.receiver.name}</strong></p>
         </div>
       `).join('')}
     </div>
     
-    <button id="close-modal" style="background-color: #2A9D8F; color: white; border: none; padding: 12px 24px; font-size: 1rem; border-radius: 4px; cursor: pointer; margin-top: 20px; float: right;">Fermer</button>
+    <button id="close-modal" style="background-color: #E67E35; color: white; border: none; padding: 12px 24px; font-size: 1rem; border-radius: 8px; cursor: pointer; margin-top: 20px; float: right; font-weight: bold;">Fermer</button>
   `;
   
   modalOverlay.appendChild(modalContent);
@@ -1828,28 +1952,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Modal de connexion -->
 <div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background-color: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%;">
-        <h2 style="color: #2A9D8F; margin-top: 0;">Connexion</h2>
-        <p>Entrez votre email professionnel pour accéder à votre espace entreprise.</p>
+    <div style="background-color: #FFF8F0; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; border: 1px solid #F0D5B8;">
+        <h2 style="color: #6F795C; margin-top: 0;">Connexion</h2>
+        <p style="color: #6F795C;">Entrez votre email professionnel pour accéder à votre espace entreprise.</p>
         
         <div style="margin-bottom: 20px;">
-            <label for="login-email" style="display: block; margin-bottom: 8px; font-weight: 600; color: #264653;">Email professionnel*</label>
-            <input type="email" id="login-email" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+            <label for="login-email" style="display: block; margin-bottom: 8px; font-weight: 600; color: #6F795C;">Email professionnel*</label>
+            <input type="email" id="login-email" style="width: 100%; padding: 12px 15px; border: 2px solid #E0D0B8; border-radius: 8px; font-size: 1rem;">
         </div>
         
         <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-            <button onclick="closeLoginModal()" style="background-color: #ccc; color: #333; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer;">Annuler</button>
-            <button onclick="loginUser()" style="background-color: #2A9D8F; color: white; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer;">Se connecter</button>
+            <button onclick="closeLoginModal()" style="background-color: #6D785A; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;">Annuler</button>
+            <button onclick="loginUser()" style="background-color: #E67E35; color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold;">Se connecter</button>
         </div>
     </div>
 </div>
 
 <!-- Pied de page -->
-<footer id="contact" style="background-color: #264653; color: white; padding: 30px 0; margin-top: 50px;">
+<footer id="contact" style="background-color: #6E785B; color: white; padding: 30px 0; margin-top: 50px;">
     <div class="container">
         <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
             <div style="margin-bottom: 20px;">
-                <h3 style="margin-top: 0; font-size: 1.4rem; color: #E9C46A;">Ré(GE)nère</h3>
+                <h3 style="margin-top: 0; font-size: 1.4rem; color: #E67E35;">Ré(GE)nère</h3>
                 <p style="margin-bottom: 5px;">Plateforme d'Écosystème Mutualisé</p>
                 <p style="font-size: 0.9rem;">© Association Eclore 2025. Tous droits réservés.</p>
             </div>
