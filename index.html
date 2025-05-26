@@ -12,49 +12,55 @@
   </script>
   <style>
     /* Reset & base */
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f7f9fc; color: #264653; margin: 0; padding: 0; }
-    header, footer { background-color: #2A9D8F; color: white; text-align: center; padding: 20px; }
-    .cta-button { display: inline-block; background-color: #2A9D8F; color: white; padding: 15px 25px; margin: 20px 10px; text-decoration: none; border-radius: 8px; font-weight: bold; transition: transform 0.3s; }
-    .cta-button:hover { transform: scale(1.05); }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f7f5f0; color: #6F795C; margin: 0; padding: 0; }
+    header, footer { background-color: #6E785B; color: white; text-align: center; padding: 20px; }
+    .cta-button { display: inline-block; background-color: #E67E35; color: white; padding: 15px 25px; margin: 20px 10px; text-decoration: none; border-radius: 8px; font-weight: bold; transition: transform 0.3s; }
+    .cta-button:hover { transform: scale(1.05); background-color: #D96928; }
     .container { width: 90%; max-width: 1200px; margin: 0 auto; }
 
     /* Intro section */
-    section.intro { background-color: #E9C46A; padding: 60px 0; text-align: center; }
-    section.intro h2 { color: #264653; font-size: 2rem; margin-bottom: 20px; }
-    section.intro .intro-text { max-width: 800px; margin: 0 auto; font-size: 1.125rem; line-height: 1.6; color: #264653; }
-    section.intro .banner { margin-top: 30px; font-size: 1.2rem; font-weight: bold; color: #264653; }
+    section.intro { background-color: #6F795B; padding: 60px 0; text-align: center; }
+    section.intro h2 { color: white; font-size: 2rem; margin-bottom: 20px; }
+    section.intro .intro-text { max-width: 800px; margin: 0 auto; font-size: 1.125rem; line-height: 1.6; color: white; }
+    section.intro .banner { margin-top: 30px; font-size: 1.2rem; font-weight: bold; color: white; background-color: #E67E35; padding: 15px; border-radius: 10px; display: inline-block; }
 
     /* Benefits section */
-    section.benefits { background-color: #ffffff; padding: 60px 0; }
-    section.benefits h2 { text-align: center; color: #264653; font-size: 2rem; margin-bottom: 40px; }
+    section.benefits { background-color: #F7F3E9; padding: 60px 0; }
+    section.benefits h2 { text-align: center; color: #6F795C; font-size: 2rem; margin-bottom: 40px; }
     .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-    .benefit-card { background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: left; }
-    .benefit-card h3 { color: #2A9D8F; margin-bottom: 10px; font-size: 1.25rem; }
-    .benefit-card p { color: #264653; line-height: 1.5; }
+    .benefit-card { background-color: #FFF8F0; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(230,126,53,0.1); text-align: left; border-top: 4px solid #E67E35; transition: transform 0.3s; }
+    .benefit-card:hover { transform: translateY(-5px); }
+    .benefit-card h3 { color: #6D775A; margin-bottom: 15px; font-size: 1.25rem; }
+    .benefit-card p { color: #6F795C; line-height: 1.6; }
 
     /* How it works section */
-    section.how-it-works { background-color: #ffffff; padding: 60px 0; }
-    section.how-it-works h2 { text-align: center; color: #264653; font-size: 2rem; margin-bottom: 40px; }
+    section.how-it-works { background-color: #6D785A; padding: 60px 0; }
+    section.how-it-works h2 { text-align: center; color: white; font-size: 2rem; margin-bottom: 40px; }
     .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
     .step { display: flex; align-items: flex-start; }
-    .step-number { background-color: #E9C46A; color: #264653; font-weight: bold; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0; }
-    .step-content h3 { margin: 0 0 8px; font-size: 1.2rem; color: #264653; }
-    .step-content p { margin: 0; color: #264653; line-height: 1.5; }
+    .step-number { background-color: #E67E35; color: white; font-weight: bold; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0; font-size: 1.2rem; }
+    .step-content h3 { margin: 0 0 8px; font-size: 1.2rem; color: white; }
+    .step-content p { margin: 0; color: white; line-height: 1.5; }
 
     /* Form section */
-    .form-container { background: white; max-width: 700px; margin: 40px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-    form label { display: block; margin: 15px 0 5px; font-weight: bold; }
-    input[type="email"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-    input[type="radio"] { margin: 10px; }
-    #loader { display: none; margin-top: 10px; font-style: italic; color: #2A9D8F; animation: pulse 2s infinite; }
+    .form-container { background: #FFF8F0; max-width: 700px; margin: 40px auto; padding: 35px; border-radius: 15px; box-shadow: 0 6px 20px rgba(230,126,53,0.15); border: 1px solid #F0D5B8; }
+    form h2 { color: #6E785A; margin-bottom: 25px; }
+    form label { display: block; margin: 18px 0 8px; font-weight: bold; color: #6F795C; }
+    input[type="email"], textarea { width: 100%; padding: 12px; border: 2px solid #E0D0B8; border-radius: 8px; background-color: white; transition: border-color 0.3s; }
+    input[type="email"]:focus, textarea:focus { border-color: #E67E35; outline: none; }
+    input[type="radio"] { margin: 10px; accent-color: #E67E35; }
+    #loader { display: none; margin-top: 10px; font-style: italic; color: #E67E35; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     .banner {
-    background-color: #E9C46A;
+    background-color: #E67E35;
     text-align: center;
-    padding: 15px;
+    padding: 18px;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #264653;
+    color: white;
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 600px;
   }
 
     footer p { margin: 0; font-size: 0.9rem; }
@@ -75,7 +81,7 @@
 
   <section id="benefits" class="benefits">
     <div class="container">
-      <h2>Pourquoi rejoindre notre écosystème ?</h2>
+      <h2>Pourquoi rejoindre notre écosystème ?</h2>
       <div class="benefits-grid">
         <div class="benefit-card">
           <h3>Réseautage local</h3>
@@ -140,128 +146,128 @@
       </div>
     </div>
   </section>
-  <!-- Section Potentiel d’économies (tableau aligné) -->
-<section id="savings-text" style="background-color:#ffffff; padding:60px 0;">
+  <!-- Section Potentiel d'économies (tableau aligné) -->
+<section id="savings-text" style="background-color:#F7F3E9; padding:60px 0;">
   <div class="container" style="max-width:900px; margin:0 auto;">
-    <h2 style="text-align:center; color:#264653; font-size:2rem; margin-bottom:40px;">
-      Exemple comparatif d’économies potentielles
+    <h2 style="text-align:center; color:#6F795C; font-size:2rem; margin-bottom:40px;">
+      Exemple comparatif d'économies potentielles
     </h2>
-    <table style="width:100%; border-collapse:collapse; font-size:0.95rem; color:#264653;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.95rem; color:#6F795C; background-color:white; border-radius:10px; overflow:hidden; box-shadow:0 4px 12px rgba(230,126,53,0.1);">
       <thead>
         <tr>
-          <th style="text-align:left; padding:12px; border-bottom:2px solid #E9C46A;">
+          <th style="text-align:left; padding:15px; background-color:#E67E35; color:white;">
             Catégorie de dépense
           </th>
-          <th style="text-align:center; padding:12px; border-bottom:2px solid #E9C46A;">
+          <th style="text-align:center; padding:15px; background-color:#E67E35; color:white;">
             Coût annuel sans mutualisation (CHF)
           </th>
-          <th style="text-align:center; padding:12px; border-bottom:2px solid #E9C46A;">
+          <th style="text-align:center; padding:15px; background-color:#E67E35; color:white;">
             Économie possible via re-ge-nere (%)
           </th>
-          <th style="text-align:right; padding:12px; border-bottom:2px solid #E9C46A;">
+          <th style="text-align:right; padding:15px; background-color:#E67E35; color:white;">
             Économie estimée (CHF)
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">
+        <tr style="background-color:#FFF8F0;">
+          <td style="padding:12px 15px; text-align:left;">
             Location de salles de réunion
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:center;">
-            3’000
+          <td style="padding:12px 15px; text-align:center;">
+            3'000
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:center; color:#2A9D8F; font-weight:bold;">
+          <td style="padding:12px 15px; text-align:center; color:#E67E35; font-weight:bold;">
             50 %
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:right;">
-            1’500
+          <td style="padding:12px 15px; text-align:right;">
+            1'500
           </td>
         </tr>
-        <tr>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">
+        <tr style="background-color:white;">
+          <td style="padding:12px 15px; text-align:left;">
             Achat de matériel (équipement, mobilier, etc.)
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:center;">
-            5’000
+          <td style="padding:12px 15px; text-align:center;">
+            5'000
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:center; color:#2A9D8F; font-weight:bold;">
+          <td style="padding:12px 15px; text-align:center; color:#E67E35; font-weight:bold;">
             40 %
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:right;">
-            2’000
+          <td style="padding:12px 15px; text-align:right;">
+            2'000
           </td>
         </tr>
-        <tr>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">
+        <tr style="background-color:#FFF8F0;">
+          <td style="padding:12px 15px; text-align:left;">
             Temps de prospection / partenariat
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:center;">
-            2’000
+          <td style="padding:12px 15px; text-align:center;">
+            2'000
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:center; color:#2A9D8F; font-weight:bold;">
+          <td style="padding:12px 15px; text-align:center; color:#E67E35; font-weight:bold;">
             60 %
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:right;">
-            1’200
+          <td style="padding:12px 15px; text-align:right;">
+            1'200
           </td>
         </tr>
-        <tr>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">
+        <tr style="background-color:white;">
+          <td style="padding:12px 15px; text-align:left;">
             Accès à des outils ou modèles de gouvernance
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:center;">
-            1’000
+          <td style="padding:12px 15px; text-align:center;">
+            1'000
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:center; color:#2A9D8F; font-weight:bold;">
+          <td style="padding:12px 15px; text-align:center; color:#E67E35; font-weight:bold;">
             80 %
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:right;">
+          <td style="padding:12px 15px; text-align:right;">
             800
           </td>
         </tr>
-        <tr>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">
+        <tr style="background-color:#FFF8F0;">
+          <td style="padding:12px 15px; text-align:left;">
             Accompagnement / coaching externe
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:center;">
-            4’000
+          <td style="padding:12px 15px; text-align:center;">
+            4'000
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:center; color:#2A9D8F; font-weight:bold;">
+          <td style="padding:12px 15px; text-align:center; color:#E67E35; font-weight:bold;">
             50 %
           </td>
-          <td style="padding:12px; border-bottom:1px solid #ddd; text-align:right;">
-            2’000
+          <td style="padding:12px 15px; text-align:right;">
+            2'000
           </td>
         </tr>
-        <tr>
-          <td style="padding:12px; text-align:left;">
+        <tr style="background-color:white;">
+          <td style="padding:12px 15px; text-align:left;">
             Communication / valorisation RSE
           </td>
-          <td style="padding:12px; text-align:center;">
-            1’500
+          <td style="padding:12px 15px; text-align:center;">
+            1'500
           </td>
-          <td style="padding:12px; text-align:center; color:#2A9D8F; font-weight:bold;">
+          <td style="padding:12px 15px; text-align:center; color:#E67E35; font-weight:bold;">
             30 %
           </td>
-          <td style="padding:12px; text-align:right;">
+          <td style="padding:12px 15px; text-align:right;">
             450
           </td>
         </tr>
       </tbody>
     </table>
 
-   <p style="text-align:left; font-size:0.9rem; color:#264653; margin-top:30px;">
-  💡 Total des économies estimées : <strong>CHF 7’950 /an</strong> pour une structure impliquée activement dans l’écosystème,  
+   <p style="text-align:left; font-size:0.9rem; color:#6F795C; margin-top:30px; background-color:#FFF8F0; padding:20px; border-radius:10px; border-left:4px solid #E67E35;">
+  💡 Total des économies estimées : <strong style="color:#E67E35;">CHF 7'950 /an</strong> pour une structure impliquée activement dans l'écosystème,  
   avec un abonnement Symbiotique à CHF 25/mois (CHF 300/an).<br> 
-  ➡️ Retour sur investissement estimé : <strong>x26</strong> (CHF 300 → CHF 7’950), sous réserve d’implication et de pertinence des synergies trouvées.
+  ➡️ Retour sur investissement estimé : <strong style="color:#E67E35;">x26</strong> (CHF 300 → CHF 7'950), sous réserve d'implication et de pertinence des synergies trouvées.
 </p>
   </div>
 </section>
 <div class="banner">
   🌟 Réservez dès maintenant votre accès ! 🌟
 </div>
-  <h2 style="color: #E76F51; text-align: center;">Étape 1 : Remplissez le questionnaire</h2>
+  <h2 style="color: #6D785A; text-align: center;">Étape 1 : Remplissez le questionnaire</h2>
   <div class="form-container">
     <h2>Aidez-nous à mieux comprendre vos besoins</h2>
     <form id="survey-form" onsubmit="sendForm(event)">
@@ -291,25 +297,25 @@
     </form>
   </div>
 
-  <p style="margin-top: 2rem; font-size: 0.95rem; max-width: 600px; margin: auto; text-align: center;">
+  <p style="margin-top: 2rem; font-size: 0.95rem; max-width: 600px; margin: auto; text-align: center; color: #6F795C;">
     Votre contribution symbolique nous aide à développer la plateforme. Vous aurez un eccès prioritaire pour aider et façonner une économie locale innovante.
   </p>
 
   <div style="text-align: center; margin: 50px 0;">
-    <h2 style="color: #2A9D8F;">Étape 2 : Réservez votre accès (5 CHF)</h2>
+    <h2 style="color: #6D785A;">Étape 2 : Réservez votre accès (5 CHF)</h2>
     <a href="https://eclore.gumroad.com/l/re-ge-nere" class="cta-button" target="_blank">
       Je réserve mon accès (5 CHF) 📚 Livre Blanc offert
     </a>
-    <a href="app.html" class="cta-button" style="background-color: #E76F51;">
+    <a href="app.html" class="cta-button" style="background-color: #6C7659;">
       🚀 Découvrir l'application Re-GE-nère
     </a>
   </div>
 
-  <footer id="contact" style="background-color: #264653; color: white; padding: 30px 0; margin-top: 50px;">
+  <footer id="contact" style="background-color: #6E785B; color: white; padding: 30px 0; margin-top: 50px;">
     <div class="container">
       <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
         <div style="margin-bottom: 20px;">
-          <h3 style="margin-top: 0; font-size: 1.4rem; color: #E9C46A;">Ré(GE)nère</h3>
+          <h3 style="margin-top: 0; font-size: 1.4rem; color: #E67E35;">Ré(GE)nère</h3>
           <p style="margin-bottom: 5px;">Plateforme d'Écosystème Mutualisé</p>
           <p style="font-size: 0.9rem;">© Association Eclore 2025. Tous droits réservés.</p>
         </div>
@@ -341,7 +347,7 @@
       };
       emailjs.send('service_n485hr9', 'template_uj8d7ba', params)
         .then(resp => { alert('Merci ! Votre réponse a bien été envoyée.'); form.reset(); document.getElementById('loader').style.display = 'none'; })
-        .catch(err => { alert('Erreur lors de l'envoi. Veuillez réessayer.'); document.getElementById('loader').style.display = 'none'; });
+        .catch(err => { alert('Erreur lors de l\'envoi. Veuillez réessayer.'); document.getElementById('loader').style.display = 'none'; });
     }
   </script>
 
